@@ -19,26 +19,15 @@ class YahtzeeGameTest < Minitest::Test
   end
 
   def test_complete_round
-    player_rolls([1,1,1,1,1])
-    player_selects_category('ones')
-    player_gets_score(5)
-  end
-
-  def test_complete_round_with_holding_dice_and_rerolling
     player_rolls([1,2,3,4,1])
     player_holds([0,4])
     player_rerolls([1,2,3]) # => [1,1,2,3,1]
     player_holds([0,1,4])
     player_rerolls([2,1])   # => [1,1,2,1,1]
     player_selects_category('ones')
-    player_gets_score(4)
-  end
 
-  def test_two_rounds_category_no_longer_available
-    skip
-    player_rolls([1,2,3,4,1])
-    player_selects_category('ones')
     player_sees_that_category_is_no_longer_available('ones')
+    player_gets_score(4)
   end
 
   def player_rolls(roll)
