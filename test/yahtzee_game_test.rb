@@ -79,6 +79,14 @@ class YahtzeeGameTest < Minitest::Test
     assert_equal 15, game.place_in_category_and_calculate_score('chance')
   end
 
+  def test_place_in_category_and_calculate_score_works_with_all_categories
+    game = YahtzeeGame.new
+    game.roll_dice
+    YahtzeeGame::CATEGORIES.each do |category|
+      game.place_in_category_and_calculate_score(category)
+    end
+  end
+
   def test_score_initially_is_zero
     game = YahtzeeGame.new
     assert_equal 0, game.score
