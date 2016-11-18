@@ -7,21 +7,21 @@ class YahtzeeGame
   attr_reader :score
 
   CATEGORIES = [
-    'Chance',
-    'Yahtzee',
-    'Ones',
-    'Twos',
-    'Threes',
-    'Fours',
-    'Fives',
-    'Sixes',
-    'Pair',
-    'Two pairs',
-    'Three of a kind',
-    'Four of a kind',
-    'Small straight',
-    'Large straight',
-    'Full house'
+    'chance',
+    'yahtzee',
+    'ones',
+    'twos',
+    'threes',
+    'fours',
+    'fives',
+    'sixes',
+    'pair',
+    'two_pairs',
+    'three_of_a_kind',
+    'four_of_a_kind',
+    'small_straight',
+    'large_straight',
+    'full_house'
   ]
 
   def initialize(dice_roller = DiceRoller.new)
@@ -41,7 +41,7 @@ class YahtzeeGame
   end
 
   def place_in_category_and_calculate_score(category)
-    @categories.delete(category.capitalize)
+    @categories.delete(category)
     @score += Yahtzee.send(category, roll)
   end
 end
