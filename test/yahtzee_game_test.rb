@@ -30,20 +30,14 @@ class YahtzeeGameTest < Minitest::Test
     player_gets_score(4)
   end
 
-  def test_roll_dice_performs_a_roll_and_saves_it_on_the_game
-    game = YahtzeeGame.new
-    game.roll_dice
-    assert_equal 5, game.roll.size
-  end
-
-  def test_roll_dice_performs_a_random_roll
+  def test_roll_dice_performs_a_random_roll_and_saves_it_on_the_game
     roller = FakeDiceRoller.new [1,2,3,4,5]
     game = YahtzeeGame.new(roller)
     game.roll_dice
     assert_equal [1,2,3,4,5], game.roll
   end
 
-  def test_reroll_rolls_again_the_dice_in_the_specified_positions
+  def test_reroll_rolls_again_the_dice_from_the_specified_positions
     roller = FakeDiceRoller.new [1,2,3,4,5,4,5,6]
     game = YahtzeeGame.new(roller)
     game.roll_dice
@@ -51,30 +45,8 @@ class YahtzeeGameTest < Minitest::Test
     assert_equal [4,2,5,4,6], game.roll
   end
 
-  def test_categories_initially_lists_all_the_categories
-    expected = [
-      'Chance',
-      'Yahtzee',
-      'Ones',
-      'Twos',
-      'Threes',
-      'Fours',
-      'Fives',
-      'Sixes',
-      'Pair',
-      'Two pairs',
-      'Three of a kind',
-      'Four of a kind',
-      'Small straight',
-      'Large straight',
-      'Full house',
-    ]
-    game = YahtzeeGame.new
-    assert_equal expected, game.categories
-  end
-
   def test_categories_lists_the_available_categories
-    expected = [
+    categories = [
       'Chance',
       'Yahtzee',
       'Ones',
@@ -93,10 +65,11 @@ class YahtzeeGameTest < Minitest::Test
     ]
 
     game = YahtzeeGame.new
-    assert_equal expected, game.categories
+    assert_equal categories, game.categories
+
     game.roll_dice
     game.place_in_category_and_calculate_score('yahtzee')
-    assert_equal expected - ['Yahtzee'], game.categories
+    assert_equal categories - ['Yahtzee'], game.categories
   end
 
   def test_place_in_category_and_calculate_score
@@ -111,19 +84,14 @@ class YahtzeeGameTest < Minitest::Test
     assert_equal 0, game.score
   end
 
-  def test_score_gets_updated_after_one_round
-    roller = FakeDiceRoller.new [1,2,3,4,5]
-    game = YahtzeeGame.new(roller)
-    game.roll_dice
-    game.place_in_category_and_calculate_score('chance')
-    assert_equal 15, game.score
-  end
-
   def test_score_keeps_track_of_multiple_rounds
     roller = FakeDiceRoller.new [1,2,3,4,5,1,1,1,1,1]
     game = YahtzeeGame.new(roller)
+
     game.roll_dice
     game.place_in_category_and_calculate_score('chance')
+    assert_equal 15, game.score
+
     game.roll_dice
     game.place_in_category_and_calculate_score('yahtzee')
     assert_equal 65, game.score
