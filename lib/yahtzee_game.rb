@@ -2,6 +2,7 @@ require_relative 'yahtzee'
 require_relative 'dice_roller'
 
 class YahtzeeGame
+  attr_reader :categories
   attr_reader :roll
   attr_reader :score
 
@@ -26,7 +27,7 @@ class YahtzeeGame
   def initialize(dice_roller = DiceRoller.new)
     @score = 0
     @dice_roller = dice_roller
-    @spent_categories = []
+    @categories = CATEGORIES.dup
   end
 
   def roll_dice
@@ -39,12 +40,8 @@ class YahtzeeGame
     end
   end
 
-  def categories
-    CATEGORIES - @spent_categories
-  end
-
   def place_in_category_and_calculate_score(category)
-    @spent_categories << category.capitalize
+    @categories.delete(category.capitalize)
     @score += Yahtzee.send(category, roll)
   end
 end
