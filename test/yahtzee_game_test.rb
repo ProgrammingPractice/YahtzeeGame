@@ -30,34 +30,6 @@ class YahtzeeGameTest < Minitest::Test
     player_gets_score(4)
   end
 
-  def player_rolls(roll)
-    @roller = FakeDiceRoller.new roll
-    @game = YahtzeeGame.new(@roller)
-    @game.roll_dice
-  end
-
-  def player_holds(positions)
-    @hold_positions = positions
-  end
-
-  def player_rerolls(partial_roll)
-    @roller.add_values partial_roll
-    reroll_positions = [0,1,2,3,4] - @hold_positions
-    @game.reroll(reroll_positions)
-  end
-
-  def player_selects_category(category)
-    @game.place_in_category_and_calculate_score(category)
-  end
-
-  def player_sees_that_category_is_no_longer_available(category)
-    assert !@game.categories.map(&:downcase).include?(category)
-  end
-
-  def player_gets_score(expected)
-    assert_equal expected, @game.score
-  end
-
   def test_roll_dice_performs_a_roll_and_saves_it_on_the_game
     game = YahtzeeGame.new
     game.roll_dice
@@ -155,5 +127,35 @@ class YahtzeeGameTest < Minitest::Test
     game.roll_dice
     game.place_in_category_and_calculate_score('yahtzee')
     assert_equal 65, game.score
+  end
+
+  private
+
+  def player_rolls(roll)
+    @roller = FakeDiceRoller.new roll
+    @game = YahtzeeGame.new(@roller)
+    @game.roll_dice
+  end
+
+  def player_holds(positions)
+    @hold_positions = positions
+  end
+
+  def player_rerolls(partial_roll)
+    @roller.add_values partial_roll
+    reroll_positions = [0,1,2,3,4] - @hold_positions
+    @game.reroll(reroll_positions)
+  end
+
+  def player_selects_category(category)
+    @game.place_in_category_and_calculate_score(category)
+  end
+
+  def player_sees_that_category_is_no_longer_available(category)
+    assert !@game.categories.map(&:downcase).include?(category)
+  end
+
+  def player_gets_score(expected)
+    assert_equal expected, @game.score
   end
 end
