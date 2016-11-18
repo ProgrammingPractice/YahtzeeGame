@@ -26,6 +26,7 @@ class YahtzeeGame
   def initialize(dice_roller = DiceRoller.new)
     @score = 0
     @dice_roller = dice_roller
+    @spent_categories = []
   end
 
   def roll_dice
@@ -39,10 +40,11 @@ class YahtzeeGame
   end
 
   def categories
-    CATEGORIES
+    CATEGORIES - @spent_categories
   end
 
   def place_in_category_and_calculate_score(category)
+    @spent_categories << category.capitalize
     @score += Yahtzee.send(category, roll)
   end
 end

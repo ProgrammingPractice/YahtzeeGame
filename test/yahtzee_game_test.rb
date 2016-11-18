@@ -34,6 +34,13 @@ class YahtzeeGameTest < Minitest::Test
     player_gets_score(4)
   end
 
+  def test_two_rounds_category_no_longer_available
+    skip
+    player_rolls([1,2,3,4,1])
+    player_selects_category('ones')
+    player_sees_that_category_is_no_longer_available('ones')
+  end
+
   def player_rolls(roll)
     @roller = FakeDiceRoller.new roll
     @game = YahtzeeGame.new(@roller)
@@ -52,6 +59,10 @@ class YahtzeeGameTest < Minitest::Test
 
   def player_selects_category(category)
     @game.place_in_category_and_calculate_score(category)
+  end
+
+  def player_sees_that_category_is_no_longer_available(category)
+    assert !@game.categories.map(&:downcase).include?(category)
   end
 
   def player_gets_score(expected)
@@ -79,7 +90,7 @@ class YahtzeeGameTest < Minitest::Test
     assert_equal [4,2,5,4,6], game.roll
   end
 
-  def test_categories_lists_all_the_categories
+  def test_categories_initially_lists_all_the_categories
     expected = [
       'Chance',
       'Yahtzee',
@@ -99,6 +110,32 @@ class YahtzeeGameTest < Minitest::Test
     ]
     game = YahtzeeGame.new
     assert_equal expected, game.categories
+  end
+
+  def test_categories_lists_the_available_categories
+    expected = [
+      'Chance',
+      'Yahtzee',
+      'Ones',
+      'Twos',
+      'Threes',
+      'Fours',
+      'Fives',
+      'Sixes',
+      'Pair',
+      'Two pairs',
+      'Three of a kind',
+      'Four of a kind',
+      'Small straight',
+      'Large straight',
+      'Full house',
+    ]
+
+    game = YahtzeeGame.new
+    assert_equal expected, game.categories
+    game.roll_dice
+    game.place_in_category_and_calculate_score('yahtzee')
+    assert_equal expected - ['Yahtzee'], game.categories
   end
 
   def test_place_in_category_and_calculate_score
