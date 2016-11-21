@@ -1,10 +1,15 @@
 gem 'minitest', '>= 5.0.0'
 require 'minitest/autorun'
-# require 'test/unit'
 
 require_relative '../lib/yahtzee'
 
 class YahtzeeTest < Minitest::Test
+  def test_calculate_score_with_unknown_category
+    assert_raises ArgumentError do
+      Yahtzee.calculate_score("some_category", [1,2,3,4,5])
+    end
+  end
+
   def test_chance
     assert_equal 5,  Yahtzee.chance([1,1,1,1,1])
     assert_equal 15, Yahtzee.chance([1,2,3,4,5])

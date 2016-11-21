@@ -20,7 +20,11 @@ module Yahtzee
   ]
 
   def calculate_score(category, roll)
-    send(category, roll)
+    if CATEGORIES.include?(category)
+      send(category, roll)
+    else
+      raise ArgumentError.new("Unknown category #{category.inspect}")
+    end
   end
 
   def chance(roll)
