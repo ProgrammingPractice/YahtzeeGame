@@ -1,6 +1,4 @@
-gem 'minitest', '>= 5.0.0'
-require 'minitest/autorun'
-
+require_relative 'test_helper'
 require_relative '../lib/score_calculator'
 
 class ScoreCalculatorTest < Minitest::Test
