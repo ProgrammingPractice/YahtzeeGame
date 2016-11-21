@@ -47,11 +47,11 @@ class YahtzeeGameTest < Minitest::Test
 
   def test_categories_lists_the_available_categories
     game = YahtzeeGame.new
-    assert_equal Yahtzee::CATEGORIES, game.categories
+    assert_equal ScoreCalculator::CATEGORIES, game.categories
 
     game.roll_dice
     game.place_in_category_and_calculate_score('yahtzee')
-    assert_equal Yahtzee::CATEGORIES - ['yahtzee'], game.categories
+    assert_equal ScoreCalculator::CATEGORIES - ['yahtzee'], game.categories
   end
 
   def test_place_in_category_and_calculate_score

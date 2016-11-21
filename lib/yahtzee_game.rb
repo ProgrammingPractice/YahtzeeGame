@@ -1,4 +1,4 @@
-require_relative 'yahtzee'
+require_relative 'score_calculator'
 require_relative 'dice_roller'
 
 class YahtzeeGame
@@ -9,7 +9,7 @@ class YahtzeeGame
   def initialize(dice_roller = DiceRoller.new)
     @score = 0
     @dice_roller = dice_roller
-    @categories = Yahtzee::CATEGORIES.dup
+    @categories = ScoreCalculator::CATEGORIES.dup
   end
 
   def roll_dice
@@ -24,6 +24,6 @@ class YahtzeeGame
 
   def place_in_category_and_calculate_score(category)
     @categories.delete(category)
-    @score += Yahtzee.calculate_score(category, roll)
+    @score += ScoreCalculator.calculate(category, roll)
   end
 end

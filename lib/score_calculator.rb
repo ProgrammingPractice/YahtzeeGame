@@ -1,4 +1,4 @@
-module Yahtzee
+module ScoreCalculator
   extend self
 
   CATEGORIES = [
@@ -19,7 +19,7 @@ module Yahtzee
     'full_house'
   ]
 
-  def calculate_score(category, roll)
+  def calculate(category, roll)
     if CATEGORIES.include?(category)
       send(category, roll)
     else
