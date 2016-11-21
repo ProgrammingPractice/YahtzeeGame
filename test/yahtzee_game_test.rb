@@ -82,7 +82,7 @@ class YahtzeeGameTest < Minitest::Test
   def test_place_in_category_and_calculate_score_works_with_all_categories
     game = YahtzeeGame.new
     game.roll_dice
-    YahtzeeGame::CATEGORIES.each do |category|
+    Yahtzee::CATEGORIES.each do |category|
       game.place_in_category_and_calculate_score(category)
     end
   end

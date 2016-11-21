@@ -1,6 +1,24 @@
 module Yahtzee
   extend self
 
+  CATEGORIES = [
+    'chance',
+    'yahtzee',
+    'ones',
+    'twos',
+    'threes',
+    'fours',
+    'fives',
+    'sixes',
+    'pair',
+    'two_pairs',
+    'three_of_a_kind',
+    'four_of_a_kind',
+    'small_straight',
+    'large_straight',
+    'full_house'
+  ]
+
   def calculate_score(category, roll)
     send(category, roll)
   end

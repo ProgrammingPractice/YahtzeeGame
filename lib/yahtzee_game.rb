@@ -6,28 +6,10 @@ class YahtzeeGame
   attr_reader :roll
   attr_reader :score
 
-  CATEGORIES = [
-    'chance',
-    'yahtzee',
-    'ones',
-    'twos',
-    'threes',
-    'fours',
-    'fives',
-    'sixes',
-    'pair',
-    'two_pairs',
-    'three_of_a_kind',
-    'four_of_a_kind',
-    'small_straight',
-    'large_straight',
-    'full_house'
-  ]
-
   def initialize(dice_roller = DiceRoller.new)
     @score = 0
     @dice_roller = dice_roller
-    @categories = CATEGORIES.dup
+    @categories = Yahtzee::CATEGORIES.dup
   end
 
   def roll_dice
