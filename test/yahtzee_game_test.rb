@@ -26,8 +26,8 @@ class YahtzeeGameTest < Minitest::Test
     player_rerolls([2,1])   # => [1,1,2,1,1]
     player_selects_category('ones')
 
-    player_sees_that_category_is_no_longer_available('ones')
-    player_gets_score(4)
+    assert the_category_is_no_longer_available('ones')
+    assert_equal 4, the_score
   end
 
   def test_roll_dice_performs_a_random_roll_and_saves_it_on_the_game
@@ -127,11 +127,11 @@ class YahtzeeGameTest < Minitest::Test
     @game.place_in_category_and_calculate_score(category)
   end
 
-  def player_sees_that_category_is_no_longer_available(category)
-    assert !@game.categories.include?(category)
+  def the_category_is_no_longer_available(category)
+    !@game.categories.include?(category)
   end
 
-  def player_gets_score(expected)
-    assert_equal expected, @game.score
+  def the_score
+    @game.score
   end
 end
