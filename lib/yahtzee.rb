@@ -1,6 +1,10 @@
 module Yahtzee
   extend self
 
+  def calculate_score(category, roll)
+    send(category, roll)
+  end
+
   def chance(roll)
     roll.reduce(:+)
   end

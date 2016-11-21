@@ -42,6 +42,6 @@ class YahtzeeGame
 
   def place_in_category_and_calculate_score(category)
     @categories.delete(category)
-    @score += Yahtzee.send(category, roll)
+    @score += Yahtzee.calculate_score(category, roll)
   end
 end
