@@ -25,6 +25,12 @@ class YahtzeeTest < Minitest::Test
     assert_equal expected, Yahtzee::CATEGORIES
   end
 
+  def test_all_categories_have_an_implementation
+    Yahtzee::CATEGORIES.each do |category|
+      Yahtzee.calculate_score(category, [1,2,3,4,5])
+    end
+  end
+
   def test_calculate_score_with_unknown_category
     assert_raises ArgumentError do
       Yahtzee.calculate_score("some_category", [1,2,3,4,5])
