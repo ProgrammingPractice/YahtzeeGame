@@ -1,8 +1,8 @@
 #! /usr/bin/env ruby
 
-require_relative 'yahtzee_game'
+require_relative 'game'
 
-game = YahtzeeGame.new
+game = Game.new
 
 def display_roll(roll)
   puts "You rolled: ", roll.inspect
