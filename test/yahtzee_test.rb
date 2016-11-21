@@ -4,6 +4,27 @@ require 'minitest/autorun'
 require_relative '../lib/yahtzee'
 
 class YahtzeeTest < Minitest::Test
+  def test_list_of_categories
+    expected = [
+      'chance',
+      'yahtzee',
+      'ones',
+      'twos',
+      'threes',
+      'fours',
+      'fives',
+      'sixes',
+      'pair',
+      'two_pairs',
+      'three_of_a_kind',
+      'four_of_a_kind',
+      'small_straight',
+      'large_straight',
+      'full_house',
+    ]
+    assert_equal expected, Yahtzee::CATEGORIES
+  end
+
   def test_calculate_score_with_unknown_category
     assert_raises ArgumentError do
       Yahtzee.calculate_score("some_category", [1,2,3,4,5])

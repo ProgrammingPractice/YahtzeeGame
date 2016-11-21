@@ -46,30 +46,12 @@ class YahtzeeGameTest < Minitest::Test
   end
 
   def test_categories_lists_the_available_categories
-    categories = [
-      'chance',
-      'yahtzee',
-      'ones',
-      'twos',
-      'threes',
-      'fours',
-      'fives',
-      'sixes',
-      'pair',
-      'two_pairs',
-      'three_of_a_kind',
-      'four_of_a_kind',
-      'small_straight',
-      'large_straight',
-      'full_house'
-    ]
-
     game = YahtzeeGame.new
-    assert_equal categories, game.categories
+    assert_equal Yahtzee::CATEGORIES, game.categories
 
     game.roll_dice
     game.place_in_category_and_calculate_score('yahtzee')
-    assert_equal categories - ['yahtzee'], game.categories
+    assert_equal Yahtzee::CATEGORIES - ['yahtzee'], game.categories
   end
 
   def test_place_in_category_and_calculate_score
