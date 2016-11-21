@@ -27,6 +27,8 @@ module Yahtzee
     end
   end
 
+  private
+
   def chance(roll)
     roll.reduce(:+)
   end
@@ -97,8 +99,6 @@ module Yahtzee
       0
     end
   end
-
-  private
 
   def sum_matching(collection, match)
     collection.select { |e| e == match }.reduce(0, :+)
