@@ -18,10 +18,14 @@ class GameRunnerTest < Minitest::Test
     def last_output
       @output.last
     end
+
+    def ask_for_category
+      @categories ||= ScoreCalculator::CATEGORIES.dup
+      @categories.shift
+    end
   end
 
   def test_complete_game
-    skip
     ui = FakeUI.new
     runner = GameRunner.new(ui)
     runner.run

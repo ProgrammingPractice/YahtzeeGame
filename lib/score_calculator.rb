@@ -17,7 +17,7 @@ module ScoreCalculator
     'small_straight',
     'large_straight',
     'full_house'
-  ]
+  ].freeze
 
   def calculate(category, roll)
     if CATEGORIES.include?(category)
