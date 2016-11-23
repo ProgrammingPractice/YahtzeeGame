@@ -6,4 +6,8 @@ class Game
   def initialize(count)
     @players = (1..count).map { Player.new }
   end
+
+  def rounds_left?
+    !@players.first.categories.empty?
+  end
 end

@@ -16,4 +16,16 @@ class GameTest < Minitest::Test
     assert_equal 0, p2.score
     assert p2.categories.include?('chance')
   end
+
+  def test_rounds_left_returns_true_as_long_as_the_game_is_not_over
+    game = Game.new(1)
+    assert game.rounds_left?
+
+    player = game.players.first
+    player.roll_dice
+    ScoreCalculator::CATEGORIES.each do |category|
+      player.place_in_category_and_calculate_score(category)
+    end
+    refute game.rounds_left?
+  end
 end

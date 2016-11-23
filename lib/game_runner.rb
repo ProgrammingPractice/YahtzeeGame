@@ -1,25 +1,17 @@
-#! /usr/bin/env ruby
+class GameRunner
+  def initialize(ui)
+    @ui = ui
+  end
 
-require_relative 'game'
+  def run
+    count = @ui.get_number_of_players
+    game = Game.new(count)
+    while game.rounds_left?
+      # ...
+    end
 
-game = Game.new
-
-def display_roll(roll)
-  puts "You rolled: ", roll.inspect
+    @ui.display_winner(0)
+    # TODO:
+    # @ui.display_winner(game.winner)
+  end
 end
-
-def user_selects_category(game)
-  puts "Please select the category for this roll ^^"
-  puts game.categories
-  'chance'
-end
-
-def display_score(score)
-  puts "The score is #{score}"
-end
-
-game.roll_dice
-display_roll(game.roll)
-category = user_selects_category(game)
-game.place_in_category_and_calculate_score(category)
-display_score(game.score)
