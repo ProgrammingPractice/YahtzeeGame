@@ -1,7 +1,7 @@
 require_relative 'test_helper'
-require_relative '../lib/game'
+require_relative '../lib/player'
 
-class GameTest < Minitest::Test
+class PlayerTest < Minitest::Test
   class FakeDiceRoller
     def initialize(values)
       @values = values
@@ -30,59 +30,59 @@ class GameTest < Minitest::Test
 
   def test_roll_dice_performs_a_random_roll_and_saves_it_on_the_game
     roller = FakeDiceRoller.new [1,2,3,4,5]
-    game = Game.new(roller)
-    game.roll_dice
-    assert_equal [1,2,3,4,5], game.roll
+    player = Player.new(roller)
+    player.roll_dice
+    assert_equal [1,2,3,4,5], player.roll
   end
 
   def test_reroll_rolls_again_the_dice_from_the_specified_positions
     roller = FakeDiceRoller.new [1,2,3,4,5,4,5,6]
-    game = Game.new(roller)
-    game.roll_dice
-    game.reroll([0,2,4])
-    assert_equal [4,2,5,4,6], game.roll
+    player = Player.new(roller)
+    player.roll_dice
+    player.reroll([0,2,4])
+    assert_equal [4,2,5,4,6], player.roll
   end
 
   def test_categories_lists_the_available_categories
-    game = Game.new
-    assert_equal ScoreCalculator::CATEGORIES, game.categories
+    player = Player.new
+    assert_equal ScoreCalculator::CATEGORIES, player.categories
 
-    game.roll_dice
-    game.place_in_category_and_calculate_score('yahtzee')
-    assert_equal ScoreCalculator::CATEGORIES - ['yahtzee'], game.categories
+    player.roll_dice
+    player.place_in_category_and_calculate_score('yahtzee')
+    assert_equal ScoreCalculator::CATEGORIES - ['yahtzee'], player.categories
   end
 
   def test_place_in_category_and_calculate_score
     roller = FakeDiceRoller.new [1,2,3,4,5]
-    game = Game.new(roller)
-    game.roll_dice
-    assert_equal 15, game.place_in_category_and_calculate_score('chance')
+    player = Player.new(roller)
+    player.roll_dice
+    assert_equal 15, player.place_in_category_and_calculate_score('chance')
   end
 
   def test_score_initially_is_zero
-    game = Game.new
-    assert_equal 0, game.score
+    player = Player.new
+    assert_equal 0, player.score
   end
 
   def test_score_keeps_track_of_multiple_rounds
     roller = FakeDiceRoller.new [1,2,3,4,5,1,1,1,1,1]
-    game = Game.new(roller)
+    player = Player.new(roller)
 
-    game.roll_dice
-    game.place_in_category_and_calculate_score('chance')
-    assert_equal 15, game.score
+    player.roll_dice
+    player.place_in_category_and_calculate_score('chance')
+    assert_equal 15, player.score
 
-    game.roll_dice
-    game.place_in_category_and_calculate_score('yahtzee')
-    assert_equal 65, game.score
+    player.roll_dice
+    player.place_in_category_and_calculate_score('yahtzee')
+    assert_equal 65, player.score
   end
 
   private
 
   def player_rolls(roll)
     @roller = FakeDiceRoller.new roll
-    @game = Game.new(@roller)
-    @game.roll_dice
+    @player = Player.new(@roller)
+    @player.roll_dice
   end
 
   def player_holds(positions)
@@ -92,18 +92,18 @@ class GameTest < Minitest::Test
   def player_rerolls(partial_roll)
     @roller.add_values partial_roll
     reroll_positions = [0,1,2,3,4] - @hold_positions
-    @game.reroll(reroll_positions)
+    @player.reroll(reroll_positions)
   end
 
   def player_selects_category(category)
-    @game.place_in_category_and_calculate_score(category)
+    @player.place_in_category_and_calculate_score(category)
   end
 
   def the_category_is_no_longer_available(category)
-    !@game.categories.include?(category)
+    !@player.categories.include?(category)
   end
 
   def the_score
-    @game.score
+    @player.score
   end
 end

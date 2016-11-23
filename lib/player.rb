@@ -1,7 +1,7 @@
 require_relative 'score_calculator'
 require_relative 'dice_roller'
 
-class Game
+class Player
   attr_reader :categories
   attr_reader :roll
   attr_reader :score
