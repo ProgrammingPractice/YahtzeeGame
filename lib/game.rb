@@ -1,6 +1,6 @@
 require_relative 'player'
 
-class Multiplayer
+class Game
   attr_reader :players
 
   def initialize(count)

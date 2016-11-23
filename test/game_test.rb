@@ -1,9 +1,9 @@
 require_relative 'test_helper'
-require_relative '../lib/multiplayer'
+require_relative '../lib/game'
 
-class MultiplayerTest < Minitest::Test
+class GameTest < Minitest::Test
   def test_game_with_two_players_each_have_their_own_score_and_categories
-    game = Multiplayer.new(2)
+    game = Game.new(2)
     p1 = game.players[0]
     p2 = game.players[1]
 
