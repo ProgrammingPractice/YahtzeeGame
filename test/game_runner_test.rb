@@ -3,7 +3,8 @@ require_relative '../lib/game_runner'
 
 class GameRunnerTest < Minitest::Test
   class FakeUI
-    def initialize
+    def initialize(categories)
+      @categories = categories
       @output = []
     end
 
@@ -12,7 +13,7 @@ class GameRunnerTest < Minitest::Test
     end
 
     def display_winner(player)
-      @output << "#{player.name} won"
+      @output << "#{player.name} won with #{player.score} points!"
     end
 
     def last_output
@@ -20,15 +21,47 @@ class GameRunnerTest < Minitest::Test
     end
 
     def ask_for_category
-      @categories ||= ScoreCalculator::CATEGORIES.dup
       @categories.shift
     end
   end
 
   def test_complete_game
-    ui = FakeUI.new
+    skip
+    data = [
+      [[1,2,3,4,5], 'chance'],          # 15
+      [[1,1,1,1,1], 'yahtzee'],         # 50
+      [[1,1,1,1,1], 'ones'],            # 5
+      [[1,1,1,1,1], 'twos'],            # 0
+      [[1,1,1,1,1], 'threes'],          # 0
+      [[1,1,1,1,1], 'fours'],           # 0
+      [[1,1,1,1,1], 'fives'],           # 0
+      [[1,1,1,1,1], 'sixes'],           # 0
+      [[1,1,1,1,1], 'pair'],            # 0
+      [[1,1,1,1,1], 'two_pairs'],       # 0
+      [[1,1,1,1,1], 'three_of_a_kind'], # 0
+      [[1,1,1,1,1], 'four_of_a_kind'],  # 0
+      [[1,1,1,1,1], 'small_straight'],  # 0
+      [[1,1,1,1,1], 'large_straight'],  # 0
+      [[1,1,1,1,1], 'full_house'],      # 0
+    ]
+
+    ui = prepare_ui(data)
+    roller = prepare_fake_dice_roller(data)
+
     runner = GameRunner.new(ui)
     runner.run
-    assert_equal "Player 1 won", ui.last_output
+    assert_equal "Player 1 won with 70 points!", ui.last_output
+  end
+
+  private
+
+  def prepare_ui(data)
+    categories = data.map { |(_, category)| category }
+    ui = FakeUI.new(categories)
+  end
+
+  def prepare_fake_dice_roller(data)
+    todo('continue_from_here')
+    FakeDiceRoller.new([])
   end
 end
