@@ -12,9 +12,7 @@ class GameRunner
       end
     end
 
-    @ui.display_winner(0)
-    # TODO:
-    # @ui.display_winner(game.winner)
+    @ui.display_winner(game.winner)
   end
 
   def play_round(player)

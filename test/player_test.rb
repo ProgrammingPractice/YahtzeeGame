@@ -16,21 +16,21 @@ class PlayerTest < Minitest::Test
 
   def test_roll_dice_performs_a_random_roll_and_saves_it_on_the_game
     roller = FakeDiceRoller.new [1,2,3,4,5]
-    player = Player.new(roller)
+    player = Player.new('P1', roller)
     player.roll_dice
     assert_equal [1,2,3,4,5], player.roll
   end
 
   def test_reroll_rolls_again_the_dice_from_the_specified_positions
     roller = FakeDiceRoller.new [1,2,3,4,5,4,5,6]
-    player = Player.new(roller)
+    player = Player.new('P1', roller)
     player.roll_dice
     player.reroll([0,2,4])
     assert_equal [4,2,5,4,6], player.roll
   end
 
   def test_categories_lists_the_available_categories
-    player = Player.new(DiceRoller.new)
+    player = Player.new('P1', DiceRoller.new)
     assert_equal ScoreCalculator::CATEGORIES, player.categories
 
     player.roll_dice
@@ -40,19 +40,19 @@ class PlayerTest < Minitest::Test
 
   def test_place_in_category_and_calculate_score
     roller = FakeDiceRoller.new [1,2,3,4,5]
-    player = Player.new(roller)
+    player = Player.new('P1', roller)
     player.roll_dice
     assert_equal 15, player.place_in_category_and_calculate_score('chance')
   end
 
   def test_score_initially_is_zero
-    player = Player.new(nil)
+    player = Player.new('P1', nil)
     assert_equal 0, player.score
   end
 
   def test_score_keeps_track_of_multiple_rounds
     roller = FakeDiceRoller.new [1,2,3,4,5,1,1,1,1,1]
-    player = Player.new(roller)
+    player = Player.new('P1', roller)
 
     player.roll_dice
     player.place_in_category_and_calculate_score('chance')
@@ -67,7 +67,7 @@ class PlayerTest < Minitest::Test
 
   def player_rolls(roll)
     @roller = FakeDiceRoller.new roll
-    @player = Player.new(@roller)
+    @player = Player.new('P1', @roller)
     @player.roll_dice
   end
 

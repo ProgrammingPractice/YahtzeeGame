@@ -12,7 +12,7 @@ class GameRunnerTest < Minitest::Test
     end
 
     def display_winner(player)
-      @output << "Player #{player + 1} won"
+      @output << "#{player.name} won"
     end
 
     def last_output

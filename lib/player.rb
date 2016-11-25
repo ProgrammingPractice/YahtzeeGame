@@ -3,10 +3,12 @@ require_relative 'dice_roller'
 
 class Player
   attr_reader :categories
+  attr_reader :name
   attr_reader :roll
   attr_reader :score
 
-  def initialize(dice_roller)
+  def initialize(name, dice_roller)
+    @name = name
     @dice_roller = dice_roller
     @score = 0
     @categories = ScoreCalculator::CATEGORIES.dup

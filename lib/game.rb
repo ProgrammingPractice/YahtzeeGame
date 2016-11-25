@@ -4,7 +4,7 @@ class Game
   attr_reader :players
 
   def initialize(count, dice_roller = DiceRoller.new)
-    @players = (1..count).map { Player.new(dice_roller) }
+    @players = (1..count).map { |i| Player.new("Player #{i}", dice_roller) }
   end
 
   def rounds_left?
