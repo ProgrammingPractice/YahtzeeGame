@@ -44,7 +44,7 @@ class PlayerTest < Minitest::Test
   end
 
   def test_categories_lists_the_available_categories
-    player = Player.new
+    player = Player.new(DiceRoller.new)
     assert_equal ScoreCalculator::CATEGORIES, player.categories
 
     player.roll_dice
@@ -60,7 +60,7 @@ class PlayerTest < Minitest::Test
   end
 
   def test_score_initially_is_zero
-    player = Player.new
+    player = Player.new(nil)
     assert_equal 0, player.score
   end
 

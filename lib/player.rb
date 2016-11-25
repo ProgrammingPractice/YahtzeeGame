@@ -6,9 +6,9 @@ class Player
   attr_reader :roll
   attr_reader :score
 
-  def initialize(dice_roller = DiceRoller.new)
-    @score = 0
+  def initialize(dice_roller)
     @dice_roller = dice_roller
+    @score = 0
     @categories = ScoreCalculator::CATEGORIES.dup
   end
 
