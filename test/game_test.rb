@@ -42,4 +42,19 @@ class GameTest < Minitest::Test
 
     assert_equal p1, game.winner
   end
+
+  def test_winner_returns_all_the_players_with_highest_score
+    skip
+    roller = FakeDiceRoller.new([2,2,2,2,2, 2,2,2,2,2])
+    game = Game.new(2, roller)
+    p1 = game.players[0]
+    p2 = game.players[1]
+
+    p1.roll_dice
+    p1.place_in_category_and_calculate_score('yahtzee')
+    p2.roll_dice
+    p2.place_in_category_and_calculate_score('yahtzee')
+
+    assert_equal [p1,p2], game.winner
+  end
 end
