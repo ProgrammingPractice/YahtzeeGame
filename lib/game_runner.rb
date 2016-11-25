@@ -1,18 +1,17 @@
 class GameRunner
-  def initialize(ui)
+  def initialize(game, ui)
+    @game = game
     @ui = ui
   end
 
   def run
-    count = @ui.get_number_of_players
-    game = Game.new(count)
-    while game.rounds_left?
-      game.players.each do |player|
+    while @game.rounds_left?
+      @game.players.each do |player|
         play_round(player)
       end
     end
 
-    @ui.display_winner(game.winner)
+    @ui.display_winner(@game.winner)
   end
 
   def play_round(player)

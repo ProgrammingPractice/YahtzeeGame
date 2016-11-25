@@ -8,10 +8,6 @@ class GameRunnerTest < Minitest::Test
       @output = []
     end
 
-    def get_number_of_players
-      1
-    end
-
     def display_winner(player)
       @output << "#{player.name} won with #{player.score} points!"
     end
@@ -45,10 +41,11 @@ class GameRunnerTest < Minitest::Test
       [[1,1,1,1,1], 'full_house'],      # 0
     ]
 
+    game = Game.new(1)
     ui = prepare_ui(data)
     roller = prepare_fake_dice_roller(data)
 
-    runner = GameRunner.new(ui)
+    runner = GameRunner.new(game, ui)
     runner.run
     assert_equal "Player 1 won with 70 points!", ui.last_output
   end
