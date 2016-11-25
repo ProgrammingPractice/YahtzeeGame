@@ -2,20 +2,6 @@ require_relative 'test_helper'
 require_relative '../lib/player'
 
 class PlayerTest < Minitest::Test
-  class FakeDiceRoller
-    def initialize(values)
-      @values = values
-    end
-
-    def roll_one
-      @values.shift
-    end
-
-    def add_values(values)
-      @values.concat(values)
-    end
-  end
-
   def test_complete_round
     player_rolls([1,2,3,4,1])
     player_holds([0,4])
