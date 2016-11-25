@@ -18,6 +18,6 @@ class GameRunner
   def play_round(player)
     player.roll_dice
     category = @ui.ask_for_category
-    player.place_in_category_and_calculate_score(category)
+    player.select_category(category)
   end
 end

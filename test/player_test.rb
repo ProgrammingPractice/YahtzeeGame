@@ -34,15 +34,15 @@ class PlayerTest < Minitest::Test
     assert_equal ScoreCalculator::CATEGORIES, player.categories
 
     player.roll_dice
-    player.place_in_category_and_calculate_score('yahtzee')
+    player.select_category('yahtzee')
     assert_equal ScoreCalculator::CATEGORIES - ['yahtzee'], player.categories
   end
 
-  def test_place_in_category_and_calculate_score
+  def test_select_category
     roller = FakeDiceRoller.new [1,2,3,4,5]
     player = Player.new('P1', roller)
     player.roll_dice
-    assert_equal 15, player.place_in_category_and_calculate_score('chance')
+    assert_equal 15, player.select_category('chance')
   end
 
   def test_score_initially_is_zero
@@ -55,11 +55,11 @@ class PlayerTest < Minitest::Test
     player = Player.new('P1', roller)
 
     player.roll_dice
-    player.place_in_category_and_calculate_score('chance')
+    player.select_category('chance')
     assert_equal 15, player.score
 
     player.roll_dice
-    player.place_in_category_and_calculate_score('yahtzee')
+    player.select_category('yahtzee')
     assert_equal 65, player.score
   end
 
@@ -82,7 +82,7 @@ class PlayerTest < Minitest::Test
   end
 
   def player_selects_category(category)
-    @player.place_in_category_and_calculate_score(category)
+    @player.select_category(category)
   end
 
   def the_category_is_no_longer_available(category)

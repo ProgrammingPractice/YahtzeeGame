@@ -24,7 +24,7 @@ class Player
     end
   end
 
-  def place_in_category_and_calculate_score(category)
+  def select_category(category)
     @categories.delete(category)
     @score += ScoreCalculator.calculate(category, roll)
   end

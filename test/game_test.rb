@@ -8,7 +8,7 @@ class GameTest < Minitest::Test
     p2 = game.players[1]
 
     p1.roll_dice
-    p1.place_in_category_and_calculate_score('chance')
+    p1.select_category('chance')
 
     refute_equal 0, p1.score
     refute p1.categories.include?('chance')
@@ -24,7 +24,7 @@ class GameTest < Minitest::Test
     player = game.players.first
     player.roll_dice
     ScoreCalculator::CATEGORIES.each do |category|
-      player.place_in_category_and_calculate_score(category)
+      player.select_category(category)
     end
     refute game.rounds_left?
   end
@@ -36,9 +36,9 @@ class GameTest < Minitest::Test
     p2 = game.players[1]
 
     p1.roll_dice
-    p1.place_in_category_and_calculate_score('yahtzee')
+    p1.select_category('yahtzee')
     p2.roll_dice
-    p2.place_in_category_and_calculate_score('chance')
+    p2.select_category('chance')
 
     assert_equal p1, game.winner
   end
@@ -51,9 +51,9 @@ class GameTest < Minitest::Test
     p2 = game.players[1]
 
     p1.roll_dice
-    p1.place_in_category_and_calculate_score('yahtzee')
+    p1.select_category('yahtzee')
     p2.roll_dice
-    p2.place_in_category_and_calculate_score('yahtzee')
+    p2.select_category('yahtzee')
 
     assert_equal [p1,p2], game.winner
   end
