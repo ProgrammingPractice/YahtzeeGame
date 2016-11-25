@@ -28,4 +28,18 @@ class GameTest < Minitest::Test
     end
     refute game.rounds_left?
   end
+
+  def test_winner_returns_the_player_with_highest_score
+    roller = FakeDiceRoller.new([2,2,2,2,2, 1,2,3,4,5])
+    game = Game.new(2, roller)
+    p1 = game.players[0]
+    p2 = game.players[1]
+
+    p1.roll_dice
+    p1.place_in_category_and_calculate_score('yahtzee')
+    p2.roll_dice
+    p2.place_in_category_and_calculate_score('chance')
+
+    assert_equal p1, game.winner
+  end
 end
