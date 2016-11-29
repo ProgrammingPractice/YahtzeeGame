@@ -21,7 +21,6 @@ class GameRunnerTest < Minitest::Test
   end
 
   def test_complete_game
-    skip
     data = [
       [[1,2,3,4,5], 'chance'],          # 15
       [[1,1,1,1,1], 'yahtzee'],         # 50
@@ -41,10 +40,9 @@ class GameRunnerTest < Minitest::Test
     ]
 
     dice_roller = prepare_fake_dice_roller(data)
-    player = Player.new('p', dice_roller)
+    player = Player.new('Player 1', dice_roller)
     game = Game.new([player])
     ui = prepare_ui(data)
-
     runner = GameRunner.new(game, ui)
     runner.run
     assert_equal "Player 1 won with 70 points!", ui.last_output
@@ -54,11 +52,11 @@ class GameRunnerTest < Minitest::Test
 
   def prepare_ui(data)
     categories = data.map { |(_, category)| category }
-    ui = FakeUI.new(categories)
+    FakeUI.new(categories)
   end
 
   def prepare_fake_dice_roller(data)
-    todo('continue_from_here')
-    FakeDiceRoller.new([])
+    rolls = data.map { |(dice, _)| dice }.flatten
+    FakeDiceRoller.new(rolls)
   end
 end
