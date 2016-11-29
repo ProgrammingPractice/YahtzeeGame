@@ -1,10 +1,8 @@
-require_relative 'player'
-
 class Game
   attr_reader :players
 
-  def initialize(count, dice_roller = DiceRoller.new)
-    @players = (1..count).map { |i| Player.new("Player #{i}", dice_roller) }
+  def initialize(players)
+    @players = players
   end
 
   def rounds_left?

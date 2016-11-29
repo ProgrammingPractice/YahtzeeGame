@@ -1,11 +1,11 @@
 require_relative 'test_helper'
-require_relative '../lib/game'
 
 class GameTest < Minitest::Test
   def test_game_with_two_players_each_have_their_own_score_and_categories
-    game = Game.new(2)
-    p1 = game.players[0]
-    p2 = game.players[1]
+    dice_roller = DiceRoller.new
+    p1 = Player.new('p1', dice_roller)
+    p2 = Player.new('p2', dice_roller)
+    game = Game.new([p1, p2])
 
     p1.roll_dice
     p1.select_category('chance')
@@ -18,10 +18,11 @@ class GameTest < Minitest::Test
   end
 
   def test_rounds_left_returns_true_as_long_as_the_game_is_not_over
-    game = Game.new(1)
+    dice_roller = DiceRoller.new
+    player = Player.new('p', dice_roller)
+    game = Game.new([player])
     assert game.rounds_left?
 
-    player = game.players.first
     player.roll_dice
     ScoreCalculator::CATEGORIES.each do |category|
       player.select_category(category)
@@ -30,10 +31,10 @@ class GameTest < Minitest::Test
   end
 
   def test_winner_returns_the_player_with_highest_score
-    roller = FakeDiceRoller.new([2,2,2,2,2, 1,2,3,4,5])
-    game = Game.new(2, roller)
-    p1 = game.players[0]
-    p2 = game.players[1]
+    dice_roller = FakeDiceRoller.new([2,2,2,2,2, 1,2,3,4,5])
+    p1 = Player.new('p1', dice_roller)
+    p2 = Player.new('p2', dice_roller)
+    game = Game.new([p1, p2])
 
     p1.roll_dice
     p1.select_category('yahtzee')
@@ -45,10 +46,10 @@ class GameTest < Minitest::Test
 
   def test_winner_returns_all_the_players_with_highest_score
     skip
-    roller = FakeDiceRoller.new([2,2,2,2,2, 2,2,2,2,2])
-    game = Game.new(2, roller)
-    p1 = game.players[0]
-    p2 = game.players[1]
+    dice_roller = FakeDiceRoller.new([2,2,2,2,2, 2,2,2,2,2])
+    p1 = Player.new('p1', dice_roller)
+    p2 = Player.new('p2', dice_roller)
+    game = Game.new([p1, p2])
 
     p1.roll_dice
     p1.select_category('yahtzee')

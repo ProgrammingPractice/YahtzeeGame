@@ -41,9 +41,10 @@ class GameRunnerTest < Minitest::Test
       [[1,1,1,1,1], 'full_house'],      # 0
     ]
 
-    game = Game.new(1)
+    dice_roller = prepare_fake_dice_roller(data)
+    player = Player.new('p', dice_roller)
+    game = Game.new([player])
     ui = prepare_ui(data)
-    roller = prepare_fake_dice_roller(data)
 
     runner = GameRunner.new(game, ui)
     runner.run
