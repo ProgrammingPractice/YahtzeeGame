@@ -19,7 +19,8 @@ class GameRunner
     @ui.display_roll(player.roll)
 
     hold = @ui.ask_for_hold_positions
-    player.reroll([0,1,2,3,4] - hold)
+
+    player.reroll(positions_to_reroll(hold))
     @ui.display_roll(player.roll)
 
     # hold = @ui.ask_for_hold_positions
@@ -28,5 +29,11 @@ class GameRunner
 
     category = @ui.ask_for_category
     player.select_category(category)
+  end
+
+  private
+
+  def positions_to_reroll(hold)
+    [0,1,2,3,4] - hold
   end
 end
