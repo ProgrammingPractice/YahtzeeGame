@@ -1,9 +1,9 @@
 #! /usr/bin/env ruby
 
+require_relative 'lib/dice_roller'
 require_relative 'lib/game'
 require_relative 'lib/game_runner'
 require_relative 'lib/player'
-require_relative 'lib/dice_roller'
 
 class UI
   def get_number_of_players

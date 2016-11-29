@@ -1,5 +1,4 @@
 require_relative 'test_helper'
-require_relative '../lib/player'
 
 class PlayerTest < Minitest::Test
   def test_complete_round

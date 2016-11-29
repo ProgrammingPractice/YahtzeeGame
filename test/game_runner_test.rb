@@ -1,5 +1,4 @@
 require_relative 'test_helper'
-require_relative '../lib/game_runner'
 
 class GameRunnerTest < Minitest::Test
   class FakeUI

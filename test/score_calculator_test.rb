@@ -1,5 +1,4 @@
 require_relative 'test_helper'
-require_relative '../lib/score_calculator'
 
 class ScoreCalculatorTest < Minitest::Test
   def test_list_of_categories

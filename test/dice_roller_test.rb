@@ -1,5 +1,4 @@
 require_relative 'test_helper'
-require_relative '../lib/dice_roller'
 
 class DiceRollerTest < Minitest::Test
   def test_roll_one_returns_a_valid_dice_value
