@@ -29,6 +29,8 @@ class GameRunner
 
     category = @ui.ask_for_category
     player.select_category(category)
+
+    @ui.display_score(player.score)
   end
 
   private
