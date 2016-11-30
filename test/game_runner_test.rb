@@ -2,6 +2,7 @@ require_relative 'test_helper'
 
 class GameRunnerTest < Minitest::Test
   class FakeUI
+    attr_reader :current_round
     attr_reader :output
 
     def initialize(test, rounds, dice_roller)
@@ -86,7 +87,11 @@ class GameRunnerTest < Minitest::Test
     ui          = FakeUI.new(self, rounds, dice_roller)
     runner      = GameRunner.new(game, ui)
 
-    runner.run
+    begin
+      runner.run
+    rescue FakeDiceRoller::OutOfValuesError
+      raise "Not enough dice values were provided in the round: #{ui.current_round.inspect}"
+    end
     assert_equal "Player 1 won with 70 points!", ui.output.last
   end
 end

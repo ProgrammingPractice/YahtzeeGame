@@ -1,11 +1,13 @@
 class FakeDiceRoller
+  class OutOfValuesError < RuntimeError; end
+
   def initialize(values)
     @values = values
   end
 
   def roll_one
     if @values.empty?
-      raise "FakeDiceRoller has no more values but was asked to roll!"
+      raise OutOfValuesError
     end
     @values.shift
   end
