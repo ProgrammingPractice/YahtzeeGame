@@ -2,35 +2,51 @@ require_relative 'test_helper'
 
 class GameRunnerTest < Minitest::Test
   class FakeUI
-    def initialize(test, categories, hold_positions, scores)
-      @test = test
-      @categories = categories
-      @hold_positions = hold_positions
-      @scores = scores
+    attr_reader :output
+
+    def initialize(test, rounds)
+      @test   = test
+      @rounds = rounds
       @output = []
+    end
+
+    def next_players_turn(player)
+      @current_round = @rounds.shift
+    end
+
+    def display_roll(roll)
+      # nothing
+    end
+
+    def display_score(score)
+      expected_score = extract_score(*@current_round)
+      @test.assert_equal expected_score, score
     end
 
     def display_winner(player)
       @output << "#{player.name} won with #{player.score} points!"
     end
 
-    def display_roll(roll)
-    end
-
-    def display_score(score)
-      @test.assert_equal @scores.shift, score
-    end
-
-    def last_output
-      @output.last
+    def ask_for_hold_positions
+      extract_hold_positions(*@current_round)
     end
 
     def ask_for_category
-      @categories.shift
+      extract_category(*@current_round)
     end
 
-    def ask_for_hold_positions
-      @hold_positions.shift
+    private
+
+    def extract_hold_positions(roll0, hold0, roll1, category, score)
+      [0,1,2,3,4].select { |i| hold0[i] == 'x' }
+    end
+
+    def extract_category(roll0, hold0, roll1, category, score)
+      category
+    end
+
+    def extract_score(roll0, hold0, roll1, category, score)
+      score
     end
   end
 
@@ -64,16 +80,13 @@ class GameRunnerTest < Minitest::Test
     runner      = GameRunner.new(game, ui)
 
     runner.run
-    assert_equal "Player 1 won with 70 points!", ui.last_output
+    assert_equal "Player 1 won with 70 points!", ui.output.last
   end
 
   private
 
   def prepare_ui(data)
-    categories = data.map { |(r0, h0, r1, category, score)| category }
-    hold_positions = data.map { |(r0, h0, r1, category, score)| [0,1,2,3,4].select { |i| h0[i] == 'x' } }
-    scores = data.map { |(r0, h0, r1, category, score)| score }
-    FakeUI.new(self, categories, hold_positions, scores)
+    FakeUI.new(self, data)
   end
 
   def prepare_fake_dice_roller(data)
