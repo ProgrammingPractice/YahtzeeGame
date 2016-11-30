@@ -16,6 +16,7 @@ class GameRunnerTest < Minitest::Test
     def start_of_player_turn(player)
       @current_round = @rounds_iterator.next
       @dice_roller.add_values(extract_rolls(*@current_round))
+      @hold_positions = extract_hold_positions(*@current_round)
     end
 
     def end_of_player_turn(player)
@@ -36,7 +37,7 @@ class GameRunnerTest < Minitest::Test
     end
 
     def ask_for_hold_positions
-      extract_hold_positions(*@current_round)
+      @hold_positions.shift
     end
 
     def ask_for_category
@@ -45,20 +46,23 @@ class GameRunnerTest < Minitest::Test
 
     private
 
-    def extract_hold_positions(roll0, hold0, roll1, category, score)
-      [0,1,2,3,4].select { |i| hold0[i] == 'x' }
+    def extract_hold_positions(roll0, hold0, roll1, hold1, roll2, category, score)
+      [
+        [0,1,2,3,4].select { |i| hold0[i] == 'x' },
+        [0,1,2,3,4].select { |i| hold1[i] == 'x' }
+      ]
     end
 
-    def extract_category(roll0, hold0, roll1, category, score)
+    def extract_category(roll0, hold0, roll1, hold1, roll2, category, score)
       category
     end
 
-    def extract_score(roll0, hold0, roll1, category, score)
+    def extract_score(roll0, hold0, roll1, hold1, roll2, category, score)
       score
     end
 
-    def extract_rolls(roll0, hold0, roll1, category, score)
-      roll0 + roll1
+    def extract_rolls(roll0, hold0, roll1, hold1, roll2, category, score)
+      roll0 + roll1 + roll2
     end
   end
 
@@ -68,21 +72,21 @@ class GameRunnerTest < Minitest::Test
     #   - multiple players
 
     rounds = [
-      [[1,2,6,4,5], 'xx_xx', [3], 'chance',          15],
-      [[1,1,1,1,1], 'xxxxx', [],  'yahtzee',         65],
-      [[1,1,1,1,1], 'xxxxx', [],  'ones',            70],
-      [[1,1,1,1,1], 'xxxxx', [],  'twos',            70],
-      [[1,1,1,1,1], 'xxxxx', [],  'threes',          70],
-      [[1,1,1,1,1], 'xxxxx', [],  'fours',           70],
-      [[1,1,1,1,1], 'xxxxx', [],  'fives',           70],
-      [[1,1,1,1,1], 'xxxxx', [],  'sixes',           70],
-      [[1,1,1,1,1], 'xxxxx', [],  'pair',            70],
-      [[1,1,1,1,1], 'xxxxx', [],  'two_pairs',       70],
-      [[1,1,1,1,1], 'xxxxx', [],  'three_of_a_kind', 70],
-      [[1,1,1,1,1], 'xxxxx', [],  'four_of_a_kind',  70],
-      [[1,1,1,1,1], 'xxxxx', [],  'small_straight',  70],
-      [[1,1,1,1,1], 'xxxxx', [],  'large_straight',  70],
-      [[1,1,1,1,1], 'xxxxx', [],  'full_house',      70],
+      [[1,2,6,4,5], 'xx_xx', [5],   'xx_xx', [3], 'chance',          15],
+      [[6,6,1,1,1], '__xxx', [5,1], '_xxxx', [1], 'yahtzee',         65],
+      [[1,1,1,1,1], 'xxxxx', [],    'xxxxx', [],  'ones',            70],
+      [[1,1,1,1,1], 'xxxxx', [],    'xxxxx', [],  'twos',            70],
+      [[1,1,1,1,1], 'xxxxx', [],    'xxxxx', [],  'threes',          70],
+      [[1,1,1,1,1], 'xxxxx', [],    'xxxxx', [],  'fours',           70],
+      [[1,1,1,1,1], 'xxxxx', [],    'xxxxx', [],  'fives',           70],
+      [[1,1,1,1,1], 'xxxxx', [],    'xxxxx', [],  'sixes',           70],
+      [[1,1,1,1,1], 'xxxxx', [],    'xxxxx', [],  'pair',            70],
+      [[1,1,1,1,1], 'xxxxx', [],    'xxxxx', [],  'two_pairs',       70],
+      [[1,1,1,1,1], 'xxxxx', [],    'xxxxx', [],  'three_of_a_kind', 70],
+      [[1,1,1,1,1], 'xxxxx', [],    'xxxxx', [],  'four_of_a_kind',  70],
+      [[1,1,1,1,1], 'xxxxx', [],    'xxxxx', [],  'small_straight',  70],
+      [[1,1,1,1,1], 'xxxxx', [],    'xxxxx', [],  'large_straight',  70],
+      [[1,1,1,1,1], 'xxxxx', [],    'xxxxx', [],  'full_house',      70],
     ]
 
     dice_roller = FakeDiceRoller.new([])
