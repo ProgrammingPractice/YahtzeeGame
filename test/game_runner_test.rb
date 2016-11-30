@@ -4,14 +4,17 @@ class GameRunnerTest < Minitest::Test
   class FakeUI
     attr_reader :output
 
-    def initialize(test, rounds)
-      @test   = test
-      @rounds = rounds
+    def initialize(test, rounds, dice_roller)
+      @test        = test
+      @dice_roller = dice_roller
+
       @output = []
+      @rounds_iterator = rounds.each
     end
 
     def next_players_turn(player)
-      @current_round = @rounds.shift
+      @current_round = @rounds_iterator.next
+      @dice_roller.add_values(extract_rolls(*@current_round))
     end
 
     def display_roll(roll)
@@ -48,6 +51,10 @@ class GameRunnerTest < Minitest::Test
     def extract_score(roll0, hold0, roll1, category, score)
       score
     end
+
+    def extract_rolls(roll0, hold0, roll1, category, score)
+      roll0 + roll1
+    end
   end
 
   def test_complete_game
@@ -55,7 +62,7 @@ class GameRunnerTest < Minitest::Test
     #   - holding dice
     #   - multiple players
 
-    data = [
+    rounds = [
       [[1,2,6,4,5], 'xx_xx', [3], 'chance',          15],
       [[1,1,1,1,1], 'xxxxx', [],  'yahtzee',         65],
       [[1,1,1,1,1], 'xxxxx', [],  'ones',            70],
@@ -73,24 +80,13 @@ class GameRunnerTest < Minitest::Test
       [[1,1,1,1,1], 'xxxxx', [],  'full_house',      70],
     ]
 
-    dice_roller = prepare_fake_dice_roller(data)
+    dice_roller = FakeDiceRoller.new([])
     player      = Player.new('Player 1', dice_roller)
     game        = Game.new([player])
-    ui          = prepare_ui(data)
+    ui          = FakeUI.new(self, rounds, dice_roller)
     runner      = GameRunner.new(game, ui)
 
     runner.run
     assert_equal "Player 1 won with 70 points!", ui.output.last
-  end
-
-  private
-
-  def prepare_ui(data)
-    FakeUI.new(self, data)
-  end
-
-  def prepare_fake_dice_roller(data)
-    rolls = data.map { |(r0, h0, r1, category, score)| r0 + r1 }.flatten
-    FakeDiceRoller.new(rolls)
   end
 end
