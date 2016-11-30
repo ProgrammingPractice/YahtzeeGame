@@ -15,4 +15,8 @@ class FakeDiceRoller
   def add_values(values)
     @values.concat(values)
   end
+
+  def empty?
+    @values.empty?
+  end
 end

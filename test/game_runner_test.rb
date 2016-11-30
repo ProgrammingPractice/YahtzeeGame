@@ -13,18 +13,22 @@ class GameRunnerTest < Minitest::Test
       @rounds_iterator = rounds.each
     end
 
-    def next_players_turn(player)
+    def start_of_player_turn(player)
       @current_round = @rounds_iterator.next
       @dice_roller.add_values(extract_rolls(*@current_round))
     end
 
-    def display_roll(roll)
-      # nothing
+    def end_of_player_turn(player)
+      unless @dice_roller.empty?
+        raise "Too many dice values were provided in the round: #{@current_round.inspect}"
+      end
+
+      expected_score = extract_score(*@current_round)
+      @test.assert_equal expected_score, player.score
     end
 
-    def display_score(score)
-      expected_score = extract_score(*@current_round)
-      @test.assert_equal expected_score, score
+    def display_roll(roll)
+      # nothing
     end
 
     def display_winner(player)

@@ -15,7 +15,7 @@ class GameRunner
   end
 
   def play_round(player)
-    @ui.next_players_turn(player)
+    @ui.start_of_player_turn(player)
 
     player.roll_dice
     @ui.display_roll(player.roll)
@@ -31,7 +31,7 @@ class GameRunner
     category = @ui.ask_for_category
     player.select_category(category)
 
-    @ui.display_score(player.score)
+    @ui.end_of_player_turn(player)
   end
 
   private
