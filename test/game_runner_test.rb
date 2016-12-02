@@ -34,8 +34,8 @@ class GameRunnerTest < Minitest::Test
       # nothing
     end
 
-    def display_winner(player)
-      @output << "#{player.name} won with #{player.score} points!"
+    def display_winner(players)
+      @output << "#{players.map(&:name).join(' & ')} won with #{players.first.score} points!"
     end
 
     def ask_for_hold_positions

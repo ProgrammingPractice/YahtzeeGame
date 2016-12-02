@@ -30,32 +30,20 @@ class GameTest < Minitest::Test
     refute game.rounds_left?
   end
 
-  def test_winner_returns_the_player_with_highest_score
-    dice_roller = FakeDiceRoller.new([2,2,2,2,2, 1,2,3,4,5])
+  def test_winners_returns_all_the_players_with_highest_score
+    dice_roller = FakeDiceRoller.new([2,2,2,2,2, 2,2,2,2,2, 1,2,3,4,5])
     p1 = Player.new('p1', dice_roller)
     p2 = Player.new('p2', dice_roller)
-    game = Game.new([p1, p2])
-
-    p1.roll_dice
-    p1.select_category('yahtzee')
-    p2.roll_dice
-    p2.select_category('chance')
-
-    assert_equal p1, game.winner
-  end
-
-  def test_winner_returns_all_the_players_with_highest_score
-    skip
-    dice_roller = FakeDiceRoller.new([2,2,2,2,2, 2,2,2,2,2])
-    p1 = Player.new('p1', dice_roller)
-    p2 = Player.new('p2', dice_roller)
-    game = Game.new([p1, p2])
+    p3 = Player.new('p3', dice_roller)
+    game = Game.new([p1, p2, p3])
 
     p1.roll_dice
     p1.select_category('yahtzee')
     p2.roll_dice
     p2.select_category('yahtzee')
+    p3.roll_dice
+    p3.select_category('chance')
 
-    assert_equal [p1,p2], game.winner
+    assert_equal [p1,p2], game.winners
   end
 end

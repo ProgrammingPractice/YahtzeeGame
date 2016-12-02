@@ -9,7 +9,8 @@ class Game
     !@players.first.categories.empty?
   end
 
-  def winner
-    @players.reduce { |a, b| a.score > b.score ? a : b }
+  def winners
+    maximum_score = @players.map(&:score).max
+    @players.select {|p| p.score == maximum_score}
   end
 end
