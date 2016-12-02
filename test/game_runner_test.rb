@@ -8,13 +8,15 @@ class GameRunnerTest < Minitest::Test
     def initialize(test, rounds, dice_roller)
       @test        = test
       @dice_roller = dice_roller
+      @output      = []
 
-      @output = []
-      @rounds_iterator = rounds.each
+      @rounds_iterators = rounds.each_with_object({}) do |(player, player_rounds), hash|
+        hash[player] = player_rounds.each
+      end
     end
 
     def start_of_player_turn(player)
-      @current_round = @rounds_iterator.next
+      @current_round = @rounds_iterators[player.name].next
       @dice_roller.add_values(extract_rolls(*@current_round))
       @hold_positions = extract_hold_positions(*@current_round)
     end
@@ -66,11 +68,7 @@ class GameRunnerTest < Minitest::Test
   end
 
   def test_complete_game
-    # TODO:
-    #   - holding dice
-    #   - multiple players
-
-    rounds = [
+    rounds_p0 = [
       [[1,2,6,4,5], 'xx_xx', [5],   'xx_xx', [3], 'chance',          15],
       [[6,6,1,1,1], '__xxx', [5,1], '_xxxx', [1], 'yahtzee',         65],
       [[1,1,1,1,1], 'xxxxx', [],    '',      [],  'ones',            70],
@@ -87,18 +85,42 @@ class GameRunnerTest < Minitest::Test
       [[1,1,1,1,1], 'xxxxx', [],    '',      [],  'large_straight',  70],
       [[1,1,1,1,1], 'xxxxx', [],    '',      [],  'full_house',      70],
     ]
+    rounds_p1 = [
+      [[2,3,4,5,6], 'xxxxx', [],    '',      [], 'chance',           20],
+      [[1,1,1,1,1], 'xxxxx', [],    '',      [], 'yahtzee',          70],
+      [[1,1,1,1,1], 'xxxxx', [],    '',      [],  'ones',            75],
+      [[1,1,1,1,1], 'xxxxx', [],    '',      [],  'twos',            75],
+      [[1,1,1,1,1], 'xxxxx', [],    '',      [],  'threes',          75],
+      [[1,1,1,1,1], 'xxxxx', [],    '',      [],  'fours',           75],
+      [[1,1,1,1,1], 'xxxxx', [],    '',      [],  'fives',           75],
+      [[1,1,1,1,1], 'xxxxx', [],    '',      [],  'sixes',           75],
+      [[1,1,1,1,1], 'xxxxx', [],    '',      [],  'pair',            75],
+      [[1,1,1,1,1], 'xxxxx', [],    '',      [],  'two_pairs',       75],
+      [[1,1,1,1,1], 'xxxxx', [],    '',      [],  'three_of_a_kind', 75],
+      [[1,1,1,1,1], 'xxxxx', [],    '',      [],  'four_of_a_kind',  75],
+      [[1,1,1,1,1], 'xxxxx', [],    '',      [],  'small_straight',  75],
+      [[1,1,1,1,1], 'xxxxx', [],    '',      [],  'large_straight',  75],
+      [[1,1,1,1,1], 'xxxxx', [],    '',      [],  'full_house',      75],
+    ]
 
     dice_roller = FakeDiceRoller.new([])
-    player      = Player.new('Player 1', dice_roller)
-    game        = Game.new([player])
-    ui          = FakeUI.new(self, rounds, dice_roller)
-    runner      = GameRunner.new(game, ui)
+    player0     = Player.new('Player 0', dice_roller)
+    player1     = Player.new('Player 1', dice_roller)
+    game        = Game.new([player0, player1])
+
+    rounds = {
+      player0.name => rounds_p0,
+      player1.name => rounds_p1,
+    }
+
+    ui     = FakeUI.new(self, rounds, dice_roller)
+    runner = GameRunner.new(game, ui)
 
     begin
       runner.run
     rescue FakeDiceRoller::OutOfValuesError
       raise "Not enough dice values were provided in the round: #{ui.current_round.inspect}"
     end
-    assert_equal "Player 1 won with 70 points!", ui.output.last
+    assert_equal "Player 1 won with 75 points!", ui.output.last
   end
 end
