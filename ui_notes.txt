@@ -1,0 +1,15 @@
+Player 1
+You rolled: [1,2,3,4,5]
+Select what to hold:
+__X__
+
+
+
+
+
+
+
+
+
+
+Use arrows to move around. Space to select. Enter to accept.

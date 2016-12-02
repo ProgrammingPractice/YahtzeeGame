@@ -28,4 +28,12 @@ class UI
 
     players_count
   end
+
+  def start_of_player_turn(player)
+  end
+
+  def display_roll(roll)
+    Viewport.new.draw(Content.new([roll.inspect]))
+    exit
+  end
 end
