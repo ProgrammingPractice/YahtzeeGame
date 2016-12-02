@@ -1,24 +1,7 @@
 #! /usr/bin/env ruby
 
-require_relative 'lib/dice_roller'
-require_relative 'lib/game'
-require_relative 'lib/game_runner'
-require_relative 'lib/player'
-
-class UI
-  def get_number_of_players
-    2
-  end
-end
-
-class GameRunnerFactory
-  def self.create(number_of_players, ui)
-    dice_roller = DiceRoller.new
-    players = (1..number_of_players).map { |i| Player.new("Player #{i}", dice_roller) }
-    game = Game.new(players)
-    GameRunner.new(game, ui)
-  end
-end
+require_relative 'lib/game_runner_factory'
+require_relative 'lib/ui'
 
 ui = UI.new
 number_of_players = ui.get_number_of_players
