@@ -24,9 +24,11 @@ class GameRunner
     player.reroll(positions_to_reroll(hold))
     @ui.display_roll(player.roll)
 
-    hold = @ui.ask_for_hold_positions
-    player.reroll(positions_to_reroll(hold))
-    @ui.display_roll(player.roll)
+    if hold.size < 5
+      hold = @ui.ask_for_hold_positions
+      player.reroll(positions_to_reroll(hold))
+      @ui.display_roll(player.roll)
+    end
 
     category = @ui.ask_for_category
     player.select_category(category)

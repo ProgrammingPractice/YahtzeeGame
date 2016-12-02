@@ -37,7 +37,7 @@ class GameRunnerTest < Minitest::Test
     end
 
     def ask_for_hold_positions
-      @hold_positions.shift
+      @hold_positions.shift or raise "We were asked for hold positions, but did not expect it."
     end
 
     def ask_for_category
@@ -47,10 +47,9 @@ class GameRunnerTest < Minitest::Test
     private
 
     def extract_hold_positions(roll0, hold0, roll1, hold1, roll2, category, score)
-      [
-        [0,1,2,3,4].select { |i| hold0[i] == 'x' },
-        [0,1,2,3,4].select { |i| hold1[i] == 'x' }
-      ]
+      hold_positions0 = [0,1,2,3,4].select { |i| hold0[i] == 'x' }
+      hold_positions1 = [0,1,2,3,4].select { |i| hold1[i] == 'x' } unless hold1.empty?
+      [hold_positions0, hold_positions1]
     end
 
     def extract_category(roll0, hold0, roll1, hold1, roll2, category, score)
@@ -74,19 +73,19 @@ class GameRunnerTest < Minitest::Test
     rounds = [
       [[1,2,6,4,5], 'xx_xx', [5],   'xx_xx', [3], 'chance',          15],
       [[6,6,1,1,1], '__xxx', [5,1], '_xxxx', [1], 'yahtzee',         65],
-      [[1,1,1,1,1], 'xxxxx', [],    'xxxxx', [],  'ones',            70],
-      [[1,1,1,1,1], 'xxxxx', [],    'xxxxx', [],  'twos',            70],
-      [[1,1,1,1,1], 'xxxxx', [],    'xxxxx', [],  'threes',          70],
-      [[1,1,1,1,1], 'xxxxx', [],    'xxxxx', [],  'fours',           70],
-      [[1,1,1,1,1], 'xxxxx', [],    'xxxxx', [],  'fives',           70],
-      [[1,1,1,1,1], 'xxxxx', [],    'xxxxx', [],  'sixes',           70],
-      [[1,1,1,1,1], 'xxxxx', [],    'xxxxx', [],  'pair',            70],
-      [[1,1,1,1,1], 'xxxxx', [],    'xxxxx', [],  'two_pairs',       70],
-      [[1,1,1,1,1], 'xxxxx', [],    'xxxxx', [],  'three_of_a_kind', 70],
-      [[1,1,1,1,1], 'xxxxx', [],    'xxxxx', [],  'four_of_a_kind',  70],
-      [[1,1,1,1,1], 'xxxxx', [],    'xxxxx', [],  'small_straight',  70],
-      [[1,1,1,1,1], 'xxxxx', [],    'xxxxx', [],  'large_straight',  70],
-      [[1,1,1,1,1], 'xxxxx', [],    'xxxxx', [],  'full_house',      70],
+      [[1,1,1,1,1], 'xxxxx', [],    '',      [],  'ones',            70],
+      [[1,1,1,1,1], 'xxxxx', [],    '',      [],  'twos',            70],
+      [[1,1,1,1,1], 'xxxxx', [],    '',      [],  'threes',          70],
+      [[1,1,1,1,1], 'xxxxx', [],    '',      [],  'fours',           70],
+      [[1,1,1,1,1], 'xxxxx', [],    '',      [],  'fives',           70],
+      [[1,1,1,1,1], 'xxxxx', [],    '',      [],  'sixes',           70],
+      [[1,1,1,1,1], 'xxxxx', [],    '',      [],  'pair',            70],
+      [[1,1,1,1,1], 'xxxxx', [],    '',      [],  'two_pairs',       70],
+      [[1,1,1,1,1], 'xxxxx', [],    '',      [],  'three_of_a_kind', 70],
+      [[1,1,1,1,1], 'xxxxx', [],    '',      [],  'four_of_a_kind',  70],
+      [[1,1,1,1,1], 'xxxxx', [],    '',      [],  'small_straight',  70],
+      [[1,1,1,1,1], 'xxxxx', [],    '',      [],  'large_straight',  70],
+      [[1,1,1,1,1], 'xxxxx', [],    '',      [],  'full_house',      70],
     ]
 
     dice_roller = FakeDiceRoller.new([])
