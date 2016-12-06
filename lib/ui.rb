@@ -86,7 +86,39 @@ Use arrows to move around. Space to select. Enter to accept.
   end
 
   def ask_for_category
-    puts 'TODO'
-    exit
+    categories = @player.categories
+    template = "Please select category for roll: #{@roll.inspect}
+#{categories}
+"
+
+    cursor = 0
+
+    message = "#{template}\n#{cursor}"
+    @viewport.draw(Content.new([message]))
+
+    Interaction.new.loop do |key|
+      if key.to_s == 'down'
+        cursor = (cursor + 1) % categories.size
+      end
+      if key.to_s == 'up'
+        cursor = (cursor - 1) % categories.size
+      end
+      if key.to_s == 'control_m'
+        break
+      end
+
+      message = "#{template}\n#{cursor}"
+      @viewport.draw(Content.new([message]))
+    end
+
+    category = categories[cursor]
+  end
+
+  def end_of_player_turn(player)
+  end
+
+  def display_winner(winners)
+    puts "The winners are: #{winners.map(&:name).join(' & ')}"
+    puts "Congratulations!"
   end
 end
