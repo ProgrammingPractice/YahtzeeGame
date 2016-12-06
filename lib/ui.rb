@@ -28,6 +28,7 @@ class UI
 
       @viewport.draw Content.new([title, players_count.to_s])
     end
+    Remedy::ANSI.cursor.show!
 
     players_count
   end
@@ -81,6 +82,7 @@ Use arrows to move around. Space to select. Enter to accept.
       message = template % { hold_pattern: hold_pattern.join() }
       @viewport.draw(Content.new([message]))
     end
+    Remedy::ANSI.cursor.show!
 
     hold_positions = (0..4).select { |i| hold_pattern[i] == 1 }
   end
@@ -110,6 +112,7 @@ Use arrows to move around. Space to select. Enter to accept.
       message = "#{template}\n#{cursor}"
       @viewport.draw(Content.new([message]))
     end
+    Remedy::ANSI.cursor.show!
 
     category = categories[cursor]
   end
