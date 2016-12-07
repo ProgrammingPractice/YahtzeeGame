@@ -7,7 +7,7 @@ class UI
     @viewport = Viewport.new
   end
 
-  def get_number_of_players
+  def ask_for_number_of_players
     interaction = Interaction.new
 
     title = "Number of players"
