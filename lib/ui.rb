@@ -12,10 +12,9 @@ class UI
   end
 
   def ask_for_number_of_players
-    title = "Number of players"
     players_count = 1
 
-    Viewport.new.draw Content.new([title, players_count.to_s])
+    display_players_count(players_count)
 
     interaction_loop do |key|
       if key.to_s == 'up'
@@ -28,7 +27,7 @@ class UI
         break
       end
 
-      Viewport.new.draw Content.new([title, players_count.to_s])
+      display_players_count(players_count)
     end
 
     players_count
@@ -113,6 +112,11 @@ class UI
 
       yield(key)
     end
+  end
+
+  def display_players_count(players_count)
+    title = "Number of players"
+    Viewport.new.draw Content.new([title, players_count.to_s])
   end
 
   def display_hold(cursor, hold_pattern)
