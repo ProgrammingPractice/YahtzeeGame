@@ -15,7 +15,6 @@ class UI
     players_count = 1
 
     display_players_count(players_count)
-
     interaction_loop do |key|
       if key.to_s == 'up'
         players_count += 1
@@ -26,7 +25,6 @@ class UI
       if key.to_s == 'control_m'
         break
       end
-
       display_players_count(players_count)
     end
 
@@ -38,7 +36,6 @@ class UI
     cursor = 0
 
     display_hold(cursor, hold_pattern)
-
     interaction_loop do |key|
       if key.to_s == 'right'
         cursor = (cursor + 1) % 5
@@ -52,7 +49,6 @@ class UI
       if key.to_s == 'space'
         hold_pattern[cursor] = (hold_pattern[cursor] + 1) % 2
       end
-
       display_hold(cursor, hold_pattern)
     end
     ANSI.screen.safe_reset!
@@ -66,7 +62,6 @@ class UI
     cursor = 0
 
     display_categories(categories, cursor)
-
     interaction_loop do |key|
       if key.to_s == 'down'
         cursor = (cursor + 1) % categories.size
@@ -77,7 +72,6 @@ class UI
       if key.to_s == 'control_m'
         break
       end
-
       display_categories(categories, cursor)
     end
 
