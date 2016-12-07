@@ -13,10 +13,7 @@ class UI
 
     @viewport.draw Content.new([title, players_count.to_s])
 
-    Remedy::Keyboard.raise_on_control_c!
-    loop do
-      key = Remedy::Keyboard.get
-
+    interaction_loop do |key|
       if key.to_s == 'up'
         players_count += 1
       end
@@ -69,10 +66,7 @@ class UI
     Remedy::ANSI.push(Remedy::ANSI.cursor.down(3))
     Remedy::ANSI.push(Remedy::ANSI.cursor.to_column(cursor + 1))
 
-    Remedy::Keyboard.raise_on_control_c!
-    loop do
-      key = Remedy::Keyboard.get
-
+    interaction_loop do |key|
       if key.to_s == 'right'
         cursor = (cursor + 1) % 5
       end
@@ -108,10 +102,7 @@ class UI
     message = "#{template}\n#{cursor}"
     @viewport.draw(Content.new([message]))
 
-    Remedy::Keyboard.raise_on_control_c!
-    loop do
-      key = Remedy::Keyboard.get
-
+    interaction_loop do |key|
       if key.to_s == 'down'
         cursor = (cursor + 1) % categories.size
       end
@@ -136,5 +127,15 @@ class UI
   def display_winner(winners)
     puts "The winners are: #{winners.map(&:name).join(' & ')}"
     puts "Congratulations!"
+  end
+
+  private
+
+  def interaction_loop
+    Remedy::Keyboard.raise_on_control_c!
+    loop do
+      key = Remedy::Keyboard.get
+      yield(key)
+    end
   end
 end
