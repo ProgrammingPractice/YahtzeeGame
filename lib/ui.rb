@@ -35,31 +35,10 @@ class UI
   end
 
   def ask_for_hold_positions
-    template = "#{@player.name}
-      You rolled: #{@roll.inspect}
-      Select what to hold:
-      %{hold_pattern}
-
-
-
-
-
-
-
-
-
-
-      Use arrows to move around. Space to select. Enter to accept.
-    ".gsub(/^\s+/, '')
-
     hold_pattern = [0,0,0,0,0]
     cursor = 0
 
-    message = template % { hold_pattern: hold_pattern.join() }
-    Viewport.new.draw(Content.new([message]))
-    Remedy::ANSI.cursor.home!
-    Remedy::ANSI.push(Remedy::ANSI.cursor.down(3))
-    Remedy::ANSI.push(Remedy::ANSI.cursor.to_column(cursor + 1))
+    display_hold(cursor, hold_pattern)
 
     interaction_loop do |key|
       if key.to_s == 'right'
@@ -75,15 +54,11 @@ class UI
         hold_pattern[cursor] = (hold_pattern[cursor] + 1) % 2
       end
 
-      message = template % { hold_pattern: hold_pattern.join() }
-      Viewport.new.draw(Content.new([message]))
-      Remedy::ANSI.cursor.home!
-      Remedy::ANSI.push(Remedy::ANSI.cursor.down(3))
-      Remedy::ANSI.push(Remedy::ANSI.cursor.to_column(cursor + 1))
+      display_hold(cursor, hold_pattern)
     end
     ANSI.screen.safe_reset!
 
-    hold_positions = (0..4).select { |i| hold_pattern[i] == 1 }
+    (0..4).select { |i| hold_pattern[i] == 1 }
   end
 
   def ask_for_category
@@ -112,10 +87,11 @@ class UI
       Viewport.new.draw(Content.new([message]))
     end
 
-    category = categories[cursor]
+    categories[cursor]
   end
 
   def end_of_player_turn(player)
+    # nothing
   end
 
   def display_winner(winners)
@@ -137,5 +113,22 @@ class UI
 
       yield(key)
     end
+  end
+
+  def display_hold(cursor, hold_pattern)
+    template = "#{@player.name}
+      You rolled: #{@roll.inspect}
+      Select what to hold:
+      %{hold_pattern}
+
+
+      Use arrows to move around. Space to select. Enter to accept.
+    ".gsub(/^\s+/, '')
+
+    message = template % { hold_pattern: hold_pattern.join() }
+    Viewport.new.draw(Content.new([message]))
+    Remedy::ANSI.cursor.home!
+    Remedy::ANSI.push(Remedy::ANSI.cursor.down(3))
+    Remedy::ANSI.push(Remedy::ANSI.cursor.to_column(cursor + 1))
   end
 end
