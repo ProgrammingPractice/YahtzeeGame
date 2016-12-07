@@ -64,8 +64,14 @@ Use arrows to move around. Space to select. Enter to accept.
 
     message = template % { hold_pattern: hold_pattern.join() }
     @viewport.draw(Content.new([message]))
+    Remedy::ANSI.cursor.home!
+    Remedy::ANSI.push(Remedy::ANSI.cursor.down(3))
+    Remedy::ANSI.push(Remedy::ANSI.cursor.to_column(cursor + 1))
 
-    Interaction.new.loop do |key|
+    Remedy::Keyboard.raise_on_control_c!
+    loop do
+      key = Remedy::Keyboard.get
+
       if key.to_s == 'right'
         cursor = (cursor + 1) % 5
       end
@@ -81,8 +87,11 @@ Use arrows to move around. Space to select. Enter to accept.
 
       message = template % { hold_pattern: hold_pattern.join() }
       @viewport.draw(Content.new([message]))
+      Remedy::ANSI.cursor.home!
+      Remedy::ANSI.push(Remedy::ANSI.cursor.down(3))
+      Remedy::ANSI.push(Remedy::ANSI.cursor.to_column(cursor + 1))
     end
-    Remedy::ANSI.cursor.show!
+    ANSI.screen.safe_reset!
 
     hold_positions = (0..4).select { |i| hold_pattern[i] == 1 }
   end
