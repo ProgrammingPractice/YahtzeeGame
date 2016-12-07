@@ -35,21 +35,28 @@ class UI
     hold_pattern = [0,0,0,0,0]
     cursor = 0
 
-    display_hold(cursor, hold_pattern)
+    display = -> { display_hold(cursor, hold_pattern) }
+    commands = {
+      'right' => -> { cursor = (cursor + 1) % 5 },
+      'left'  => -> { cursor = (cursor - 1) % 5 },
+      'space' => -> { hold_pattern[cursor] = (hold_pattern[cursor] + 1) % 2 },
+    }
+
+    display.call
     interaction_loop do |key|
       if key.to_s == 'right'
-        cursor = (cursor + 1) % 5
+        commands[key.to_s].call
       end
       if key.to_s == 'left'
-        cursor = (cursor - 1) % 5
+        commands[key.to_s].call
       end
       if key.to_s == 'control_m'
         break
       end
       if key.to_s == 'space'
-        hold_pattern[cursor] = (hold_pattern[cursor] + 1) % 2
+        commands[key.to_s].call
       end
-      display_hold(cursor, hold_pattern)
+      display.call
     end
     ANSI.screen.safe_reset!
 
