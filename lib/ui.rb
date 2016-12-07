@@ -43,9 +43,9 @@ class UI
 
   def ask_for_hold_positions
     template = "#{@player.name}
-You rolled: #{@roll.inspect}
-Select what to hold:
-%{hold_pattern}
+      You rolled: #{@roll.inspect}
+      Select what to hold:
+      %{hold_pattern}
 
 
 
@@ -56,8 +56,8 @@ Select what to hold:
 
 
 
-Use arrows to move around. Space to select. Enter to accept.
-"
+      Use arrows to move around. Space to select. Enter to accept.
+    ".gsub(/^\s+/, '')
 
     hold_pattern = [0,0,0,0,0]
     cursor = 0
@@ -99,8 +99,8 @@ Use arrows to move around. Space to select. Enter to accept.
   def ask_for_category
     categories = @player.categories
     template = "Please select category for roll: #{@roll.inspect}
-#{categories}
-"
+      #{categories}
+    "
 
     cursor = 0
 
