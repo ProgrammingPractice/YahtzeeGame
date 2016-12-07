@@ -3,15 +3,19 @@ require 'remedy'
 class UI
   include Remedy
 
-  def initialize
-    @viewport = Viewport.new
+  def start_of_player_turn(player)
+    @player = player
+  end
+
+  def display_roll(roll)
+    @roll = roll
   end
 
   def ask_for_number_of_players
     title = "Number of players"
     players_count = 1
 
-    @viewport.draw Content.new([title, players_count.to_s])
+    Viewport.new.draw Content.new([title, players_count.to_s])
 
     interaction_loop do |key|
       if key.to_s == 'up'
@@ -24,18 +28,10 @@ class UI
         break
       end
 
-      @viewport.draw Content.new([title, players_count.to_s])
+      Viewport.new.draw Content.new([title, players_count.to_s])
     end
 
     players_count
-  end
-
-  def start_of_player_turn(player)
-    @player = player
-  end
-
-  def display_roll(roll)
-    @roll = roll
   end
 
   def ask_for_hold_positions
@@ -60,7 +56,7 @@ class UI
     cursor = 0
 
     message = template % { hold_pattern: hold_pattern.join() }
-    @viewport.draw(Content.new([message]))
+    Viewport.new.draw(Content.new([message]))
     Remedy::ANSI.cursor.home!
     Remedy::ANSI.push(Remedy::ANSI.cursor.down(3))
     Remedy::ANSI.push(Remedy::ANSI.cursor.to_column(cursor + 1))
@@ -80,7 +76,7 @@ class UI
       end
 
       message = template % { hold_pattern: hold_pattern.join() }
-      @viewport.draw(Content.new([message]))
+      Viewport.new.draw(Content.new([message]))
       Remedy::ANSI.cursor.home!
       Remedy::ANSI.push(Remedy::ANSI.cursor.down(3))
       Remedy::ANSI.push(Remedy::ANSI.cursor.to_column(cursor + 1))
@@ -99,7 +95,7 @@ class UI
     cursor = 0
 
     message = "#{template}\n#{cursor}"
-    @viewport.draw(Content.new([message]))
+    Viewport.new.draw(Content.new([message]))
 
     interaction_loop do |key|
       if key.to_s == 'down'
@@ -113,7 +109,7 @@ class UI
       end
 
       message = "#{template}\n#{cursor}"
-      @viewport.draw(Content.new([message]))
+      Viewport.new.draw(Content.new([message]))
     end
 
     category = categories[cursor]
@@ -133,6 +129,12 @@ class UI
     Remedy::Keyboard.raise_on_control_c!
     loop do
       key = Remedy::Keyboard.get
+
+      if key.to_s == 'q'
+        puts "Bye"
+        exit
+      end
+
       yield(key)
     end
   end
