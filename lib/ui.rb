@@ -8,14 +8,15 @@ class UI
   end
 
   def ask_for_number_of_players
-    interaction = Interaction.new
-
     title = "Number of players"
     players_count = 1
 
     @viewport.draw Content.new([title, players_count.to_s])
 
-    interaction.loop do |key|
+    Remedy::Keyboard.raise_on_control_c!
+    loop do
+      key = Remedy::Keyboard.get
+
       if key.to_s == 'up'
         players_count += 1
       end
@@ -107,7 +108,10 @@ class UI
     message = "#{template}\n#{cursor}"
     @viewport.draw(Content.new([message]))
 
-    Interaction.new.loop do |key|
+    Remedy::Keyboard.raise_on_control_c!
+    loop do
+      key = Remedy::Keyboard.get
+
       if key.to_s == 'down'
         cursor = (cursor + 1) % categories.size
       end
