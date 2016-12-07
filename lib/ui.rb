@@ -26,7 +26,6 @@ class UI
 
       @viewport.draw Content.new([title, players_count.to_s])
     end
-    Remedy::ANSI.cursor.show!
 
     players_count
   end
@@ -116,7 +115,6 @@ class UI
       message = "#{template}\n#{cursor}"
       @viewport.draw(Content.new([message]))
     end
-    Remedy::ANSI.cursor.show!
 
     category = categories[cursor]
   end
