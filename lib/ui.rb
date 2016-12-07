@@ -62,14 +62,10 @@ class UI
 
   def ask_for_category
     categories = @player.categories
-    template = "Please select category for roll: #{@roll.inspect}
-      #{categories}
-    "
 
     cursor = 0
 
-    message = "#{template}\n#{cursor}"
-    Viewport.new.draw(Content.new([message]))
+    display_categories(categories, cursor)
 
     interaction_loop do |key|
       if key.to_s == 'down'
@@ -82,8 +78,7 @@ class UI
         break
       end
 
-      message = "#{template}\n#{cursor}"
-      Viewport.new.draw(Content.new([message]))
+      display_categories(categories, cursor)
     end
 
     categories[cursor]
@@ -134,5 +129,13 @@ class UI
     Remedy::ANSI.cursor.home!
     Remedy::ANSI.push(Remedy::ANSI.cursor.down(3))
     Remedy::ANSI.push(Remedy::ANSI.cursor.to_column(cursor + 1))
+  end
+
+  def display_categories(categories, cursor)
+    template = "Please select category for roll: #{@roll.inspect}
+      #{categories}
+    "
+    message = "#{template}\n#{cursor}"
+    Viewport.new.draw(Content.new([message]))
   end
 end
