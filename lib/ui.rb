@@ -14,18 +14,21 @@ class UI
   def ask_for_number_of_players
     players_count = 1
 
-    display_players_count(players_count)
+    display = -> { display_players_count(players_count) }
+    commands = {
+      'up'   => -> { players_count += 1 },
+      'down' => -> { players_count = [1, players_count - 1].max }
+    }
+
+    display.call
     interaction_loop do |key|
-      if key.to_s == 'up'
-        players_count += 1
-      end
-      if key.to_s == 'down'
-        players_count = [1, players_count - 1].max
+      if commands.key?(key.to_s)
+        commands[key.to_s].call
       end
       if key.to_s == 'control_m'
         break
       end
-      display_players_count(players_count)
+      display.call
     end
 
     players_count
@@ -47,12 +50,12 @@ class UI
       if commands.key?(key.to_s)
         commands[key.to_s].call
       end
-
       if key.to_s == 'control_m'
         break
       end
       display.call
     end
+
     ANSI.screen.safe_reset!
 
     (0..4).select { |i| hold_pattern[i] == 1 }
