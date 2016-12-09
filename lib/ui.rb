@@ -113,9 +113,11 @@ class UI
 
   def display_categories(categories, cursor)
     template = "Please select category for roll: #{@roll.inspect}
-      #{categories}
-    "
+      #{categories.join("\n")}
+    ".gsub(/^\s+/, '')
     message = "#{template}\n#{cursor}"
     Viewport.new.draw(Content.new([message]))
+    Remedy::ANSI.cursor.home!
+    Remedy::ANSI.push(Remedy::ANSI.cursor.down(1))
   end
 end
