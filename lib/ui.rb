@@ -45,17 +45,17 @@ class UI
 
   def ask_for_category
     categories = @player.categories
-    cursor     = 0
+    index      = 0
 
-    display = -> { display_categories(categories, cursor) }
+    display = -> { display_categories(categories, index) }
     commands = {
-      'down' => -> { cursor = (cursor + 1) % categories.size },
-      'up'   => -> { cursor = (cursor - 1) % categories.size }
+      'down' => -> { index = (index + 1) % categories.size },
+      'up'   => -> { index = (index - 1) % categories.size }
     }
 
     interaction_loop(display, commands)
 
-    categories[cursor]
+    categories[index]
   end
 
   def end_of_player_turn(player)
@@ -111,13 +111,13 @@ class UI
     Remedy::ANSI.push(Remedy::ANSI.cursor.to_column(cursor + 1))
   end
 
-  def display_categories(categories, cursor)
-    template = "Please select category for roll: #{@roll.inspect}
+  def display_categories(categories, index)
+    message = "Please select category for roll: #{@roll.inspect}
       #{categories.join("\n")}
     ".gsub(/^\s+/, '')
-    message = "#{template}\n#{cursor}"
+
     Viewport.new.draw(Content.new([message]))
     Remedy::ANSI.cursor.home!
-    Remedy::ANSI.push(Remedy::ANSI.cursor.down(1))
+    Remedy::ANSI.push(Remedy::ANSI.cursor.down(index+1))
   end
 end
