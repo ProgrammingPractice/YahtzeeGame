@@ -44,17 +44,12 @@ class UI
 
     display.call
     interaction_loop do |key|
-      if key.to_s == 'right'
+      if commands.key?(key.to_s)
         commands[key.to_s].call
       end
-      if key.to_s == 'left'
-        commands[key.to_s].call
-      end
+
       if key.to_s == 'control_m'
         break
-      end
-      if key.to_s == 'space'
-        commands[key.to_s].call
       end
       display.call
     end
