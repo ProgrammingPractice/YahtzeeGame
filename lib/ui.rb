@@ -66,18 +66,21 @@ class UI
 
     cursor = 0
 
-    display_categories(categories, cursor)
+    display = -> { display_categories(categories, cursor) }
+    commands = {
+      'down' => -> { cursor = (cursor + 1) % categories.size },
+      'up'   => -> { cursor = (cursor - 1) % categories.size }
+    }
+
+    display.call
     interaction_loop do |key|
-      if key.to_s == 'down'
-        cursor = (cursor + 1) % categories.size
-      end
-      if key.to_s == 'up'
-        cursor = (cursor - 1) % categories.size
+      if commands.key?(key.to_s)
+        commands[key.to_s].call
       end
       if key.to_s == 'control_m'
         break
       end
-      display_categories(categories, cursor)
+      display.call
     end
 
     categories[cursor]
