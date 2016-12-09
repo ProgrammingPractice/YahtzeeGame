@@ -3,6 +3,8 @@ require 'remedy'
 class UI
   include Remedy
 
+  KEY_ENTER = 'control_m'
+
   def start_of_player_turn(player)
     @player = player
   end
@@ -26,8 +28,8 @@ class UI
   end
 
   def ask_for_hold_positions
+    cursor       = 0
     hold_pattern = [0,0,0,0,0]
-    cursor = 0
 
     display = -> { display_hold(cursor, hold_pattern) }
     commands = {
@@ -38,15 +40,12 @@ class UI
 
     interaction_loop(display, commands)
 
-    ANSI.screen.safe_reset!
-
     (0..4).select { |i| hold_pattern[i] == 1 }
   end
 
   def ask_for_category
     categories = @player.categories
-
-    cursor = 0
+    cursor     = 0
 
     display = -> { display_categories(categories, cursor) }
     commands = {
@@ -75,17 +74,15 @@ class UI
 
     Remedy::Keyboard.raise_on_control_c!
     loop do
-      key = Remedy::Keyboard.get
+      key = Remedy::Keyboard.get.to_s
 
-      if key.to_s == 'q'
+      if key == 'q'
         puts "Bye"
         exit
-      end
-      if commands.key?(key.to_s)
-        commands[key.to_s].call
-      end
-      if key.to_s == 'control_m'
+      elsif key == KEY_ENTER
         break
+      elsif commands.key?(key)
+        commands.fetch(key).call
       end
 
       display.call
