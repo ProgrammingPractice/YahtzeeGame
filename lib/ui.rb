@@ -95,16 +95,15 @@ class UI
   end
 
   def display_hold(cursor, hold_pattern)
-    template = "#{@player.name}
+    message = "#{@player.name}
       You rolled: #{@roll.inspect}
       Select what to hold:
-      %{hold_pattern}
+      #{hold_pattern.join()}
 
 
       Use arrows to move around. Space to select. Enter to accept.
     ".gsub(/^\s+/, '')
 
-    message = template % { hold_pattern: hold_pattern.join() }
     Viewport.new.draw(Content.new([message]))
     Remedy::ANSI.cursor.home!
     Remedy::ANSI.push(Remedy::ANSI.cursor.down(3))
