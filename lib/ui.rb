@@ -7,10 +7,13 @@ class UI
 
   def start_of_player_turn(player)
     @player = player
+    @rolls_count = 0
   end
 
   def display_roll(roll)
     @roll = roll
+    @rolls_count += 1
+    # we do the actual display in 'ask_for_category'
   end
 
   def ask_for_number_of_players
@@ -96,7 +99,7 @@ class UI
 
   def display_hold(cursor, hold_pattern)
     message = "#{@player.name}
-      You rolled: #{@roll.inspect}
+      You rolled: #{@roll.inspect} (roll #{@rolls_count}/3)
       Select what to hold:
       #{hold_pattern.join()}
 
