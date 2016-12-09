@@ -66,7 +66,12 @@ class UI
   end
 
   def display_winner(winners)
-    puts "The winners are: #{winners.map(&:name).join(' & ')}"
+    score = winners.first.score
+    if winners.size == 1
+      puts "The winner is: #{winners.first.name} with score #{score}!"
+    else
+      puts "The winners are: #{winners.map(&:name).join(' & ')} with score #{score}!"
+    end
     puts "Congratulations!"
   end
 
