@@ -20,7 +20,7 @@ class UI
       'down' => -> { players_count = [1, players_count - 1].max }
     }
 
-    smart_interaction_loop(display, commands)
+    interaction_loop(display, commands)
 
     players_count
   end
@@ -36,7 +36,7 @@ class UI
       'space' => -> { hold_pattern[cursor] = (hold_pattern[cursor] + 1) % 2 },
     }
 
-    smart_interaction_loop(display, commands)
+    interaction_loop(display, commands)
 
     ANSI.screen.safe_reset!
 
@@ -54,7 +54,7 @@ class UI
       'up'   => -> { cursor = (cursor - 1) % categories.size }
     }
 
-    smart_interaction_loop(display, commands)
+    interaction_loop(display, commands)
 
     categories[cursor]
   end
@@ -70,20 +70,9 @@ class UI
 
   private
 
-  def smart_interaction_loop(display, commands)
+  def interaction_loop(display, commands)
     display.call
-    interaction_loop do |key|
-      if commands.key?(key.to_s)
-        commands[key.to_s].call
-      end
-      if key.to_s == 'control_m'
-        break
-      end
-      display.call
-    end
-  end
 
-  def interaction_loop
     Remedy::Keyboard.raise_on_control_c!
     loop do
       key = Remedy::Keyboard.get
@@ -92,8 +81,14 @@ class UI
         puts "Bye"
         exit
       end
+      if commands.key?(key.to_s)
+        commands[key.to_s].call
+      end
+      if key.to_s == 'control_m'
+        break
+      end
 
-      yield(key)
+      display.call
     end
   end
 
