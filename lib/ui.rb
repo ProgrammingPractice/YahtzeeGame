@@ -103,16 +103,16 @@ class UI
   end
 
   def display_hold(cursor, hold_pattern)
-    message = "#{@player.name}
+    message = "
       You rolled: #{@roll.inspect} (roll #{@rolls_count}/3)
       Select what to hold:
       #{hold_pattern.join()}
-
-
-      Use arrows to move around. Space to select. Enter to accept.
     ".gsub(/^\s+/, '')
 
-    Viewport.new.draw(Content.new([message]))
+    header = Remedy::Header.new([@player.name])
+    footer = Remedy::Footer.new(["--------\nUse arrows to move around. Space to select. Enter to accept."])
+
+    Viewport.new.draw(Content.new([message]), Size.new(0,0), header, footer)
     Remedy::ANSI.cursor.home!
     Remedy::ANSI.push(Remedy::ANSI.cursor.down(3))
     Remedy::ANSI.push(Remedy::ANSI.cursor.to_column(cursor + 1))
