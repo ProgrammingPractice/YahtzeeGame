@@ -3,6 +3,10 @@ require 'remedy'
 class UI
   KEY_ENTER = 'control_m'
 
+  def set_players(players)
+    @players = players
+  end
+
   def start_of_player_turn(player)
     @player = player
     @rolls_count = 0
@@ -121,7 +125,7 @@ class UI
 
     Remedy::Viewport.new.draw(Remedy::Content.new([message]), Remedy::Size.new(0,0), header, footer)
     Remedy::ANSI.cursor.home!
-    Remedy::ANSI.push(Remedy::ANSI.cursor.down(3))
+    Remedy::ANSI.push(Remedy::ANSI.cursor.down(@players.size + 4))
     Remedy::ANSI.push(Remedy::ANSI.cursor.to_column(cursor + 1))
   end
 
@@ -134,11 +138,15 @@ class UI
 
     Remedy::Viewport.new.draw(Remedy::Content.new([message]), Remedy::Size.new(0,0), header, footer)
     Remedy::ANSI.cursor.home!
-    Remedy::ANSI.push(Remedy::ANSI.cursor.down(index+2))
+    Remedy::ANSI.push(Remedy::ANSI.cursor.down(@players.size + index + 3))
   end
 
   def header
-    Remedy::Header.new(["#{@player.name} Current score: #{@player.score}"])
+    message = @players.map do |player|
+      "#{player.name}: #{player.score} points"
+    end.join("\n")
+
+    Remedy::Header.new([message, '--------', "Playing -> #{@player.name}"])
   end
 
   def categories

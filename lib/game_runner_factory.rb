@@ -8,6 +8,7 @@ class GameRunnerFactory
     dice_roller = DiceRoller.new
     players = (1..number_of_players).map { |i| Player.new("Player #{i}", dice_roller) }
     game = Game.new(players)
+    ui.set_players(players)
     GameRunner.new(game, ui)
   end
 end
