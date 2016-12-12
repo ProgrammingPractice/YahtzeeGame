@@ -98,8 +98,12 @@ class UI
   end
 
   def display_players_count(players_count)
-    title = "Number of players"
-    Viewport.new.draw Content.new([title, players_count.to_s])
+    header = Remedy::Header.new(["Yahtzee!\nSelect number of players"])
+    footer = Remedy::Footer.new(["--------\nUse arrows to change values. Enter to accept."])
+
+    Viewport.new.draw(Content.new([players_count.to_s]), Size.new(0,0), header, footer)
+    Remedy::ANSI.cursor.home!
+    Remedy::ANSI.push(Remedy::ANSI.cursor.down(2))
   end
 
   def display_hold(cursor, hold_pattern)
