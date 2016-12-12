@@ -65,7 +65,7 @@ class UI
     # nothing
   end
 
-  def display_winner(winners)
+  def display_winners(winners)
     score = winners.first.score
     if winners.size == 1
       puts "The winner is: #{winners.first.name} with score #{score}!"

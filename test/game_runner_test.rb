@@ -34,7 +34,7 @@ class GameRunnerTest < Minitest::Test
       # nothing
     end
 
-    def display_winner(players)
+    def display_winners(players)
       @output << "#{players.map(&:name).join(' & ')} won with #{players.first.score} points!"
     end
 

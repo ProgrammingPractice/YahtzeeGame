@@ -11,7 +11,7 @@ class GameRunner
       end
     end
 
-    @ui.display_winner(@game.winners)
+    @ui.display_winners(@game.winners)
   end
 
   def play_round(player)
