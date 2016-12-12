@@ -110,7 +110,7 @@ class UI
     ".gsub(/^\s+/, '')
 
     header = Remedy::Header.new([@player.name])
-    footer = Remedy::Footer.new(["--------\nUse arrows to move around. Space to select. Enter to accept."])
+    footer = Remedy::Footer.new(["--------\nUse arrows to move around. Space to mark position. Enter to accept."])
 
     Viewport.new.draw(Content.new([message]), Size.new(0,0), header, footer)
     Remedy::ANSI.cursor.home!
@@ -123,8 +123,11 @@ class UI
       #{categories.join("\n")}
     ".gsub(/^\s+/, '')
 
-    Viewport.new.draw(Content.new([message]))
+    header = Remedy::Header.new([@player.name])
+    footer = Remedy::Footer.new(["--------\nUse arrows to move around. Enter to accept."])
+
+    Viewport.new.draw(Content.new([message]), Size.new(0,0), header, footer)
     Remedy::ANSI.cursor.home!
-    Remedy::ANSI.push(Remedy::ANSI.cursor.down(index+1))
+    Remedy::ANSI.push(Remedy::ANSI.cursor.down(index+2))
   end
 end
