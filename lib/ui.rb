@@ -113,7 +113,6 @@ class UI
       #{hold_pattern.join()}
     ".gsub(/^\s+/, '')
 
-    header = Remedy::Header.new(["#{@player.name} Current score: #{@player.score}"])
     footer = Remedy::Footer.new(["--------\nUse left/right to move around. Space to mark position. Enter to accept."])
 
     Viewport.new.draw(Content.new([message]), Size.new(0,0), header, footer)
@@ -131,11 +130,14 @@ class UI
       #{category_names.join("\n")}
     ".gsub(/^\s+/, '')
 
-    header = Remedy::Header.new(["#{@player.name} Current score: #{@player.score}"])
     footer = Remedy::Footer.new(["--------\nUse up/down to move around. Enter to accept."])
 
     Viewport.new.draw(Content.new([message]), Size.new(0,0), header, footer)
     Remedy::ANSI.cursor.home!
     Remedy::ANSI.push(Remedy::ANSI.cursor.down(index+2))
+  end
+
+  def header
+    Remedy::Header.new(["#{@player.name} Current score: #{@player.score}"])
   end
 end
