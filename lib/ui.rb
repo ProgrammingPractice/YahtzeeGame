@@ -32,7 +32,7 @@ class UI
 
   def ask_for_hold_positions
     cursor       = 0
-    hold_pattern = [0,0,0,0,0]
+    hold_pattern = [1,1,1,1,1]
 
     display = -> { display_hold(cursor, hold_pattern) }
     commands = {
@@ -107,10 +107,14 @@ class UI
   end
 
   def display_hold(cursor, hold_pattern)
+    dice_to_hold = hold_pattern.each_with_index.map do |value, i|
+      value == 0 ? '-' : @roll[i]
+    end.join
+
     message = "
       You rolled: #{@roll.inspect} (roll #{@rolls_count}/3)
       Select what to hold:
-      #{hold_pattern.join()}
+      #{dice_to_hold}
     ".gsub(/^\s+/, '')
 
     footer = Remedy::Footer.new(["--------\nUse left/right to move around. Space to mark position. Enter to accept."])
