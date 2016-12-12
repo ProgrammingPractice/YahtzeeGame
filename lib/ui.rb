@@ -45,10 +45,9 @@ class UI
   end
 
   def ask_for_category
-    categories = @player.categories
     index      = 0
 
-    display = -> { display_categories(categories, index) }
+    display = -> { display_categories(index) }
     commands = {
       'down' => -> { index = (index + 1) % categories.size },
       'up'   => -> { index = (index - 1) % categories.size }
@@ -113,6 +112,9 @@ class UI
       You rolled: #{@roll.inspect} (roll #{@rolls_count}/3)
       Select what to hold:
       #{dice_to_hold}
+      --------
+      Available categories:
+      #{category_names.join("\n")}
     ".gsub(/^\s+/, '')
 
     footer = Remedy::Footer.new(["--------\nUse left/right to move around. Space to mark position. Enter to accept."])
@@ -123,11 +125,7 @@ class UI
     Remedy::ANSI.push(Remedy::ANSI.cursor.to_column(cursor + 1))
   end
 
-  def display_categories(categories, index)
-    category_names = categories.map do |category|
-      category.gsub(/_/, " ").capitalize
-    end
-
+  def display_categories(index)
     message = "Please select category for roll: #{@roll.inspect}
       #{category_names.join("\n")}
     ".gsub(/^\s+/, '')
@@ -141,5 +139,15 @@ class UI
 
   def header
     Remedy::Header.new(["#{@player.name} Current score: #{@player.score}"])
+  end
+
+  def categories
+    @player.categories
+  end
+
+  def category_names
+    categories.map do |category|
+      category.gsub(/_/, " ").capitalize
+    end
   end
 end
