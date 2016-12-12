@@ -99,7 +99,7 @@ class UI
 
   def display_players_count(players_count)
     header = Remedy::Header.new(["Yahtzee!\nSelect number of players"])
-    footer = Remedy::Footer.new(["--------\nUse arrows to change values. Enter to accept."])
+    footer = Remedy::Footer.new(["--------\nUse up/down to change values. Enter to accept."])
 
     Viewport.new.draw(Content.new([players_count.to_s]), Size.new(0,0), header, footer)
     Remedy::ANSI.cursor.home!
@@ -114,7 +114,7 @@ class UI
     ".gsub(/^\s+/, '')
 
     header = Remedy::Header.new([@player.name])
-    footer = Remedy::Footer.new(["--------\nUse arrows to move around. Space to mark position. Enter to accept."])
+    footer = Remedy::Footer.new(["--------\nUse left/right to move around. Space to mark position. Enter to accept."])
 
     Viewport.new.draw(Content.new([message]), Size.new(0,0), header, footer)
     Remedy::ANSI.cursor.home!
@@ -128,7 +128,7 @@ class UI
     ".gsub(/^\s+/, '')
 
     header = Remedy::Header.new([@player.name])
-    footer = Remedy::Footer.new(["--------\nUse arrows to move around. Enter to accept."])
+    footer = Remedy::Footer.new(["--------\nUse up/down to move around. Enter to accept."])
 
     Viewport.new.draw(Content.new([message]), Size.new(0,0), header, footer)
     Remedy::ANSI.cursor.home!
