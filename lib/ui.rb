@@ -123,8 +123,12 @@ class UI
   end
 
   def display_categories(categories, index)
+    category_names = categories.map do |category|
+      category.gsub(/_/, " ").capitalize
+    end
+
     message = "Please select category for roll: #{@roll.inspect}
-      #{categories.join("\n")}
+      #{category_names.join("\n")}
     ".gsub(/^\s+/, '')
 
     header = Remedy::Header.new(["#{@player.name} Current score: #{@player.score}"])
