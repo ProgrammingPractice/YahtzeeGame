@@ -1,8 +1,6 @@
 require 'remedy'
 
 class UI
-  include Remedy
-
   KEY_ENTER = 'control_m'
 
   def start_of_player_turn(player)
@@ -101,7 +99,7 @@ class UI
     header = Remedy::Header.new(["Yahtzee!\nSelect number of players"])
     footer = Remedy::Footer.new(["--------\nUse up/down to change values. Enter to accept."])
 
-    Viewport.new.draw(Content.new([players_count.to_s]), Size.new(0,0), header, footer)
+    Remedy::Viewport.new.draw(Remedy::Content.new([players_count.to_s]), Remedy::Size.new(0,0), header, footer)
     Remedy::ANSI.cursor.home!
     Remedy::ANSI.push(Remedy::ANSI.cursor.down(2))
   end
@@ -119,7 +117,7 @@ class UI
 
     footer = Remedy::Footer.new(["--------\nUse left/right to move around. Space to mark position. Enter to accept."])
 
-    Viewport.new.draw(Content.new([message]), Size.new(0,0), header, footer)
+    Remedy::Viewport.new.draw(Remedy::Content.new([message]), Remedy::Size.new(0,0), header, footer)
     Remedy::ANSI.cursor.home!
     Remedy::ANSI.push(Remedy::ANSI.cursor.down(3))
     Remedy::ANSI.push(Remedy::ANSI.cursor.to_column(cursor + 1))
@@ -136,7 +134,7 @@ class UI
 
     footer = Remedy::Footer.new(["--------\nUse up/down to move around. Enter to accept."])
 
-    Viewport.new.draw(Content.new([message]), Size.new(0,0), header, footer)
+    Remedy::Viewport.new.draw(Remedy::Content.new([message]), Remedy::Size.new(0,0), header, footer)
     Remedy::ANSI.cursor.home!
     Remedy::ANSI.push(Remedy::ANSI.cursor.down(index+2))
   end
