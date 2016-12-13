@@ -3,7 +3,7 @@ require 'remedy'
 class UI
   KEY_ENTER = 'control_m'
 
-  def set_players(players)
+  def start_game_with_players(players)
     @players = players
   end
 

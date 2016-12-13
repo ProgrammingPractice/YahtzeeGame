@@ -15,6 +15,10 @@ class GameRunnerTest < Minitest::Test
       end
     end
 
+    def start_game_with_players(players)
+      # nothing
+    end
+
     def start_of_player_turn(player)
       @current_round = @rounds_iterators[player.name].next
       @dice_roller.add_values(extract_rolls(*@current_round))

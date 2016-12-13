@@ -5,6 +5,8 @@ class GameRunner
   end
 
   def run
+    @ui.start_game_with_players(@game.players)
+
     while @game.rounds_left?
       @game.players.each do |player|
         play_round(player)
