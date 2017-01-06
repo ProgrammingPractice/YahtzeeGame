@@ -6,3 +6,8 @@ gem 'thin'
 group :development do
   gem 'rerun'
 end
+
+group :test do
+  gem 'minitest'
+  gem 'capybara'
+end
