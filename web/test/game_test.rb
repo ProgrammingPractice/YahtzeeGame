@@ -21,6 +21,6 @@ class YahtzeeWebTest < Minitest::Test
     page.select '1', from: 'players_count'
     click_button('Submit')
 
-    assert page.has_content?('You rolled:')
+    assert page.has_content?('Playing -> Player 1')
   end
 end
