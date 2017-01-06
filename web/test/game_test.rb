@@ -13,8 +13,14 @@ class YahtzeeWebTest < Minitest::Test
     Capybara.app = Sinatra::Application.new
   end
 
-  def test_it_works
+  def test_complete_game
     visit '/'
+
     assert page.has_content?('Yahtzee')
+    assert page.has_content?('Please enter number of players:')
+    page.select '1', from: 'players_count'
+    click_button('Submit')
+
+    assert page.has_content?('You rolled:')
   end
 end
