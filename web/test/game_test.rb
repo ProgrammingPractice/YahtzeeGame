@@ -15,12 +15,15 @@ class YahtzeeWebTest < Minitest::Test
 
   def test_complete_game
     visit '/'
+    assert has_content?('Yahtzee')
+    assert has_content?('Please enter number of players:')
 
-    assert page.has_content?('Yahtzee')
-    assert page.has_content?('Please enter number of players:')
-    page.select '1', from: 'players_count'
+    select('1', from: 'players_count')
     click_button('Submit')
+    assert has_content?('Playing -> Player 1')
 
-    assert page.has_content?('Playing -> Player 1')
+    check('checkbox_dice_0')
+    check('checkbox_dice_2')
+    # click_button('Submit')
   end
 end

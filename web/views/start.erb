@@ -2,7 +2,14 @@
 
 <p>You rolled: <%= @roll.inspect %> (roll <%= @rolls_count %>/3)</p>
 <p>Select what to hold:</p>
-<p><%= @dice_to_hold %></p>
+
+<form action="">
+<% @roll.each_with_index do |dice, i| %>
+  <input type="checkbox" id="checkbox_dice_<%= i %>" name="dice_to_hold" value="dice_<%= i %>">
+  <label for="checkbox_dice_<%= i %>"><%= dice %></label>
+<% end %>
+</form>
+
 <p>--------</p>
 <p>Available categories:</p>
 <p><%= @category_names.join("\n") %></p>
