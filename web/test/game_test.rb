@@ -24,6 +24,6 @@ class YahtzeeWebTest < Minitest::Test
 
     check('checkbox_dice_0')
     check('checkbox_dice_2')
-    # click_button('Submit')
+    click_button('Submit')
   end
 end
