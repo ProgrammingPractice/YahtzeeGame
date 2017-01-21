@@ -12,7 +12,7 @@ post '/start' do
   @player = game.players.first
 
   @roll = [1,2,3,4,5]
-  @rolls_count = 2
+  @rolls_count = 1
   @dice_to_hold = ""
   @category_names = []
   erb :start

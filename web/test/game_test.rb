@@ -24,6 +24,8 @@ class YahtzeeWebTest < Minitest::Test
 
     check('checkbox_dice_0')
     check('checkbox_dice_2')
+    assert has_content?('You rolled:')
+    assert has_content?('roll 1/3')
     click_button('Submit')
   end
 end
