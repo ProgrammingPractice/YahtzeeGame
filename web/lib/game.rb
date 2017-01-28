@@ -1,4 +1,7 @@
 require_relative '../../lib/game_factory'
+require_relative 'game_serializer'
+
+enable :sessions
 
 get '/' do
   redirect :new_game
@@ -9,23 +12,20 @@ get '/new_game' do
 end
 
 post '/create_game' do
-  # TODO: create new game and persist it (probably in cookies)
+  players_count = params.fetch('players_count').to_i
+  game = GameFactory.create(players_count)
+  session[:game] = GameSerializer.dump(game)
   redirect :new_round
 end
 
 get '/new_round' do
-  # TODO: load game from storage
-
-  players_count = 2
-  # players_count = params.fetch('players_count').to_i
-
-  game = GameFactory.create(players_count)
+  game = GameSerializer.load(session.fetch(:game))
   @player = game.players.first
 
   @roll = [1,2,3,4,5]
   @rolls_count = 1
-  @dice_to_hold = ""
-  @category_names = []
+  @dice_to_hold = "DICE TO HOLD"
+  @category_names = @player.categories
 
   erb :new_round
 end
