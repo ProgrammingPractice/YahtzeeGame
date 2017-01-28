@@ -2,24 +2,12 @@ require 'json'
 
 module GameSerializer
   def self.dump(game)
-    hash = { 'players' => [] }
-    game.players.each do |player|
-      hash['players'] << {
-        'name'  => player.name,
-        'score' => player.score,
-        'categories' => player.categories
-      }
-    end
-    JSON.dump(hash)
+    JSON.dump(players: game.players.map(&:to_h))
   end
 
   def self.load(data)
-    players = []
-    JSON.load(data).fetch('players').each do |hash|
-      player = Player.new(hash.fetch('name'), nil)
-      player.instance_variable_set(:@score, hash.fetch('score'))
-      player.instance_variable_set(:@categories, hash.fetch('categories'))
-      players << player
+    players = JSON.load(data).fetch('players').map do |hash|
+      Player.from_h(hash)
     end
     Game.new(players)
   end

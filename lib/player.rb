@@ -13,6 +13,10 @@ class Player
     @categories = ScoreCalculator::CATEGORIES.dup
   end
 
+  def self.from_h(hash)
+    new(nil, nil).from_h(hash)
+  end
+
   def roll_dice
     @roll = (1..5).map { @dice_roller.roll_one }
   end
@@ -26,5 +30,20 @@ class Player
   def select_category(category)
     @categories.delete(category)
     @score += ScoreCalculator.calculate(category, roll)
+  end
+
+  def to_h
+    {
+      :name       => @name,
+      :score      => @score,
+      :categories => @categories
+    }
+  end
+
+  def from_h(hash)
+    @name       = hash.fetch('name')
+    @score      = hash.fetch('score')
+    @categories = hash.fetch('categories')
+    self
   end
 end
