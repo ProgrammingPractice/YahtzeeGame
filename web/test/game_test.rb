@@ -30,7 +30,7 @@ class YahtzeeWebTest < Minitest::Test
     check('checkbox_dice_2')
     click_button('Submit')
 
-    # assert_equal 200, status_code
-    # assert has_content?('roll 2/3')
+    assert_equal 200, status_code
+    assert has_content?('roll 2/3')
   end
 end

@@ -19,13 +19,15 @@ post '/create_game' do
 end
 
 get '/new_round' do
-  game = GameSerializer.load(session.fetch(:game))
+  @rolls_count = session[:rolls_count] || 1
+
+  game = GameSerializer.load(session[:game])
   @player = game.players.first
 
   @roll = [1,2,3,4,5]
-  @rolls_count = 1
   @dice_to_hold = "DICE TO HOLD"
   @category_names = @player.categories
 
+  session[:rolls_count] = @rolls_count + 1
   erb :new_round
 end
