@@ -15,11 +15,12 @@ post '/create_game' do
   players_count = params.fetch('players_count').to_i
   game = GameFactory.create(players_count)
   session[:game] = GameSerializer.dump(game)
+  session[:rolls_count] = 1
   redirect :new_round
 end
 
 get '/new_round' do
-  @rolls_count = session[:rolls_count] || 1
+  @rolls_count = session[:rolls_count]
 
   game = GameSerializer.load(session[:game])
   @players = game.players
