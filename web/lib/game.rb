@@ -22,7 +22,8 @@ get '/new_round' do
   @rolls_count = session[:rolls_count] || 1
 
   game = GameSerializer.load(session[:game])
-  @player = game.players.first
+  @players = game.players
+  @player  = @players.first
 
   @roll = [1,2,3,4,5]
   @dice_to_hold = "DICE TO HOLD"
