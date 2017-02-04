@@ -28,6 +28,7 @@ get '/new_round' do
 
   @player.roll_dice
 
+  session[:game] = GameSerializer.dump(game)
   session[:rolls_count] = @rolls_count + 1
   erb :new_round
 end
@@ -39,9 +40,6 @@ post '/select_category' do
   @players = game.players
   @player  = @players.first
 
-  # FIXME: rolling the dice is needed because we don't store the roll in the
-  # serialized version of the game
-  @player.roll_dice
   @player.select_category(category)
 
   session[:game] = GameSerializer.dump(game)
