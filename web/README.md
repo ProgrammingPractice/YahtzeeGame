@@ -6,8 +6,8 @@ Web version of the Yahtzee game.
 
 - Running the server
 
-        bundle exec rerun 'ruby app.rb'
+        ./server
 
 - Running the tests
 
-        bundle exec ruby test/game_test.rb
+        ./build
