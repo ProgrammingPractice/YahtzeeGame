@@ -37,7 +37,8 @@ class Player
     {
       :name       => @name,
       :score      => @score,
-      :categories => @categories
+      :categories => @categories,
+      :roll       => @roll,
     }
   end
 
@@ -45,6 +46,7 @@ class Player
     @name       = hash.fetch('name')
     @score      = hash.fetch('score')
     @categories = hash.fetch('categories')
+    @roll       = hash.fetch('roll')
     self
   end
 end
