@@ -27,8 +27,6 @@ get '/new_round' do
   @player  = @players.first
 
   @player.roll_dice
-  @dice_to_hold = "DICE TO HOLD"
-  @category_names = @player.categories
 
   session[:rolls_count] = @rolls_count + 1
   erb :new_round
