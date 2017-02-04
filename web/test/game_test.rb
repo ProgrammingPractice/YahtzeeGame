@@ -20,7 +20,7 @@ class YahtzeeWebTest < Minitest::Test
     assert has_content?('Please enter number of players:')
 
     select('2', from: 'players_count')
-    click_button('Submit')
+    click_button('Start game')
     assert_equal 200, status_code
     assert has_content?('Player 1: 0 points')
     assert has_content?('Player 2: 0 points')
@@ -43,5 +43,12 @@ class YahtzeeWebTest < Minitest::Test
     assert_equal 200, status_code
     assert has_content?('roll 3/3')
     refute has_content?('Select what to hold:')
+
+    choose('radiobutton_category_chance')
+    click_button('Select category')
+
+    assert_equal 200, status_code
+    refute has_content?('Player 1: 0 points')
+    assert has_content?('Player 2: 0 points')
   end
 end

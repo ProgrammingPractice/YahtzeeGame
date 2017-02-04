@@ -26,13 +26,13 @@
     <p><%= category %></p>
   <% end %>
 <% else %>
-  <form action="calculate_score">
+  <form action="select_category" method="post">
     <% @player.categories.each do |category| %>
       <p>
         <input type="radio" id="radiobutton_category_<%= category %>" name="category" value="<%= category %>">
         <label for="radiobutton_category_<%= category %>"><%= category %></label>
       </p>
     <% end %>
-    <input type="submit" value="Submit category">
+    <input type="submit" value="Select category">
   </form>
 <% end %>
