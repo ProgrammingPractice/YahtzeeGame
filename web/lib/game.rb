@@ -14,7 +14,7 @@ end
 post '/create_game' do
   players_count = params.fetch('players_count').to_i
   game = GameFactory.create(players_count)
-  session[:game] = GameSerializer.dump(game)
+  save_game(game)
   session[:rolls_count] = 1
   redirect :new_round
 end
@@ -22,13 +22,12 @@ end
 get '/new_round' do
   @rolls_count = session[:rolls_count]
 
-  game = GameSerializer.load(session[:game])
-  @players = game.players
-  @player  = @players.first
+  @game = load_game
+  @player = @game.players.first
 
   @player.roll_dice
 
-  session[:game] = GameSerializer.dump(game)
+  save_game(@game)
   session[:rolls_count] = @rolls_count + 1
   erb :new_round
 end
@@ -36,12 +35,19 @@ end
 post '/select_category' do
   category = params.fetch('category')
 
-  game = GameSerializer.load(session[:game])
-  @players = game.players
-  @player  = @players.first
+  @game = load_game
+  @player = @game.players.first
 
   @player.select_category(category)
 
-  session[:game] = GameSerializer.dump(game)
+  save_game(@game)
   redirect :new_round
+end
+
+def load_game
+  GameSerializer.load(session[:game])
+end
+
+def save_game(game)
+  session[:game] = GameSerializer.dump(game)
 end
