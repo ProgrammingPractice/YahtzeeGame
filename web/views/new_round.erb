@@ -16,4 +16,6 @@
 
 <p>--------</p>
 <p>Available categories:</p>
-<p><%= @category_names.join("\n") %></p>
+<% @category_names.each do |category| %>
+  <p><%= category %></p>
+<% end %>
