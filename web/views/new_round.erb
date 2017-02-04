@@ -5,13 +5,13 @@
 
 <p>Playing -> <%= @player.name %></p>
 
-<p>You rolled: <%= @roll.inspect %> (roll <%= @rolls_count %>/3)</p>
+<p>You rolled: <%= @player.roll.inspect %> (roll <%= @rolls_count %>/3)</p>
 
 <% if @rolls_count < 3 %>
   <p>Select what to hold:</p>
 
   <form action="">
-    <% @roll.each_with_index do |dice, i| %>
+    <% @player.roll.each_with_index do |dice, i| %>
       <input type="checkbox" id="checkbox_dice_<%= i %>" name="dice_to_hold" value="dice_<%= i %>">
       <label for="checkbox_dice_<%= i %>"><%= dice %></label>
     <% end %>

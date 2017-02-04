@@ -25,7 +25,7 @@ get '/new_round' do
   @players = game.players
   @player  = @players.first
 
-  @roll = [1,2,3,4,5]
+  @player.roll_dice
   @dice_to_hold = "DICE TO HOLD"
   @category_names = @player.categories
 

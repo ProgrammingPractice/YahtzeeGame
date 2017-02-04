@@ -14,7 +14,8 @@ class Player
   end
 
   def self.from_h(hash)
-    new(nil, nil).from_h(hash)
+    dice_roller = DiceRoller.new
+    new(nil, dice_roller).from_h(hash)
   end
 
   def roll_dice
