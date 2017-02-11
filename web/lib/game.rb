@@ -26,7 +26,6 @@ get '/new_round' do
   @player = @game.players.first
 
   @player.roll_dice
-  @player.instance_variable_set(:@roll, [1,2,3,4,5])
 
   save_game(@game)
   session[:rolls_count] = @rolls_count + 1
@@ -46,7 +45,7 @@ post '/select_category' do
 end
 
 def load_game
-  dice_roller = DiceRoller.new
+  dice_roller = settings.dice_roller
   GameSerializer.load(session[:game], dice_roller)
 end
 
