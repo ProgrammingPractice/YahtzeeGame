@@ -5,6 +5,7 @@ require 'capybara/dsl'
 require 'minitest/autorun'
 require 'minitest/pride'
 require_relative '../app'
+require 'capybara-screenshot/minitest'
 
 class YahtzeeWebTest < Minitest::Test
   include Capybara::DSL
