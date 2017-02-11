@@ -5,9 +5,9 @@ module GameSerializer
     JSON.dump(players: game.players.map(&:to_h))
   end
 
-  def self.load(data)
+  def self.load(data, dice_roller)
     players = JSON.load(data).fetch('players').map do |hash|
-      Player.from_h(hash)
+      Player.from_h(hash, dice_roller)
     end
     Game.new(players)
   end

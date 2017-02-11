@@ -23,7 +23,7 @@ class GameSerializerTest < Minitest::Test
     data = GameSerializer.dump(orig_game)
     assert_equal String, data.class
 
-    game = GameSerializer.load(data)
+    game = GameSerializer.load(data, DiceRoller.new)
     assert_equal Game, game.class
 
     player1 = game.players[0]

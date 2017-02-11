@@ -46,7 +46,8 @@ post '/select_category' do
 end
 
 def load_game
-  GameSerializer.load(session[:game])
+  dice_roller = DiceRoller.new
+  GameSerializer.load(session[:game], dice_roller)
 end
 
 def save_game(game)

@@ -13,8 +13,7 @@ class Player
     @categories = ScoreCalculator::CATEGORIES.dup
   end
 
-  def self.from_h(hash)
-    dice_roller = DiceRoller.new
+  def self.from_h(hash, dice_roller)
     new(nil, dice_roller).from_h(hash)
   end
 

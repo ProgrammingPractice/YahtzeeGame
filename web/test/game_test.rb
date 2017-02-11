@@ -6,6 +6,7 @@ require 'minitest/autorun'
 require 'minitest/pride'
 require_relative '../app'
 require 'capybara-screenshot/minitest'
+require 'byebug'
 
 class YahtzeeWebTest < Minitest::Test
   include Capybara::DSL
@@ -15,7 +16,6 @@ class YahtzeeWebTest < Minitest::Test
   end
 
   def the_dice_will_be(dice)
-    @game.player.first.roll = dice
   end
 
   def test_complete_game
