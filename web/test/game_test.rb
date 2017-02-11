@@ -8,6 +8,8 @@ require_relative '../app'
 require 'capybara-screenshot/minitest'
 require 'byebug'
 
+Capybara.save_path = "/tmp"
+
 class YahtzeeWebTest < Minitest::Test
   include Capybara::DSL
 
