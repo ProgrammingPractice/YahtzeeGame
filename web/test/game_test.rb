@@ -14,11 +14,17 @@ class YahtzeeWebTest < Minitest::Test
     Capybara.app = Sinatra::Application.new
   end
 
+  def the_dice_will_be(dice)
+    @game.player.first.roll = dice
+  end
+
   def test_complete_game
     visit '/new_game'
     assert_equal 200, status_code
     assert has_content?('Yahtzee')
     assert has_content?('Please enter number of players:')
+
+    the_dice_will_be([1,2,3,4,5])
 
     select('2', from: 'players_count')
     click_button('Start game')
@@ -27,11 +33,14 @@ class YahtzeeWebTest < Minitest::Test
     assert has_content?('Player 2: 0 points')
 
     assert has_content?('Playing -> Player 1')
-    assert has_content?('You rolled:')
+    assert has_content?('You rolled: [1, 2, 3, 4, 5]')
     assert has_content?('roll 1/3')
 
     check('checkbox_dice_0')
+    check('checkbox_dice_1')
     check('checkbox_dice_2')
+    check('checkbox_dice_3')
+    check('checkbox_dice_4')
     click_button('Submit')
 
     assert_equal 200, status_code
@@ -49,7 +58,7 @@ class YahtzeeWebTest < Minitest::Test
     click_button('Select category')
 
     assert_equal 200, status_code
-    refute has_content?('Player 1: 0 points')
+    assert has_content?('Player 1: 15 points')
     assert has_content?('Player 2: 0 points')
   end
 end

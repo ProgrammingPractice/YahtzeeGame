@@ -26,6 +26,7 @@ get '/new_round' do
   @player = @game.players.first
 
   @player.roll_dice
+  @player.instance_variable_set(:@roll, [1,2,3,4,5])
 
   save_game(@game)
   session[:rolls_count] = @rolls_count + 1
