@@ -7,25 +7,17 @@ require 'minitest/pride'
 require_relative '../app'
 require 'capybara-screenshot/minitest'
 require 'byebug'
+require_relative '../../test/fake_dice_roller'
 
 Capybara.save_path = "/tmp"
 
 class YahtzeeWebTest < Minitest::Test
   include Capybara::DSL
 
-  class FakeDiceRoller
-    def initialize
-      @dice = [1,2,3,4,5] * 10
-    end
-
-    def roll_one
-      @dice.shift
-    end
-  end
-
   def setup
     Capybara.app = Sinatra::Application.new
-    Capybara.app.settings.set :dice_roller, FakeDiceRoller.new
+    dice_roller = FakeDiceRoller.new([1,2,3,4,5] * 10)
+    Capybara.app.settings.set :dice_roller, dice_roller
   end
 
   def the_dice_will_be(dice)
