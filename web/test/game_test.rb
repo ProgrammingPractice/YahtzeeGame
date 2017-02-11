@@ -1,6 +1,6 @@
 require_relative 'capybara_helper'
 
-require_relative '../app'
+require_relative '../lib/game'
 require_relative '../../test/fake_dice_roller'
 
 class YahtzeeWebTest < Minitest::Test

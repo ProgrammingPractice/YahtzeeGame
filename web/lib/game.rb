@@ -1,6 +1,10 @@
+require 'sinatra'
+
 require_relative '../../lib/game_factory'
 require_relative 'game_serializer'
 
+set :root, File.dirname(__FILE__) + '/..'
+set :dice_roller, DiceRoller.new
 enable :sessions
 
 get '/' do
