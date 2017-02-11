@@ -1,15 +1,7 @@
-ENV['RACK_ENV'] = 'test'
+require_relative 'capybara_helper'
 
-require 'capybara'
-require 'capybara/dsl'
-require 'minitest/autorun'
-require 'minitest/pride'
 require_relative '../app'
-require 'capybara-screenshot/minitest'
-require 'byebug'
 require_relative '../../test/fake_dice_roller'
-
-Capybara.save_path = "/tmp"
 
 class YahtzeeWebTest < Minitest::Test
   include Capybara::DSL
