@@ -38,8 +38,22 @@ get '/new_round' do
   end
 
   save_game(@game)
-  session[:rolls_count] = @rolls_count + 1
-  erb :new_round
+
+  if @rolls_count == 3
+    redirect :category_selection
+  else
+    session[:rolls_count] = @rolls_count + 1
+    erb :new_round
+  end
+end
+
+get '/category_selection' do
+  @rolls_count = session[:rolls_count]
+
+  @game = load_game
+  @player = @game.players[session[:current_player]]
+
+  erb :category_selection
 end
 
 post '/select_category' do
@@ -50,8 +64,7 @@ post '/select_category' do
 
   @player.select_category(category)
 
-  session[:rolls_count] = 1
-  session[:current_player] += 1
+  switch_to_next_player
 
   save_game(@game)
   redirect :new_round
@@ -64,4 +77,9 @@ end
 
 def save_game(game)
   session[:game] = GameSerializer.dump(game)
+end
+
+def switch_to_next_player
+  session[:rolls_count] = 1
+  session[:current_player] += 1
 end

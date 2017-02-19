@@ -7,32 +7,18 @@
 
 <p>You rolled: <%= @player.roll.inspect %> (roll <%= @rolls_count %>/3)</p>
 
-<% if @rolls_count < 3 %>
-  <p>Select what to hold:</p>
+<p>Select what to hold:</p>
 
-  <form action="">
-    <% @player.roll.each_with_index do |dice, i| %>
-      <input type="checkbox" id="checkbox_dice_<%= i %>" name="dice_to_hold[]" value="<%= i %>">
-      <label for="checkbox_dice_<%= i %>"><%= dice %></label>
-    <% end %>
-    <input type="submit" value="Submit">
-  </form>
-<% end %>
+<form action="">
+  <% @player.roll.each_with_index do |dice, i| %>
+    <input type="checkbox" id="checkbox_dice_<%= i %>" name="dice_to_hold[]" value="<%= i %>">
+    <label for="checkbox_dice_<%= i %>"><%= dice %></label>
+  <% end %>
+  <input type="submit" value="Submit">
+</form>
 
 <p>--------</p>
 <p>Available categories:</p>
-<% if @rolls_count < 3 %>
-  <% @player.categories.each do |category| %>
-    <p><%= category %></p>
-  <% end %>
-<% else %>
-  <form action="select_category" method="post">
-    <% @player.categories.each do |category| %>
-      <p>
-        <input type="radio" id="radiobutton_category_<%= category %>" name="category" value="<%= category %>">
-        <label for="radiobutton_category_<%= category %>"><%= category %></label>
-      </p>
-    <% end %>
-    <input type="submit" value="Select category">
-  </form>
+<% @player.categories.each do |category| %>
+  <p><%= category %></p>
 <% end %>
