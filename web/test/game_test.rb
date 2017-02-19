@@ -36,6 +36,16 @@ class YahtzeeWebTest < Minitest::Test
     the_dice_will_be([3,3,3,3,3])
     player_holds_dice_in_round('Player 2', [], 1)
     assert has_content?('You rolled: [3, 3, 3, 3, 3]')
+
+    # TODO: replace the 3 lines above with this
+    # player_holds_dice_in_round('Player 2', [0,1,2,3,4], 1)
+    # assert has_content?('You rolled: [2, 2, 2, 2, 2]')
+
+    # the_dice_will_be([1,2,3,4,5])
+    # player_selects_category('Player 2', 'twos')
+
+    # assert has_content?('Player 1: 8 points')
+    # assert has_content?('Player 2: 10 points')
   end
 
   def start_new_game_with_players(count)
