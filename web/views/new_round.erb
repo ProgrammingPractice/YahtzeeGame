@@ -12,7 +12,7 @@
 
   <form action="">
     <% @player.roll.each_with_index do |dice, i| %>
-      <input type="checkbox" id="checkbox_dice_<%= i %>" name="dice_to_hold" value="dice_<%= i %>">
+      <input type="checkbox" id="checkbox_dice_<%= i %>" name="dice_to_hold[]" value="<%= i %>">
       <label for="checkbox_dice_<%= i %>"><%= dice %></label>
     <% end %>
     <input type="submit" value="Submit">

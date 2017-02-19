@@ -29,7 +29,12 @@ get '/new_round' do
   @game = load_game
   @player = @game.players.first
 
-  @player.roll_dice
+  dice_to_hold = params['dice_to_hold']
+  if dice_to_hold
+    @player.reroll([0,1,2,3,4] - dice_to_hold.map(&:to_i))
+  else
+    @player.roll_dice
+  end
 
   save_game(@game)
   session[:rolls_count] = @rolls_count + 1

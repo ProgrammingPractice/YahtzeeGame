@@ -40,17 +40,12 @@ class YahtzeeWebTest < Minitest::Test
 
     the_dice_will_be([1,1,1,1,1])
 
-    check('checkbox_dice_0')
-    check('checkbox_dice_1')
-    check('checkbox_dice_2')
-    check('checkbox_dice_3')
-    check('checkbox_dice_4')
     click_button('Submit')
 
     assert_equal 200, status_code
     assert has_content?('roll 2/3')
 
-    the_dice_will_be([1,2,3,4,5])
+    the_dice_will_be([1,2,3])
 
     check('checkbox_dice_3')
     check('checkbox_dice_4')
@@ -58,6 +53,7 @@ class YahtzeeWebTest < Minitest::Test
 
     assert_equal 200, status_code
     assert has_content?('roll 3/3')
+    assert has_content?('You rolled: [1, 2, 3, 1, 1]')
     refute has_content?('Select what to hold:')
 
     the_dice_will_be([2,2,2,2,2])
@@ -66,7 +62,7 @@ class YahtzeeWebTest < Minitest::Test
     click_button('Select category')
 
     assert_equal 200, status_code
-    assert has_content?('Player 1: 15 points')
+    assert has_content?('Player 1: 8 points')
     assert has_content?('Player 2: 0 points')
   end
 end
