@@ -23,7 +23,7 @@ class YahtzeeWebTest < Minitest::Test
     assert has_content?('Yahtzee')
     assert has_content?('Please enter number of players:')
 
-    the_dice_will_be([1,2,3,4,5, 1,1,1,1,1, 1,2,3,4,5, 2,2,2,2,2])
+    the_dice_will_be([1,2,3,4,5])
 
     select('2', from: 'players_count')
     click_button('Start game')
@@ -35,6 +35,8 @@ class YahtzeeWebTest < Minitest::Test
     assert has_content?('You rolled: [1, 2, 3, 4, 5]')
     assert has_content?('roll 1/3')
 
+    the_dice_will_be([1,1,1,1,1])
+
     check('checkbox_dice_0')
     check('checkbox_dice_1')
     check('checkbox_dice_2')
@@ -45,6 +47,8 @@ class YahtzeeWebTest < Minitest::Test
     assert_equal 200, status_code
     assert has_content?('roll 2/3')
 
+    the_dice_will_be([1,2,3,4,5])
+
     check('checkbox_dice_3')
     check('checkbox_dice_4')
     click_button('Submit')
@@ -52,6 +56,8 @@ class YahtzeeWebTest < Minitest::Test
     assert_equal 200, status_code
     assert has_content?('roll 3/3')
     refute has_content?('Select what to hold:')
+
+    the_dice_will_be([2,2,2,2,2])
 
     choose('radiobutton_category_chance')
     click_button('Select category')
