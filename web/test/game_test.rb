@@ -14,6 +14,9 @@ class YahtzeeWebTest < Minitest::Test
   end
 
   def the_dice_will_be(dice)
+    unless @dice_roller.empty?
+      raise "FakeDiceRoller is not empty but you are trying to add new values!"
+    end
     @dice_roller.add_values(dice)
   end
 
