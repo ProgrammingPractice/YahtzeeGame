@@ -14,7 +14,7 @@ class YahtzeeWebTest < Minitest::Test
   end
 
   def the_dice_will_be(dice)
-    @dice_roller.add_values(dice * 10)
+    @dice_roller.add_values(dice)
   end
 
   def test_complete_game
@@ -23,7 +23,7 @@ class YahtzeeWebTest < Minitest::Test
     assert has_content?('Yahtzee')
     assert has_content?('Please enter number of players:')
 
-    the_dice_will_be([1,2,3,4,5])
+    the_dice_will_be([1,2,3,4,5, 1,1,1,1,1, 1,2,3,4,5, 2,2,2,2,2])
 
     select('2', from: 'players_count')
     click_button('Start game')
