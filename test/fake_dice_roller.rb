@@ -1,7 +1,7 @@
 class FakeDiceRoller
   class OutOfValuesError < RuntimeError; end
 
-  def initialize(values)
+  def initialize(values = [])
     @values = values
   end
 

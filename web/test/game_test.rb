@@ -7,12 +7,14 @@ class YahtzeeWebTest < Minitest::Test
   include Capybara::DSL
 
   def setup
-    Capybara.app = Sinatra::Application.new
-    dice_roller = FakeDiceRoller.new([1,2,3,4,5] * 10)
-    Capybara.app.settings.set :dice_roller, dice_roller
+    @dice_roller = FakeDiceRoller.new
+    application = Sinatra::Application.new
+    application.settings.set(:dice_roller, @dice_roller)
+    Capybara.app = application
   end
 
   def the_dice_will_be(dice)
+    @dice_roller.add_values(dice * 10)
   end
 
   def test_complete_game
