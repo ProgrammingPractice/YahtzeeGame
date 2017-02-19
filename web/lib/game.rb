@@ -20,6 +20,7 @@ post '/create_game' do
   game = GameFactory.create(players_count)
   save_game(game)
   session[:rolls_count] = 1
+  session[:current_player] = 0
   redirect :new_round
 end
 
@@ -27,7 +28,7 @@ get '/new_round' do
   @rolls_count = session[:rolls_count]
 
   @game = load_game
-  @player = @game.players.first
+  @player = @game.players[session[:current_player]]
 
   dice_to_hold = params['dice_to_hold']
   if dice_to_hold
@@ -48,6 +49,9 @@ post '/select_category' do
   @player = @game.players.first
 
   @player.select_category(category)
+
+  session[:rolls_count] = 1
+  session[:current_player] += 1
 
   save_game(@game)
   redirect :new_round
