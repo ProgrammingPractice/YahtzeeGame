@@ -25,8 +25,6 @@ post '/create_game' do
 end
 
 get '/new_round' do
-  @rolls_count = session[:rolls_count]
-
   @game = load_game
   @player = @game.players[session[:current_player]]
 
@@ -39,17 +37,15 @@ get '/new_round' do
 
   save_game(@game)
 
-  if @rolls_count == 3
+  if session[:rolls_count] == 3
     redirect :category_selection
   else
-    session[:rolls_count] = @rolls_count + 1
+    session[:rolls_count] = session[:rolls_count] + 1
     erb :new_round
   end
 end
 
 get '/category_selection' do
-  @rolls_count = session[:rolls_count]
-
   @game = load_game
   @player = @game.players[session[:current_player]]
 
