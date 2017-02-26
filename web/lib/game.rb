@@ -29,13 +29,13 @@ get '/new_round' do
 
   dice_to_hold = params['dice_to_hold']
   if dice_to_hold
-    @player.reroll([0,1,2,3,4] - dice_to_hold.map(&:to_i))
+    current_player.reroll([0,1,2,3,4] - dice_to_hold.map(&:to_i))
   else
-    @player.roll_dice
+    current_player.roll_dice
   end
   session[:rolls_count] = session[:rolls_count] + 1
 
-  save_game(@game)
+  save_current_game
 
   if session[:rolls_count] == 3 || hold_all_dice(dice_to_hold)
     redirect :category_selection
@@ -55,12 +55,24 @@ post '/select_category' do
 
   load_game
 
-  @player.select_category(category)
+  current_player.select_category(category)
 
   switch_to_next_player
 
-  save_game(@game)
+  save_current_game
   redirect :new_round
+end
+
+def current_game
+  @game
+end
+
+def current_player
+  @player
+end
+
+def save_current_game
+  save_game(@game)
 end
 
 def load_game

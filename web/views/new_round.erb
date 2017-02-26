@@ -1,16 +1,16 @@
-<% @game.players.each do |player| %>
+<% current_game.players.each do |player| %>
   <p><%= "#{player.name}: #{player.score} points" %></p>
 <% end %>
 <p>--------</p>
 
-<p>Playing -> <%= @player.name %></p>
+<p>Playing -> <%= current_player.name %></p>
 
-<p>You rolled: <%= @player.roll.inspect %> (roll <%= session[:rolls_count] %>/3)</p>
+<p>You rolled: <%= current_player.roll.inspect %> (roll <%= session[:rolls_count] %>/3)</p>
 
 <p>Select what to hold:</p>
 
 <form action="">
-  <% @player.roll.each_with_index do |dice, i| %>
+  <% current_player.roll.each_with_index do |dice, i| %>
     <input type="checkbox" id="checkbox_dice_<%= i %>" name="dice_to_hold[]" value="<%= i %>">
     <label for="checkbox_dice_<%= i %>"><%= dice %></label>
   <% end %>
@@ -19,6 +19,6 @@
 
 <p>--------</p>
 <p>Available categories:</p>
-<% @player.categories.each do |category| %>
+<% current_player.categories.each do |category| %>
   <p><%= category %></p>
 <% end %>

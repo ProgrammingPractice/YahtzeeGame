@@ -1,16 +1,16 @@
-<% @game.players.each do |player| %>
+<% current_game.players.each do |player| %>
   <p><%= "#{player.name}: #{player.score} points" %></p>
 <% end %>
 <p>--------</p>
 
-<p>Playing -> <%= @player.name %></p>
+<p>Playing -> <%= current_player.name %></p>
 
-<p>You rolled: <%= @player.roll.inspect %></p>
+<p>You rolled: <%= current_player.roll.inspect %></p>
 
 <p>--------</p>
 <p>Available categories:</p>
 <form action="select_category" method="post">
-  <% @player.categories.each do |category| %>
+  <% current_player.categories.each do |category| %>
     <p>
       <input type="radio" id="radiobutton_category_<%= category %>" name="category" value="<%= category %>">
       <label for="radiobutton_category_<%= category %>"><%= category %></label>
