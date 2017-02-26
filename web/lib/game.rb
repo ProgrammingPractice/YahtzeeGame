@@ -31,7 +31,7 @@ get '/new_round' do
   end
   session[:rolls_count] = session[:rolls_count] + 1
 
-  save_current_game
+  save_game
 
   if session[:rolls_count] == 3 || hold_all_dice(dice_to_hold)
     redirect :category_selection
@@ -51,8 +51,18 @@ post '/select_category' do
 
   switch_to_next_player
 
-  save_current_game
+  save_game
   redirect :new_round
+end
+
+def create_new_game(game)
+  session[:game]           = GameSerializer.dump(game)
+  session[:rolls_count]    = 0
+  session[:current_player] = 0
+end
+
+def save_game
+  session[:game] = GameSerializer.dump(@_game)
 end
 
 def current_game
@@ -68,20 +78,6 @@ def current_player
     @_player = current_game.players[session[:current_player]]
   end
   @_player
-end
-
-def save_current_game
-  save_game(@_game)
-end
-
-def create_new_game(game)
-  save_game(game)
-  session[:rolls_count] = 0
-  session[:current_player] = 0
-end
-
-def save_game(game)
-  session[:game] = GameSerializer.dump(game)
 end
 
 def switch_to_next_player
