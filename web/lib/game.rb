@@ -25,8 +25,6 @@ post '/create_game' do
 end
 
 get '/new_round' do
-  load_game
-
   dice_to_hold = params['dice_to_hold']
   if dice_to_hold
     current_player.reroll([0,1,2,3,4] - dice_to_hold.map(&:to_i))
@@ -45,15 +43,11 @@ get '/new_round' do
 end
 
 get '/category_selection' do
-  load_game
-
   erb :category_selection
 end
 
 post '/select_category' do
   category = params.fetch('category')
-
-  load_game
 
   current_player.select_category(category)
 
@@ -64,21 +58,22 @@ post '/select_category' do
 end
 
 def current_game
-  @game
+  if @_game.nil?
+    dice_roller = settings.dice_roller
+    @_game = GameSerializer.load(session[:game], dice_roller)
+  end
+  @_game
 end
 
 def current_player
-  @player
+  if @_player.nil?
+    @_player = current_game.players[session[:current_player]]
+  end
+  @_player
 end
 
 def save_current_game
-  save_game(@game)
-end
-
-def load_game
-  dice_roller = settings.dice_roller
-  @game = GameSerializer.load(session[:game], dice_roller)
-  @player = @game.players[session[:current_player]]
+  save_game(@_game)
 end
 
 def save_game(game)
@@ -87,7 +82,7 @@ end
 
 def switch_to_next_player
   session[:rolls_count] = 0
-  session[:current_player] = (session[:current_player] + 1) % @game.players.size
+  session[:current_player] = (session[:current_player] + 1) % current_game.players.size
 end
 
 def hold_all_dice(dice_to_hold)
