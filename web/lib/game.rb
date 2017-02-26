@@ -25,8 +25,7 @@ post '/create_game' do
 end
 
 get '/new_round' do
-  @game = load_game
-  @player = @game.players[session[:current_player]]
+  load_game
 
   dice_to_hold = params['dice_to_hold']
   if dice_to_hold
@@ -46,8 +45,7 @@ get '/new_round' do
 end
 
 get '/category_selection' do
-  @game = load_game
-  @player = @game.players[session[:current_player]]
+  load_game
 
   erb :category_selection
 end
@@ -55,8 +53,7 @@ end
 post '/select_category' do
   category = params.fetch('category')
 
-  @game = load_game
-  @player = @game.players.first
+  load_game
 
   @player.select_category(category)
 
@@ -68,7 +65,8 @@ end
 
 def load_game
   dice_roller = settings.dice_roller
-  GameSerializer.load(session[:game], dice_roller)
+  @game = GameSerializer.load(session[:game], dice_roller)
+  @player = @game.players[session[:current_player]]
 end
 
 def save_game(game)
