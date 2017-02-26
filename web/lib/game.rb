@@ -19,7 +19,7 @@ post '/create_game' do
   players_count = params.fetch('players_count').to_i
   game = GameFactory.create(players_count)
   save_game(game)
-  session[:rolls_count] = 1
+  session[:rolls_count] = 0
   session[:current_player] = 0
   redirect :new_round
 end
@@ -34,13 +34,13 @@ get '/new_round' do
   else
     @player.roll_dice
   end
+  session[:rolls_count] = session[:rolls_count] + 1
 
   save_game(@game)
 
   if session[:rolls_count] == 3
     redirect :category_selection
   else
-    session[:rolls_count] = session[:rolls_count] + 1
     erb :new_round
   end
 end
@@ -76,6 +76,6 @@ def save_game(game)
 end
 
 def switch_to_next_player
-  session[:rolls_count] = 1
+  session[:rolls_count] = 0
   session[:current_player] += 1
 end
