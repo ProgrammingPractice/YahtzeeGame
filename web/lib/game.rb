@@ -18,9 +18,7 @@ end
 post '/create_game' do
   players_count = params.fetch('players_count').to_i
   game = GameFactory.create(players_count)
-  save_game(game)
-  session[:rolls_count] = 0
-  session[:current_player] = 0
+  create_new_game(game)
   redirect :new_round
 end
 
@@ -74,6 +72,12 @@ end
 
 def save_current_game
   save_game(@_game)
+end
+
+def create_new_game(game)
+  save_game(game)
+  session[:rolls_count] = 0
+  session[:current_player] = 0
 end
 
 def save_game(game)
