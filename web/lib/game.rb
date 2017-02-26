@@ -37,7 +37,7 @@ get '/new_round' do
 
   save_game(@game)
 
-  if session[:rolls_count] == 3
+  if session[:rolls_count] == 3 || hold_all_dice(dice_to_hold)
     redirect :category_selection
   else
     erb :new_round
@@ -75,5 +75,9 @@ end
 
 def switch_to_next_player
   session[:rolls_count] = 0
-  session[:current_player] += 1
+  session[:current_player] = (session[:current_player] + 1) % @game.players.size
+end
+
+def hold_all_dice(dice_to_hold)
+  dice_to_hold && dice_to_hold.size == 5
 end
