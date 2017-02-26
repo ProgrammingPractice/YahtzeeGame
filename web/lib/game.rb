@@ -66,18 +66,11 @@ def save_game
 end
 
 def current_game
-  if @_game.nil?
-    dice_roller = settings.dice_roller
-    @_game = GameSerializer.load(session[:game], dice_roller)
-  end
-  @_game
+  @_game ||= GameSerializer.load(session[:game], settings.dice_roller)
 end
 
 def current_player
-  if @_player.nil?
-    @_player = current_game.players[session[:current_player]]
-  end
-  @_player
+  @_player ||= current_game.players[session[:current_player]]
 end
 
 def switch_to_next_player
