@@ -11,6 +11,9 @@ class YahtzeeWebTest < Minitest::Test
     application = YahtzeeWeb.new
     application.settings.set(:dice_roller, @dice_roller)
     Capybara.app = application
+
+    # We need to set this so that capybara-screenshot works
+    Sinatra::Application.root = application.settings.root
   end
 
   def test_complete_game
