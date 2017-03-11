@@ -56,10 +56,12 @@ class YahtzeeWeb < Sinatra::Base
     redirect :new_round
   end
 
+  private
+
   def create_new_game(game)
     session[:game]           = GameSerializer.dump(game)
-    session[:rolls_count]    = 0
     session[:current_player] = 0
+    reset_rolls_count
   end
 
   def save_game
@@ -75,12 +77,16 @@ class YahtzeeWeb < Sinatra::Base
   end
 
   def switch_to_next_player
-    session[:rolls_count] = 0
+    reset_rolls_count
     session[:current_player] = (session[:current_player] + 1) % current_game.players.size
   end
 
   def rolls_count
     session[:rolls_count]
+  end
+
+  def reset_rolls_count
+    session[:rolls_count] = 0
   end
 
   def increase_rolls_count
