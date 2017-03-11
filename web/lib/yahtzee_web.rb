@@ -5,8 +5,12 @@ require_relative 'game_serializer'
 
 class YahtzeeWeb < Sinatra::Base
   set :root, File.expand_path(File.join(File.dirname(__FILE__), '..'))
-  set :dice_roller, DiceRoller.new
   enable :sessions
+
+  def initialize(dice_roller = DiceRoller.new)
+    super
+    @dice_roller = dice_roller
+  end
 
   get '/' do
     redirect :new_game
@@ -69,7 +73,7 @@ class YahtzeeWeb < Sinatra::Base
   end
 
   def current_game
-    @_game ||= GameSerializer.load(session[:game], settings.dice_roller)
+    @_game ||= GameSerializer.load(session[:game], @dice_roller)
   end
 
   def current_player

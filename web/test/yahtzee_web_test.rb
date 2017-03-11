@@ -8,8 +8,7 @@ class YahtzeeWebTest < Minitest::Test
 
   def setup
     @dice_roller = FakeDiceRoller.new
-    application = YahtzeeWeb.new
-    application.settings.set(:dice_roller, @dice_roller)
+    application = YahtzeeWeb.new(@dice_roller)
     Capybara.app = application
 
     # We need to set this so that capybara-screenshot works
