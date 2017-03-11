@@ -1,4 +1,5 @@
 require_relative 'test_helper'
+require 'json'
 
 class GameRunnerTest < Minitest::Test
   class FakeUI
@@ -72,40 +73,9 @@ class GameRunnerTest < Minitest::Test
   end
 
   def test_complete_game
-    rounds_p0 = [
-      [[1,2,6,4,5], 'xx_xx', [5],   'xx_xx', [3], 'chance',          15],
-      [[6,6,1,1,1], '__xxx', [5,1], '_xxxx', [1], 'yahtzee',         65],
-      [[1,1,1,1,1], 'xxxxx', [],    '',      [],  'ones',            70],
-      [[1,1,1,1,1], 'xxxxx', [],    '',      [],  'twos',            70],
-      [[1,1,1,1,1], 'xxxxx', [],    '',      [],  'threes',          70],
-      [[1,1,1,1,1], 'xxxxx', [],    '',      [],  'fours',           70],
-      [[1,1,1,1,1], 'xxxxx', [],    '',      [],  'fives',           70],
-      [[1,1,1,1,1], 'xxxxx', [],    '',      [],  'sixes',           70],
-      [[1,1,1,1,1], 'xxxxx', [],    '',      [],  'pair',            70],
-      [[1,1,1,1,1], 'xxxxx', [],    '',      [],  'two_pairs',       70],
-      [[1,1,1,1,1], 'xxxxx', [],    '',      [],  'three_of_a_kind', 70],
-      [[1,1,1,1,1], 'xxxxx', [],    '',      [],  'four_of_a_kind',  70],
-      [[1,1,1,1,1], 'xxxxx', [],    '',      [],  'small_straight',  70],
-      [[1,1,1,1,1], 'xxxxx', [],    '',      [],  'large_straight',  70],
-      [[1,1,1,1,1], 'xxxxx', [],    '',      [],  'full_house',      70],
-    ]
-    rounds_p1 = [
-      [[2,3,4,5,6], 'xxxxx', [],    '',      [], 'chance',           20],
-      [[1,1,1,1,1], 'xxxxx', [],    '',      [], 'yahtzee',          70],
-      [[1,1,1,1,1], 'xxxxx', [],    '',      [],  'ones',            75],
-      [[1,1,1,1,1], 'xxxxx', [],    '',      [],  'twos',            75],
-      [[1,1,1,1,1], 'xxxxx', [],    '',      [],  'threes',          75],
-      [[1,1,1,1,1], 'xxxxx', [],    '',      [],  'fours',           75],
-      [[1,1,1,1,1], 'xxxxx', [],    '',      [],  'fives',           75],
-      [[1,1,1,1,1], 'xxxxx', [],    '',      [],  'sixes',           75],
-      [[1,1,1,1,1], 'xxxxx', [],    '',      [],  'pair',            75],
-      [[1,1,1,1,1], 'xxxxx', [],    '',      [],  'two_pairs',       75],
-      [[1,1,1,1,1], 'xxxxx', [],    '',      [],  'three_of_a_kind', 75],
-      [[1,1,1,1,1], 'xxxxx', [],    '',      [],  'four_of_a_kind',  75],
-      [[1,1,1,1,1], 'xxxxx', [],    '',      [],  'small_straight',  75],
-      [[1,1,1,1,1], 'xxxxx', [],    '',      [],  'large_straight',  75],
-      [[1,1,1,1,1], 'xxxxx', [],    '',      [],  'full_house',      75],
-    ]
+    json = JSON.load(File.read('test/fixtures/complete_game.json'))
+    rounds_p0 = json['rounds_p0']
+    rounds_p1 = json['rounds_p1']
 
     dice_roller = FakeDiceRoller.new([])
     player0     = Player.new('Player 0', dice_roller)
