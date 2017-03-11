@@ -4,7 +4,7 @@ require_relative '../../lib/game_factory'
 require_relative 'game_serializer'
 
 class YahtzeeWeb < Sinatra::Base
-  set :root, File.dirname(__FILE__) + '/..'
+  set :root, File.expand_path(File.join(File.dirname(__FILE__), '..'))
   set :dice_roller, DiceRoller.new
   enable :sessions
 
