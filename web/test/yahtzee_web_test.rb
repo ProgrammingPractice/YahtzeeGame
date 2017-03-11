@@ -8,7 +8,7 @@ class YahtzeeWebTest < Minitest::Test
 
   def setup
     @dice_roller = FakeDiceRoller.new
-    application = Sinatra::Application.new
+    application = YahtzeeWeb.new
     application.settings.set(:dice_roller, @dice_roller)
     Capybara.app = application
   end
