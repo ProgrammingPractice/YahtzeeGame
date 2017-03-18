@@ -73,7 +73,7 @@ class GameRunnerTest < Minitest::Test
   end
 
   def test_complete_game
-    json = JSON.load(File.read('test/fixtures/complete_game.json'))
+    json = JSON.load(File.read('tests/fixtures/complete_game.json'))
     rounds_p0 = json['rounds_p0']
     rounds_p1 = json['rounds_p1']
 
