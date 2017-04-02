@@ -15,39 +15,27 @@ class GameWrapper
     @game.winners
   end
 
-  def each_step(player, &block)
+  def each_step_of_round(player)
     hold_positions = []
+
     actions = {
-      ask_for_nothing:        ->(_input) { player.roll_dice },
       ask_for_hold_positions: ->(input) { hold_positions = input; player.reroll(positions_to_reroll(input)) },
       ask_for_category:       ->(input) { player.select_category(input) },
     }
 
     steps = [
-      [
-        :ask_for_nothing,
-        actions[:ask_for_nothing]
-      ],
-      [
-        :ask_for_hold_positions,
-        actions[:ask_for_hold_positions]
-      ],
-      [
-        :ask_for_hold_positions,
-        actions[:ask_for_hold_positions]
-      ],
-      [
-        :ask_for_category,
-        actions[:ask_for_category]
-      ]
+      :ask_for_hold_positions,
+      :ask_for_hold_positions,
+      :ask_for_category,
     ]
 
-    yield(steps[0])
-    yield(steps[1])
+    player.roll_dice
+
+    yield(steps[0], actions[steps[0]])
     if hold_positions.size < 5
-      yield(steps[2])
+      yield(steps[1], actions[steps[1]])
     end
-    yield(steps[3])
+    yield(steps[2], actions[steps[2]])
   end
 
   private

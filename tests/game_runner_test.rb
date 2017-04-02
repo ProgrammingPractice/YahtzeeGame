@@ -29,17 +29,10 @@ class GameRunnerTest < Minitest::Test
     end
 
     def play_round(game_wrapper, player)
-      result = nil
-      game_wrapper.each_step(player) do |step|
-        ui_action         = step[0]
-        game_wrapper_code = step[1]
-
+      game_wrapper.each_step_of_round(player) do |ui_action, callback|
         result = send(ui_action)
-        game_wrapper_code.call(result)
+        callback.call(result)
       end
-    end
-
-    def ask_for_nothing
     end
 
     def start_of_player_turn(player)
