@@ -111,7 +111,7 @@ class GameRunnerTest < Minitest::Test
   end
 
   def test_complete_game
-    json = JSON.load(File.read('tests/fixtures/complete_game.json'))
+    json = JSON.parse(File.read('tests/fixtures/complete_game.json'))
     rounds_p0 = json['rounds_p0']
     rounds_p1 = json['rounds_p1']
 
@@ -127,10 +127,9 @@ class GameRunnerTest < Minitest::Test
 
     ui           = FakeUI.new(self, rounds, dice_roller)
     game_wrapper = GameWrapper.new(game)
-    runner       = GameRunner.new(game_wrapper, ui)
 
     begin
-      runner.run
+      ui.run(game_wrapper)
     rescue FakeDiceRoller::OutOfValuesError
       raise "Not enough dice values were provided in the round: #{ui.current_round.inspect}"
     end
