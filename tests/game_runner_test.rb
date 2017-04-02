@@ -20,7 +20,7 @@ class GameRunnerTest < Minitest::Test
       while game_wrapper.rounds_left?
         game_wrapper.players.each do |player|
           start_of_player_turn(player)
-          play_round(player)
+          play_round(game_wrapper, player)
           end_of_player_turn(player)
         end
       end
@@ -28,37 +28,16 @@ class GameRunnerTest < Minitest::Test
       display_winners(game_wrapper.winners)
     end
 
-    def play_round(player)
-      actions = {
-        ask_for_nothing:        ->(_input) { player.roll_dice },
-        ask_for_hold_positions: ->(input) { player.reroll(positions_to_reroll(input)) },
-        ask_for_category:       ->(input) { player.select_category(input) },
-      }
-
-      steps = [
-        [
-          :ask_for_nothing, false,
-          actions[:ask_for_nothing]
-        ],
-        [
-          :ask_for_hold_positions, false,
-          actions[:ask_for_hold_positions]
-        ],
-        [
-          :ask_for_hold_positions, true,
-          actions[:ask_for_hold_positions]
-        ],
-        [
-          :ask_for_category, false,
-          actions[:ask_for_category]
-        ]
-      ]
-
+    def play_round(game_wrapper, player)
       result = nil
-      steps.each do |step|
-        args = step[1] ? [result] : []
-        result = send(step[0], *args)
-        step[2].call(result)
+      game_wrapper.steps(player).each do |step|
+        ui_action            = step[0]
+        pass_previous_result = step[1]
+        game_wrapper_code    = step[2]
+
+        args = pass_previous_result ? [result] : []
+        result = send(ui_action, *args)
+        game_wrapper_code.call(result)
       end
     end
 
@@ -97,10 +76,6 @@ class GameRunnerTest < Minitest::Test
     end
 
     private
-
-    def positions_to_reroll(hold)
-      [0, 1, 2, 3, 4] - hold
-    end
 
     def extract_hold_positions(roll0, hold0, roll1, hold1, roll2, category, score)
       hold_positions0 = [0,1,2,3,4].select { |i| hold0[i] == 'x' }
