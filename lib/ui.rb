@@ -1,22 +1,7 @@
 require 'remedy'
 
 class UI
-  KEY_ENTER = 'control_m'
-
-  def start_game_with_players(players)
-    @players = players
-  end
-
-  def start_of_player_turn(player)
-    @player = player
-    @rolls_count = 0
-  end
-
-  def display_roll(roll)
-    @roll = roll
-    @rolls_count += 1
-    # we do the actual display in 'ask_for_category'
-  end
+  KEY_ENTER = 'control_m'.freeze
 
   def ask_for_number_of_players
     players_count = 1
@@ -60,10 +45,6 @@ class UI
     interaction_loop(display, commands)
 
     categories[index]
-  end
-
-  def end_of_player_turn(player)
-    # nothing
   end
 
   def display_winners(winners)

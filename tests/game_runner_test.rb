@@ -17,8 +17,6 @@ class GameRunnerTest < Minitest::Test
     end
 
     def run(game_wrapper)
-      start_game_with_players(game_wrapper.players)
-
       while game_wrapper.rounds_left?
         game_wrapper.players.each do |player|
           play_round(player)
@@ -32,26 +30,19 @@ class GameRunnerTest < Minitest::Test
       start_of_player_turn(player)
 
       player.roll_dice
-      display_roll(player.roll)
 
       hold = ask_for_hold_positions
       player.reroll(positions_to_reroll(hold))
-      display_roll(player.roll)
 
       if hold.size < 5
         hold = ask_for_hold_positions
         player.reroll(positions_to_reroll(hold))
-        display_roll(player.roll)
       end
 
       category = ask_for_category
       player.select_category(category)
 
       end_of_player_turn(player)
-    end
-
-    def start_game_with_players(players)
-      # nothing
     end
 
     def start_of_player_turn(player)
@@ -67,10 +58,6 @@ class GameRunnerTest < Minitest::Test
 
       expected_score = extract_score(*@current_round)
       @test.assert_equal expected_score, player.score
-    end
-
-    def display_roll(roll)
-      # nothing
     end
 
     def display_winners(players)
