@@ -30,13 +30,11 @@ class GameRunnerTest < Minitest::Test
 
     def play_round(game_wrapper, player)
       result = nil
-      game_wrapper.steps(player).each do |step|
-        ui_action            = step[0]
-        pass_previous_result = step[1]
-        game_wrapper_code    = step[2]
+      game_wrapper.each_step(player) do |step|
+        ui_action         = step[0]
+        game_wrapper_code = step[1]
 
-        args = pass_previous_result ? [result] : []
-        result = send(ui_action, *args)
+        result = send(ui_action)
         game_wrapper_code.call(result)
       end
     end
@@ -63,12 +61,8 @@ class GameRunnerTest < Minitest::Test
       @output << "#{players.map(&:name).join(' & ')} won with #{players.first.score} points!"
     end
 
-    def ask_for_hold_positions(previous_hold = [])
-      if previous_hold.size == 5
-        return previous_hold
-      else
-        @hold_positions.shift or raise "We were asked for hold positions, but did not expect it."
-      end
+    def ask_for_hold_positions
+      @hold_positions.shift or raise "We were asked for hold positions, but did not expect it."
     end
 
     def ask_for_category
