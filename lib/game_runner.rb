@@ -1,19 +1,21 @@
+require_relative 'game_wrapper'
+
 class GameRunner
   def initialize(game, ui)
-    @game = game
-    @ui   = ui
+    @game_wrapper = GameWrapper.new(game)
+    @ui           = ui
   end
 
   def run
-    @ui.start_game_with_players(@game.players)
+    @ui.start_game_with_players(@game_wrapper.players)
 
-    while @game.rounds_left?
-      @game.players.each do |player|
+    while @game_wrapper.rounds_left?
+      @game_wrapper.players.each do |player|
         play_round(player)
       end
     end
 
-    @ui.display_winners(@game.winners)
+    @ui.display_winners(@game_wrapper.winners)
   end
 
   def play_round(player)
