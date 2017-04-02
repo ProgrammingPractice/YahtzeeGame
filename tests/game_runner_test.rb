@@ -29,37 +29,31 @@ class GameRunnerTest < Minitest::Test
     end
 
     def play_round(player)
-      step = [
-        :ask_for_nothing,
-        -> (input) { player.roll_dice }
+      steps = [
+        [
+          :ask_for_nothing, false,
+          ->(_input) { player.roll_dice }
+        ],
+        [
+          :ask_for_hold_positions, false,
+          ->(input) { player.reroll(positions_to_reroll(input)) }
+        ],
+        [
+          :ask_for_hold_positions, true,
+          ->(input) { player.reroll(positions_to_reroll(input)) }
+        ],
+        [
+          :ask_for_category, false,
+          ->(input) { player.select_category(input) }
+        ]
       ]
 
-      result = send(step[0])
-      step[1].call(result)
-
-      step = [
-        :ask_for_hold_positions,
-        -> (input) { player.reroll(positions_to_reroll(input)) }
-      ]
-
-      result = send(step[0])
-      step[1].call(result)
-
-      step = [
-        :ask_for_hold_positions,
-        -> (input) { player.reroll(positions_to_reroll(input)) }
-      ]
-
-      result = send(step[0], result)
-      step[1].call(result)
-
-      step = [
-        :ask_for_category,
-        -> (input) { player.select_category(input) }
-      ]
-
-      result = send(step[0])
-      step[1].call(result)
+      result = nil
+      steps.each do |step|
+        args = step[1] ? [result] : []
+        result = send(step[0], *args)
+        step[2].call(result)
+      end
     end
 
     def ask_for_nothing
