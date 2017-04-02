@@ -16,6 +16,40 @@ class GameRunnerTest < Minitest::Test
       end
     end
 
+    def run(game_wrapper)
+      start_game_with_players(game_wrapper.players)
+
+      while game_wrapper.rounds_left?
+        game_wrapper.players.each do |player|
+          play_round(player)
+        end
+      end
+
+      display_winners(game_wrapper.winners)
+    end
+
+    def play_round(player)
+      start_of_player_turn(player)
+
+      player.roll_dice
+      display_roll(player.roll)
+
+      hold = ask_for_hold_positions
+      player.reroll(positions_to_reroll(hold))
+      display_roll(player.roll)
+
+      if hold.size < 5
+        hold = ask_for_hold_positions
+        player.reroll(positions_to_reroll(hold))
+        display_roll(player.roll)
+      end
+
+      category = ask_for_category
+      player.select_category(category)
+
+      end_of_player_turn(player)
+    end
+
     def start_game_with_players(players)
       # nothing
     end
@@ -53,6 +87,10 @@ class GameRunnerTest < Minitest::Test
 
     private
 
+    def positions_to_reroll(hold)
+      [0, 1, 2, 3, 4] - hold
+    end
+
     def extract_hold_positions(roll0, hold0, roll1, hold1, roll2, category, score)
       hold_positions0 = [0,1,2,3,4].select { |i| hold0[i] == 'x' }
       hold_positions1 = [0,1,2,3,4].select { |i| hold1[i] == 'x' } unless hold1.empty?
@@ -87,8 +125,9 @@ class GameRunnerTest < Minitest::Test
       player1.name => rounds_p1,
     }
 
-    ui     = FakeUI.new(self, rounds, dice_roller)
-    runner = GameRunner.new(game, ui)
+    ui           = FakeUI.new(self, rounds, dice_roller)
+    game_wrapper = GameWrapper.new(game)
+    runner       = GameRunner.new(game_wrapper, ui)
 
     begin
       runner.run
