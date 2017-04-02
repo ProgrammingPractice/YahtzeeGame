@@ -29,20 +29,40 @@ class GameRunnerTest < Minitest::Test
     end
 
     def play_round(player)
+      step = [
+        :ask_for_nothing,
+        -> (input) { player.roll_dice }
+      ]
 
-      player.roll_dice
+      result = send(step[0])
+      step[1].call(result)
 
-      hold = ask_for_hold_positions
-      player.reroll(positions_to_reroll(hold))
+      step = [
+        :ask_for_hold_positions,
+        -> (input) { player.reroll(positions_to_reroll(input)) }
+      ]
 
-      if hold.size < 5
-        hold = ask_for_hold_positions
-        player.reroll(positions_to_reroll(hold))
-      end
+      result = send(step[0])
+      step[1].call(result)
 
-      category = ask_for_category
-      player.select_category(category)
+      step = [
+        :ask_for_hold_positions,
+        -> (input) { player.reroll(positions_to_reroll(input)) }
+      ]
 
+      result = send(step[0], result)
+      step[1].call(result)
+
+      step = [
+        :ask_for_category,
+        -> (input) { player.select_category(input) }
+      ]
+
+      result = send(step[0])
+      step[1].call(result)
+    end
+
+    def ask_for_nothing
     end
 
     def start_of_player_turn(player)
@@ -64,8 +84,12 @@ class GameRunnerTest < Minitest::Test
       @output << "#{players.map(&:name).join(' & ')} won with #{players.first.score} points!"
     end
 
-    def ask_for_hold_positions
-      @hold_positions.shift or raise "We were asked for hold positions, but did not expect it."
+    def ask_for_hold_positions(previous_hold = [])
+      if previous_hold.size == 5
+        return previous_hold
+      else
+        @hold_positions.shift or raise "We were asked for hold positions, but did not expect it."
+      end
     end
 
     def ask_for_category
