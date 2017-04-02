@@ -19,7 +19,9 @@ class GameRunnerTest < Minitest::Test
     def run(game_wrapper)
       while game_wrapper.rounds_left?
         game_wrapper.players.each do |player|
+          start_of_player_turn(player)
           play_round(player)
+          end_of_player_turn(player)
         end
       end
 
@@ -27,7 +29,6 @@ class GameRunnerTest < Minitest::Test
     end
 
     def play_round(player)
-      start_of_player_turn(player)
 
       player.roll_dice
 
@@ -42,7 +43,6 @@ class GameRunnerTest < Minitest::Test
       category = ask_for_category
       player.select_category(category)
 
-      end_of_player_turn(player)
     end
 
     def start_of_player_turn(player)
