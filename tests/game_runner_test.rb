@@ -29,22 +29,28 @@ class GameRunnerTest < Minitest::Test
     end
 
     def play_round(player)
+      actions = {
+        ask_for_nothing:        ->(_input) { player.roll_dice },
+        ask_for_hold_positions: ->(input) { player.reroll(positions_to_reroll(input)) },
+        ask_for_category:       ->(input) { player.select_category(input) },
+      }
+
       steps = [
         [
           :ask_for_nothing, false,
-          ->(_input) { player.roll_dice }
+          actions[:ask_for_nothing]
         ],
         [
           :ask_for_hold_positions, false,
-          ->(input) { player.reroll(positions_to_reroll(input)) }
+          actions[:ask_for_hold_positions]
         ],
         [
           :ask_for_hold_positions, true,
-          ->(input) { player.reroll(positions_to_reroll(input)) }
+          actions[:ask_for_hold_positions]
         ],
         [
           :ask_for_category, false,
-          ->(input) { player.select_category(input) }
+          actions[:ask_for_category]
         ]
       ]
 
