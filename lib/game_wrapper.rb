@@ -16,12 +16,7 @@ class GameWrapper
   end
 
   def start_round(player)
-    @player = player
-    @current_step = 0
-  end
-
-  def next_step_of_round
-    steps = [
+    @steps = [
       [
         :ask_for_hold_positions,
         ->(hold_positions) do
@@ -52,7 +47,17 @@ class GameWrapper
       ],
     ]
 
-    steps[@current_step]
+    @player = player
+    @current_step = 0
+  end
+
+  def next_step_of_round
+    @steps[@current_step][0]
+  end
+
+  def advance(result)
+    callback = @steps[@current_step][1]
+    callback.call(result)
   end
 
   def round_finished?

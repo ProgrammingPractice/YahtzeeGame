@@ -31,9 +31,9 @@ class GameRunnerTest < Minitest::Test
 
     def play_round(game_wrapper)
       loop do
-        (ui_action, callback) = game_wrapper.next_step_of_round
-        result = send(ui_action)
-        callback.call(result)
+        ui_action = game_wrapper.next_step_of_round
+        input_from_user = send(ui_action)
+        game_wrapper.advance(input_from_user)
 
         break if game_wrapper.round_finished?
       end
