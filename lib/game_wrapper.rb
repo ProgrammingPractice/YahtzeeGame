@@ -18,33 +18,41 @@ class GameWrapper
   def start_round(player)
     @player = player
     @current_step = 0
-    @hold_positions = []
   end
 
   def one_step_of_round
-    actions = {
-      ask_for_hold_positions: ->(input) { @hold_positions = input; @player.reroll(positions_to_reroll(input)) },
-      ask_for_category:       ->(input) { @player.select_category(input) },
-    }
-
     steps = [
-      :ask_for_hold_positions,
-      :ask_for_hold_positions,
-      :ask_for_category,
+      [
+        :ask_for_hold_positions,
+        ->(hold_positions) do
+          # FIXME: we should roll before asking the user for hold positions.
+          @player.roll_dice
+          @player.reroll(positions_to_reroll(hold_positions))
+          if hold_positions.size < 5
+            @current_step += 1
+          else
+            # No need to ask for hold positions again if all dice were held the first time.
+            @current_step += 2
+          end
+        end
+      ],
+      [
+        :ask_for_hold_positions,
+        ->(hold_positions) do
+          @player.reroll(positions_to_reroll(hold_positions))
+          @current_step += 1
+        end
+      ],
+      [
+        :ask_for_category,
+        ->(category) do
+          @player.select_category(category)
+          @current_step += 1
+        end
+      ],
     ]
 
-    if @current_step == 0
-      @player.roll_dice
-      yield(steps[@current_step], actions[steps[@current_step]])
-    elsif @current_step == 1
-      if @hold_positions.size < 5
-        yield(steps[@current_step], actions[steps[@current_step]])
-      end
-    else
-      yield(steps[@current_step], actions[steps[@current_step]])
-    end
-
-    @current_step += 1
+    yield(steps[@current_step][0], steps[@current_step][1])
   end
 
   def round_finished?
