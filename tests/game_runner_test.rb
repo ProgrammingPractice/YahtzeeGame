@@ -31,10 +31,10 @@ class GameRunnerTest < Minitest::Test
 
     def play_round(game_wrapper)
       loop do
-        game_wrapper.one_step_of_round do |ui_action, callback|
-          result = send(ui_action)
-          callback.call(result)
-        end
+        (ui_action, callback) = game_wrapper.next_step_of_round
+        result = send(ui_action)
+        callback.call(result)
+
         break if game_wrapper.round_finished?
       end
     end

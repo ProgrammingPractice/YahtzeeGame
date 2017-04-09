@@ -20,7 +20,7 @@ class GameWrapper
     @current_step = 0
   end
 
-  def one_step_of_round
+  def next_step_of_round
     steps = [
       [
         :ask_for_hold_positions,
@@ -52,7 +52,7 @@ class GameWrapper
       ],
     ]
 
-    yield(steps[@current_step][0], steps[@current_step][1])
+    steps[@current_step]
   end
 
   def round_finished?
