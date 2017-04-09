@@ -23,26 +23,18 @@ class GameWrapper
           # FIXME: we should roll before asking the user for hold positions.
           @player.roll_dice
           @player.reroll(positions_to_reroll(hold_positions))
-          if hold_positions.size < 5
-            @current_step += 1
-          else
-            # No need to ask for hold positions again if all dice were held the first time.
-            @current_step += 2
-          end
         end
       ],
       [
         :ask_for_hold_positions,
         ->(hold_positions) do
           @player.reroll(positions_to_reroll(hold_positions))
-          @current_step += 1
         end
       ],
       [
         :ask_for_category,
         ->(category) do
           @player.select_category(category)
-          @current_step += 1
         end
       ],
     ]
@@ -55,9 +47,18 @@ class GameWrapper
     @steps[@current_step][0]
   end
 
-  def advance(result)
+  def advance(input_from_user)
     callback = @steps[@current_step][1]
-    callback.call(result)
+    callback.call(input_from_user)
+    advance_current_step(input_from_user)
+  end
+
+  def advance_current_step(input_from_user)
+    if input_from_user.is_a?(Array) && input_from_user.size == 5
+      @current_step += 2
+    else
+      @current_step += 1
+    end
   end
 
   def round_finished?
