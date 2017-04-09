@@ -15,11 +15,14 @@ class GameWrapper
     @game.winners
   end
 
-  def each_step_of_round(player)
-    hold_positions = []
+  def start_round
+    @current_step = 0
+    @hold_positions = []
+  end
 
+  def one_step_of_round(player)
     actions = {
-      ask_for_hold_positions: ->(input) { hold_positions = input; player.reroll(positions_to_reroll(input)) },
+      ask_for_hold_positions: ->(input) { @hold_positions = input; player.reroll(positions_to_reroll(input)) },
       ask_for_category:       ->(input) { player.select_category(input) },
     }
 
@@ -29,13 +32,24 @@ class GameWrapper
       :ask_for_category,
     ]
 
-    player.roll_dice
-
-    yield(steps[0], actions[steps[0]])
-    if hold_positions.size < 5
-      yield(steps[1], actions[steps[1]])
+    if @current_step == 0
+      player.roll_dice
+      yield(steps[0], actions[steps[0]])
+      @current_step = 1
+    elsif @current_step == 1
+      if @hold_positions.size < 5
+        yield(steps[1], actions[steps[1]])
+      end
+      @current_step = 2
+    else
+      yield(steps[2], actions[steps[2]])
+      @current_step = -1
     end
-    yield(steps[2], actions[steps[2]])
+  end
+
+  def round_finished?
+    @current_step == -1
+    # true
   end
 
   private
