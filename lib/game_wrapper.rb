@@ -35,22 +35,20 @@ class GameWrapper
 
     if @current_step == 0
       @player.roll_dice
-      yield(steps[0], actions[steps[0]])
-      @current_step = 1
+      yield(steps[@current_step], actions[steps[@current_step]])
     elsif @current_step == 1
       if @hold_positions.size < 5
-        yield(steps[1], actions[steps[1]])
+        yield(steps[@current_step], actions[steps[@current_step]])
       end
-      @current_step = 2
     else
-      yield(steps[2], actions[steps[2]])
-      @current_step = -1
+      yield(steps[@current_step], actions[steps[@current_step]])
     end
+
+    @current_step += 1
   end
 
   def round_finished?
-    @current_step == -1
-    # true
+    @current_step == 3
   end
 
   private
