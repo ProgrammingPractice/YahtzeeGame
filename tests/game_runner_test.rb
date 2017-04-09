@@ -20,7 +20,8 @@ class GameRunnerTest < Minitest::Test
       while game_wrapper.rounds_left?
         game_wrapper.players.each do |player|
           start_of_player_turn(player)
-          play_round(game_wrapper, player)
+          game_wrapper.start_round(player)
+          play_round(game_wrapper)
           end_of_player_turn(player)
         end
       end
@@ -28,10 +29,9 @@ class GameRunnerTest < Minitest::Test
       display_winners(game_wrapper.winners)
     end
 
-    def play_round(game_wrapper, player)
-      game_wrapper.start_round
+    def play_round(game_wrapper)
       loop do
-        game_wrapper.one_step_of_round(player) do |ui_action, callback|
+        game_wrapper.one_step_of_round do |ui_action, callback|
           result = send(ui_action)
           callback.call(result)
         end
