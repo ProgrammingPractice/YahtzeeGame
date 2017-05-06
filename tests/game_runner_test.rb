@@ -17,19 +17,25 @@ class GameRunnerTest < Minitest::Test
     end
 
     def run(game_wrapper)
-      while game_wrapper.rounds_left?
+      loop do
         game_wrapper.players.each do |player|
-          start_of_player_turn(player)
-          game_wrapper.start_round(player)
-          play_round(game_wrapper)
-          end_of_player_turn(player)
+          player_round(player, game_wrapper)
         end
+
+        break unless game_wrapper.rounds_left?
       end
 
       display_winners(game_wrapper.winners)
     end
 
-    def play_round(game_wrapper)
+    def player_round(player, game_wrapper)
+      start_of_player_turn(player)
+      game_wrapper.start_round(player)
+      player_ui_interaction(game_wrapper)
+      end_of_player_turn(player)
+    end
+
+    def player_ui_interaction(game_wrapper)
       loop do
         ui_action = game_wrapper.next_step_of_round
         input_from_user = send(ui_action)
