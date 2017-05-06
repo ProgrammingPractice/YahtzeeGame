@@ -1,6 +1,4 @@
 class FakeDiceRoller
-  class OutOfValuesError < RuntimeError; end
-
   attr_reader :rolled_values
 
   def initialize(values = [])
@@ -10,9 +8,10 @@ class FakeDiceRoller
 
   def roll_one
     if @values.empty?
-      raise OutOfValuesError
+      value = 'OutOfValues'
+    else
+      value = @values.shift
     end
-    value = @values.shift
     @rolled_values << value
     value
   end

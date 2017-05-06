@@ -127,11 +127,7 @@ class CompleteGameTest < Minitest::Test
     ui           = FakeUI.new(self, rounds, dice_roller)
     game_wrapper = GameWrapper.new(game)
 
-    begin
-      ui.run(game_wrapper)
-    rescue FakeDiceRoller::OutOfValuesError
-      raise "Not enough dice values were provided in the round: #{ui.current_round.inspect}"
-    end
+    ui.run(game_wrapper)
     assert_equal "Player 1 won with 75 points!", ui.output.last
   end
 end
