@@ -1,6 +1,4 @@
 class FakeDiceRoller
-  attr_reader :rolled_values, :current_round_values
-
   def initialize(values = [])
     @values        = values
     @rolled_values = []
@@ -24,6 +22,21 @@ class FakeDiceRoller
 
   def empty?
     @values.empty?
+  end
+
+  def ensure_exact_use_of_dice
+    if @current_round_values != @rolled_values
+      message = <<~STRING
+        Dice mismatch.
+          In the current round the number of dice provided and dice used do not match:
+          Dice provided by test: #{@current_round_values}
+          Dice used by game:     #{@rolled_values}
+      STRING
+
+      raise message
+    end
+
+    move_to_next_round
   end
 
   def move_to_next_round

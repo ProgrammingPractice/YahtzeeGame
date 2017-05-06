@@ -52,28 +52,10 @@ class CompleteGameTest < Minitest::Test
     end
 
     def end_of_player_turn(player)
-      ensure_exact_use_of_dice
+      @dice_roller.ensure_exact_use_of_dice
 
       expected_score = extract_score(*@current_round)
       @test.assert_equal expected_score, player.score
-    end
-
-    def ensure_exact_use_of_dice
-      rolls_in_round = @dice_roller.current_round_values
-      rolled_values  = @dice_roller.rolled_values
-
-      if rolls_in_round != rolled_values
-        message = <<~STRING
-          Dice mismatch.
-            In the current round the number of dice provided and dice used do not match:
-            Dice provided by test: #{rolls_in_round}
-            Dice used by game:     #{rolled_values}
-        STRING
-
-        raise message
-      end
-
-      @dice_roller.move_to_next_round
     end
 
     def display_winners(players)
