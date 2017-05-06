@@ -14,6 +14,15 @@ class FakeDiceRoller
     value
   end
 
+  def setup(rounds)
+    @players = rounds.keys
+    @current_player_index = 0
+  end
+
+  def current_player
+    @players[@current_player_index]
+  end
+
   def ensure_exact_use_of_dice
     if @current_round_values != @rolled_values
       message = <<~STRING
@@ -27,10 +36,16 @@ class FakeDiceRoller
 
       raise message
     end
+
+    advance_to_next_player
   end
 
-  def move_to_next_round(player_name, raw_round)
-    @player_name   = player_name
+  def advance_to_next_player
+    @current_player_index = (@current_player_index + 1) % @players.size
+  end
+
+  def move_to_next_round(raw_round)
+    @player_name   = current_player
     @raw_round     = raw_round
     @rolled_values = []
 
