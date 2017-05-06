@@ -63,10 +63,11 @@ class CompleteGameTest < Minitest::Test
       rolled_values  = @dice_roller.rolled_values
 
       if rolls_in_round != rolled_values
-        message = <<-STRING
-          In the current round the number of dice provided and dice used do not match:
-          Dice provided by test: #{rolls_in_round}
-          Dice used by game:     #{rolled_values}
+        message = <<~STRING
+          Dice mismatch.
+            In the current round the number of dice provided and dice used do not match:
+            Dice provided by test: #{rolls_in_round}
+            Dice used by game:     #{rolled_values}
         STRING
 
         raise message
