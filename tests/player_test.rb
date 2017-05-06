@@ -75,7 +75,7 @@ class PlayerTest < Minitest::Test
   end
 
   def player_rerolls(partial_roll)
-    @roller.add_values partial_roll
+    @roller.add_values_for_round partial_roll
     reroll_positions = [0,1,2,3,4] - @hold_positions
     @player.reroll(reroll_positions)
   end
