@@ -29,6 +29,8 @@ class FakeDiceRoller
       message = <<~STRING
         Dice mismatch.
           In the current round the number of dice provided and dice used do not match:
+          Player: #{@player_name}
+          Raw round: #{@raw_round.inspect}
           Dice provided by test: #{@current_round_values}
           Dice used by game:     #{@rolled_values}
       STRING
@@ -37,7 +39,9 @@ class FakeDiceRoller
     end
   end
 
-  def move_to_next_round
+  def move_to_next_round(player_name, raw_round)
+    @player_name   = player_name
+    @raw_round     = raw_round
     @rolled_values = []
   end
 end
