@@ -87,10 +87,6 @@ class CompleteGameTest < Minitest::Test
     def extract_score(roll0, hold0, roll1, hold1, roll2, category, score)
       score
     end
-
-    def extract_rolls(roll0, hold0, roll1, hold1, roll2, category, score)
-      roll0 + roll1 + roll2
-    end
   end
 
   def test_complete_game

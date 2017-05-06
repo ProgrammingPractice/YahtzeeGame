@@ -50,6 +50,8 @@ class FakeDiceRoller
     @rolled_values = []
 
     dice = raw_round[0] + raw_round[2] + raw_round[4]
+    # TODO: encapsulate test data in an object
+    # dice = test_data.raw_round(@player_name, round_number)
     add_values_for_round(dice)
   end
 
