@@ -1,7 +1,7 @@
 require_relative 'test_helper'
 require 'json'
 
-class GameRunnerTest < Minitest::Test
+class CompleteGameTest < Minitest::Test
   class FakeUI
     attr_reader :current_round
     attr_reader :output
