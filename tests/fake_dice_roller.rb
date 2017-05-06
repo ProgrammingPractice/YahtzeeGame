@@ -6,7 +6,7 @@ class FakeDiceRoller
 
   def roll_one
     if @values.empty?
-      value = 'OutOfValues'
+      value = 10
     else
       value = @values.shift
     end
@@ -35,8 +35,6 @@ class FakeDiceRoller
 
       raise message
     end
-
-    move_to_next_round
   end
 
   def move_to_next_round

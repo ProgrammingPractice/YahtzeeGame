@@ -53,6 +53,7 @@ class CompleteGameTest < Minitest::Test
 
     def end_of_player_turn(player)
       @dice_roller.ensure_exact_use_of_dice
+      @dice_roller.move_to_next_round
 
       expected_score = extract_score(*@current_round)
       @test.assert_equal expected_score, player.score
