@@ -44,14 +44,11 @@ class FakeDiceRoller
     @current_player_index = (@current_player_index + 1) % @players.size
   end
 
-  def move_to_next_round(raw_round)
+  def move_to_next_round(dice, raw_round)
     @player_name   = current_player
-    @raw_round     = raw_round
     @rolled_values = []
+    @raw_round     = raw_round
 
-    dice = raw_round[0] + raw_round[2] + raw_round[4]
-    # TODO: encapsulate test data in an object
-    # dice = test_data.raw_round(@player_name, round_number)
     add_values_for_round(dice)
   end
 
