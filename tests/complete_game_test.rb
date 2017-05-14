@@ -46,7 +46,7 @@ class CompleteGameTest < Minitest::Test
 
     def start_of_player_turn(player)
       @test_data.advance_to_next_round(player)
-      @dice_roller.move_to_next_round(@test_data.extract_dice, @test_data.current_round)
+      @dice_roller.move_to_next_round(@test_data)
       @hold_positions = @test_data.extract_hold_positions
     end
 
