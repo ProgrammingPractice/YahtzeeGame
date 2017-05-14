@@ -2,8 +2,12 @@ require 'minitest/autorun'
 require 'minitest/pride'
 require 'byebug'
 
-require_relative 'fake_dice_roller'
-require_relative '../lib/dice_roller'
-require_relative '../lib/game'
-require_relative '../lib/game_wrapper'
-require_relative '../lib/player'
+$LOAD_PATH.unshift(File.expand_path('../../lib', __FILE__))
+$LOAD_PATH.unshift(File.expand_path('..', __FILE__))
+
+require 'fake_dice_roller'
+
+require 'dice_roller'
+require 'game'
+require 'game_wrapper'
+require 'player'
