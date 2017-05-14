@@ -14,7 +14,7 @@ For the web version you can find instructions in 'web/README.md'
 
 - Running tests
 
-        bundle exec ruby test/all.rb
+        bin/run_tests
 
 ## Game rules
 
