@@ -13,9 +13,7 @@ class CompleteGameTest < Minitest::Test
 
       @dice_roller.setup(rounds)
 
-      @rounds_iterators = rounds.each_with_object({}) do |(player, player_rounds), hash|
-        hash[player] = player_rounds.each
-      end
+      @test_data = TestData.new(rounds)
     end
 
     def run(game_wrapper)
@@ -48,7 +46,7 @@ class CompleteGameTest < Minitest::Test
     end
 
     def start_of_player_turn(player)
-      @current_round = @rounds_iterators[player.name].next
+      @current_round = @test_data.get_next_round(player)
       @dice_roller.move_to_next_round(@current_round)
       @hold_positions = extract_hold_positions(*@current_round)
     end
@@ -86,6 +84,18 @@ class CompleteGameTest < Minitest::Test
 
     def extract_score(roll0, hold0, roll1, hold1, roll2, category, score)
       score
+    end
+  end
+
+  class TestData
+    def initialize(rounds)
+      @rounds_iterators = rounds.each_with_object({}) do |(player, player_rounds), hash|
+        hash[player] = player_rounds.each
+      end
+    end
+
+    def get_next_round(player)
+      @rounds_iterators[player.name].next
     end
   end
 
