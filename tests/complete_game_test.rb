@@ -1,8 +1,8 @@
 require_relative 'test_helper'
 require 'json'
 
-require_relative 'fake_ui'
-require_relative 'test_data'
+require_relative 'helpers/fake_ui'
+require_relative 'helpers/test_data'
 
 class CompleteGameTest < Minitest::Test
   def test_complete_game
