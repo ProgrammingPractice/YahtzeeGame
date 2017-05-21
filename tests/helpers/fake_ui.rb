@@ -40,14 +40,13 @@ class FakeUI
   end
 
   def start_of_player_turn
-    @test_data.advance_to_next_round
     @dice_roller.move_to_next_round(@test_data)
   end
 
   def end_of_player_turn_assertions(player)
     @dice_roller.ensure_exact_use_of_dice
 
-    expected_score = @test_data.extract_score
+    expected_score = @test_data.extract_score_and_advance_round
     @test.assert_equal expected_score, player.score
   end
 

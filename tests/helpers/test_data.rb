@@ -8,6 +8,8 @@ class TestData
     @rounds_iterators = rounds.each_with_object({}) do |(player, player_rounds), hash|
       hash[player] = player_rounds.each
     end
+
+    advance_to_next_round
   end
 
   def advance_to_next_round
@@ -47,8 +49,9 @@ class TestData
     [hold_positions0, hold_positions1]
   end
 
-  def extract_score
+  def extract_score_and_advance_round
     (roll0, hold0, roll1, hold1, roll2, category, score) = @current_round
+    advance_to_next_round
     score
   end
 end
