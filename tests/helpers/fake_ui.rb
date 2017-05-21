@@ -21,7 +21,7 @@ class FakeUI
   end
 
   def player_round(player, game_wrapper)
-    game_wrapper.start_round(player)
+    game_wrapper.start_round_for_next_player
     player_ui_interaction(game_wrapper)
     end_of_player_turn_assertions(player)
   end

@@ -15,31 +15,45 @@ class GameWrapper
     @game.winners
   end
 
-  def start_round(player)
+  def start_round_for_next_player
+    advance_to_next_player
+    start_round
+  end
+
+  def advance_to_next_player
+    if @current_player.nil?
+      @player_index = 0
+    else
+      @player_index = (@player_index + 1) % players.size
+    end
+
+    @current_player = players[@player_index]
+  end
+
+  def start_round
     @steps = [
       [
         :ask_for_hold_positions,
         ->(hold_positions) do
           # FIXME: we should roll before asking the user for hold positions.
-          @player.roll_dice
-          @player.reroll(positions_to_reroll(hold_positions))
+          @current_player.roll_dice
+          @current_player.reroll(positions_to_reroll(hold_positions))
         end
       ],
       [
         :ask_for_hold_positions,
         ->(hold_positions) do
-          @player.reroll(positions_to_reroll(hold_positions))
+          @current_player.reroll(positions_to_reroll(hold_positions))
         end
       ],
       [
         :ask_for_category,
         ->(category) do
-          @player.select_category(category)
+          @current_player.select_category(category)
         end
       ],
     ]
 
-    @player = player
     @current_step = 0
   end
 
