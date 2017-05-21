@@ -12,6 +12,7 @@ class TestData
 
   def advance_to_next_round(player)
     @current_round = @rounds_iterators[player.name].next
+    @hold_positions = extract_hold_positions
   end
 
   def extract_category
@@ -24,7 +25,11 @@ class TestData
     roll0 + roll1 + roll2
   end
 
-  def extract_hold_positions
+  def next_hold_positions
+    @hold_positions.shift or raise "We were asked for hold positions, but did not expect it."
+  end
+
+  private def extract_hold_positions
     (roll0, hold0, roll1, hold1, roll2, category, score) = @current_round
     hold_positions0 = [0,1,2,3,4].select { |i| hold0[i] == 'x' }
     hold_positions1 = [0,1,2,3,4].select { |i| hold1[i] == 'x' } unless hold1.empty?
