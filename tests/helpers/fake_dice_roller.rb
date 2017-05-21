@@ -52,8 +52,6 @@ class FakeDiceRoller
     add_values_for_round(test_data.extract_dice)
   end
 
-  private
-
   def add_values_for_round(values)
     raise 'Values should be empty when round begins' if @values.any?
     @current_round_values = values.dup
