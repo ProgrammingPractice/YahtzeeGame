@@ -1,4 +1,5 @@
 class TestData
+  attr_reader :current_player
   attr_reader :current_round
   attr_reader :player_names
 

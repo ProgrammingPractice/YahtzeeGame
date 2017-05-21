@@ -6,7 +6,6 @@ class FakeUI
     @test_data   = test_data
     @dice_roller = dice_roller
     @output      = []
-    @dice_roller.setup(test_data.player_names)
   end
 
   def run(game_wrapper)
