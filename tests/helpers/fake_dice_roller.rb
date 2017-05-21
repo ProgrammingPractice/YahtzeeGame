@@ -14,8 +14,8 @@ class FakeDiceRoller
     value
   end
 
-  def setup(rounds)
-    @players = rounds.keys
+  def setup(players)
+    @players = players
     @current_player_index = 0
   end
 

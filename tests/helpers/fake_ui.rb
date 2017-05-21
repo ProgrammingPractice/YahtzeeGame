@@ -1,14 +1,12 @@
 class FakeUI
   attr_reader :output
 
-  def initialize(test, rounds, dice_roller)
+  def initialize(test, test_data, dice_roller)
     @test        = test
+    @test_data   = test_data
     @dice_roller = dice_roller
     @output      = []
-
-    @dice_roller.setup(rounds)
-
-    @test_data = TestData.new(rounds)
+    @dice_roller.setup(test_data.players)
   end
 
   def run(game_wrapper)

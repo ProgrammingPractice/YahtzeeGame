@@ -20,7 +20,9 @@ class CompleteGameTest < Minitest::Test
       player1.name => rounds_p1,
     }
 
-    ui           = FakeUI.new(self, rounds, dice_roller)
+    test_data = TestData.new(rounds)
+
+    ui           = FakeUI.new(self, test_data, dice_roller)
     game_wrapper = GameWrapper.new(game)
 
     ui.run(game_wrapper)

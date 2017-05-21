@@ -1,7 +1,10 @@
 class TestData
   attr_reader :current_round
+  attr_reader :players
 
   def initialize(rounds)
+    @players = rounds.keys
+
     @rounds_iterators = rounds.each_with_object({}) do |(player, player_rounds), hash|
       hash[player] = player_rounds.each
     end
