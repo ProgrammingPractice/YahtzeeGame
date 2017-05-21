@@ -27,7 +27,7 @@ class FakeUI
     start_of_player_turn(player)
     game_wrapper.start_round(player)
     player_ui_interaction(game_wrapper)
-    end_of_player_turn(player)
+    end_of_player_turn_assertions(player)
   end
 
   def player_ui_interaction(game_wrapper)
@@ -46,7 +46,7 @@ class FakeUI
     @hold_positions = @test_data.extract_hold_positions
   end
 
-  def end_of_player_turn(player)
+  def end_of_player_turn_assertions(player)
     @dice_roller.ensure_exact_use_of_dice
 
     expected_score = @test_data.extract_score
