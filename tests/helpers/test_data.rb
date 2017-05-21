@@ -10,9 +10,20 @@ class TestData
     end
   end
 
-  def advance_to_next_round(player)
-    @current_round = @rounds_iterators[player.name].next
+  def advance_to_next_round
+    advance_current_player
+    @current_round = @rounds_iterators[@current_player].next
     @hold_positions = extract_hold_positions
+  end
+
+  private def advance_current_player
+    if @current_player.nil?
+      @player_index = 0
+    else
+      @player_index = (@player_index + 1) % @player_names.size
+    end
+
+    @current_player = @player_names[@player_index]
   end
 
   def extract_category

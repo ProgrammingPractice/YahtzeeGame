@@ -22,7 +22,7 @@ class FakeUI
   end
 
   def player_round(player, game_wrapper)
-    start_of_player_turn(player)
+    start_of_player_turn
     game_wrapper.start_round(player)
     player_ui_interaction(game_wrapper)
     end_of_player_turn_assertions(player)
@@ -39,8 +39,8 @@ class FakeUI
     end
   end
 
-  def start_of_player_turn(player)
-    @test_data.advance_to_next_round(player)
+  def start_of_player_turn
+    @test_data.advance_to_next_round
     @dice_roller.move_to_next_round(@test_data)
   end
 
