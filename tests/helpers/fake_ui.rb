@@ -21,7 +21,6 @@ class FakeUI
   end
 
   def player_round(player, game_wrapper)
-    start_of_player_turn
     game_wrapper.start_round(player)
     player_ui_interaction(game_wrapper)
     end_of_player_turn_assertions(player)
@@ -36,10 +35,6 @@ class FakeUI
 
       break if game_wrapper.round_finished?
     end
-  end
-
-  def start_of_player_turn
-    @dice_roller.move_to_next_round(@test_data)
   end
 
   def end_of_player_turn_assertions(player)

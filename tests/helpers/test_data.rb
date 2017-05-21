@@ -3,8 +3,9 @@ class TestData
   attr_reader :current_round
   attr_reader :player_names
 
-  def initialize(rounds)
+  def initialize(rounds, dice_roller)
     @player_names = rounds.keys
+    @dice_roller = dice_roller
 
     @rounds_iterators = rounds.each_with_object({}) do |(player, player_rounds), hash|
       hash[player] = player_rounds.each
@@ -17,6 +18,8 @@ class TestData
     advance_current_player
     @current_round = @rounds_iterators[@current_player].next
     @hold_positions = extract_hold_positions
+
+    @dice_roller.move_to_next_round(self)
   end
 
   private def advance_current_player
