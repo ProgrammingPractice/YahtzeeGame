@@ -10,8 +10,8 @@ class FakeUI
 
   def run(game_wrapper)
     loop do
-      game_wrapper.players.each do |player|
-        player_round(player, game_wrapper)
+      game_wrapper.players.each do |_player|
+        player_round(game_wrapper)
       end
 
       break unless game_wrapper.rounds_left?
@@ -20,10 +20,10 @@ class FakeUI
     display_winners(game_wrapper.winners)
   end
 
-  def player_round(player, game_wrapper)
+  def player_round(game_wrapper)
     game_wrapper.start_round_for_next_player
     player_ui_interaction(game_wrapper)
-    end_of_player_turn_assertions(player)
+    end_of_player_turn_assertions(game_wrapper.current_player_score)
   end
 
   def player_ui_interaction(game_wrapper)
@@ -37,11 +37,11 @@ class FakeUI
     end
   end
 
-  def end_of_player_turn_assertions(player)
+  def end_of_player_turn_assertions(score)
     @dice_roller.ensure_exact_use_of_dice
 
     expected_score = @test_data.extract_score_and_advance_round
-    @test.assert_equal expected_score, player.score
+    @test.assert_equal expected_score, score
   end
 
   def display_winners(players)

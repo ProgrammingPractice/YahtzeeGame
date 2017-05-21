@@ -3,6 +3,10 @@ class GameWrapper
     @game = game
   end
 
+  def current_player_score
+    @current_player.score
+  end
+
   def players
     @game.players
   end
