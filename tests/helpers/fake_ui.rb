@@ -10,31 +10,23 @@ class FakeUI
 
   def run(game_wrapper)
     loop do
-      game_wrapper.players.each do |_player|
-        player_round(game_wrapper)
+      game_wrapper.players.size.times do
+        game_wrapper.start_round_for_next_player
+        loop do
+          ui_action = game_wrapper.next_step_of_round
+          # values for ui_action: ask_for_hold_positions, ask_for_category
+          input_from_user = send(ui_action)
+          game_wrapper.advance(input_from_user)
+
+          break if game_wrapper.round_finished?
+        end
+        end_of_player_turn_assertions(game_wrapper.current_player_score)
       end
 
       break unless game_wrapper.rounds_left?
     end
 
     display_winners(game_wrapper.winners)
-  end
-
-  def player_round(game_wrapper)
-    game_wrapper.start_round_for_next_player
-    player_ui_interaction(game_wrapper)
-    end_of_player_turn_assertions(game_wrapper.current_player_score)
-  end
-
-  def player_ui_interaction(game_wrapper)
-    loop do
-      ui_action = game_wrapper.next_step_of_round
-      # values for ui_action: ask_for_hold_positions, ask_for_category
-      input_from_user = send(ui_action)
-      game_wrapper.advance(input_from_user)
-
-      break if game_wrapper.round_finished?
-    end
   end
 
   def end_of_player_turn_assertions(score)
