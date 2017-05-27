@@ -30,31 +30,6 @@ class GameWrapper
     @current_step = 0
   end
 
-  def steps
-    [
-      [
-        :ask_for_hold_positions,
-        ->(hold_positions) do
-          # FIXME: we should roll before asking the user for hold positions.
-          @current_player.roll_dice
-          @current_player.reroll(positions_to_reroll(hold_positions))
-        end
-      ],
-      [
-        :ask_for_hold_positions,
-        ->(hold_positions) do
-          @current_player.reroll(positions_to_reroll(hold_positions))
-        end
-      ],
-      [
-        :ask_for_category,
-        ->(category) do
-          @current_player.select_category(category)
-        end
-      ],
-    ]
-  end
-
   def next_step_of_round
     steps[@current_step][0]
   end
@@ -81,5 +56,30 @@ class GameWrapper
 
   def positions_to_reroll(hold)
     [0, 1, 2, 3, 4] - hold
+  end
+
+  def steps
+    [
+      [
+        :ask_for_hold_positions,
+        ->(hold_positions) do
+          # FIXME: we should roll before asking the user for hold positions.
+          @current_player.roll_dice
+          @current_player.reroll(positions_to_reroll(hold_positions))
+        end
+      ],
+      [
+        :ask_for_hold_positions,
+        ->(hold_positions) do
+          @current_player.reroll(positions_to_reroll(hold_positions))
+        end
+      ],
+      [
+        :ask_for_category,
+        ->(category) do
+          @current_player.select_category(category)
+        end
+      ],
+    ]
   end
 end
