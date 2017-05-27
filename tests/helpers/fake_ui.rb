@@ -12,18 +12,16 @@ class FakeUI
     current_player_score = nil
 
     loop do
-      loop do
-        ui_action = game_wrapper.next_step_of_round
-        # values for ui_action: ask_for_hold_positions, ask_for_category
-        input_from_user = send(ui_action)
-        game_wrapper.advance(input_from_user)
+      ui_action = game_wrapper.next_step_of_round
+      # values for ui_action: ask_for_hold_positions, ask_for_category
+      input_from_user = send(ui_action)
+      game_wrapper.advance(input_from_user)
 
-        current_player_score = game_wrapper.current_player_score
+      current_player_score = game_wrapper.current_player_score
 
-        break if game_wrapper.round_finished?
+      if game_wrapper.round_finished?
+        end_of_player_turn_assertions(current_player_score)
       end
-
-      end_of_player_turn_assertions(current_player_score)
 
       break unless game_wrapper.rounds_left?
     end
