@@ -34,8 +34,8 @@ class GameWrapper
     @current_player = players[@player_index]
   end
 
-  def start_round
-    @steps = [
+  def steps
+    [
       [
         :ask_for_hold_positions,
         ->(hold_positions) do
@@ -57,16 +57,18 @@ class GameWrapper
         end
       ],
     ]
+  end
 
+  def start_round
     @current_step = 0
   end
 
   def next_step_of_round
-    @steps[@current_step][0]
+    steps[@current_step][0]
   end
 
   def advance(input_from_user)
-    callback = @steps[@current_step][1]
+    callback = steps[@current_step][1]
     callback.call(input_from_user)
     advance_current_step(input_from_user)
   end
