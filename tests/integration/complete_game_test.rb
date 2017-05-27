@@ -17,10 +17,10 @@ class CompleteGameTest < Minitest::Test
     end
     game = Game.new(players)
     game_wrapper = GameWrapper.new(game)
+    ui = FakeUI.new(game_wrapper, self, test_data, dice_roller)
 
-    ui = FakeUI.new(self, test_data, dice_roller)
+    ui.run
 
-    ui.run(game_wrapper)
     assert_equal "Player 1 won with 75 points!", ui.output.last
   end
 end

@@ -1,28 +1,29 @@
 class FakeUI
   attr_reader :output
 
-  def initialize(test, test_data, dice_roller)
-    @test        = test
-    @test_data   = test_data
-    @dice_roller = dice_roller
-    @output      = []
+  def initialize(game_wrapper, test, test_data, dice_roller)
+    @game_wrapper = game_wrapper
+    @test         = test
+    @test_data    = test_data
+    @dice_roller  = dice_roller
+    @output       = []
   end
 
-  def run(game_wrapper)
+  def run
     loop do
-      ui_action = game_wrapper.next_step
+      ui_action = @game_wrapper.next_step
       # values for ui_action: ask_for_hold_positions, ask_for_category
       input_from_user = send(ui_action)
-      game_wrapper.advance(input_from_user)
+      @game_wrapper.advance(input_from_user)
 
-      if game_wrapper.round_finished?
-        end_of_player_turn_assertions(game_wrapper)
+      if @game_wrapper.round_finished?
+        end_of_player_turn_assertions(@game_wrapper)
       end
 
-      break unless game_wrapper.rounds_left?
+      break unless @game_wrapper.rounds_left?
     end
 
-    display_winners(game_wrapper.winners)
+    display_winners(@game_wrapper.winners)
   end
 
   def end_of_player_turn_assertions(game_wrapper)
