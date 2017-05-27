@@ -1,29 +1,13 @@
-class FakeUI
+class FakeUI < UI
   attr_reader :output
 
   def initialize(game_wrapper, test, test_data, dice_roller)
-    @game_wrapper = game_wrapper
+    super(game_wrapper)
+
     @test         = test
     @test_data    = test_data
     @dice_roller  = dice_roller
     @output       = []
-  end
-
-  def run
-    loop do
-      ui_action = @game_wrapper.next_step
-      # values for ui_action: ask_for_hold_positions, ask_for_category
-      input_from_user = send(ui_action)
-      @game_wrapper.advance(input_from_user)
-
-      if @game_wrapper.round_finished?
-        end_of_player_turn_assertions(@game_wrapper)
-      end
-
-      break unless @game_wrapper.rounds_left?
-    end
-
-    display_winners(@game_wrapper.winners)
   end
 
   def end_of_player_turn_assertions(game_wrapper)
@@ -39,7 +23,7 @@ class FakeUI
     @output << "#{players.map(&:name).join(' & ')} won with #{players.first.score} points!"
   end
 
-  def ask_for_hold_positions
+  def ask_for_hold_positions(_roll)
     @test_data.next_hold_positions
   end
 

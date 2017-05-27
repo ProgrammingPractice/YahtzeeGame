@@ -1,6 +1,7 @@
 require_relative '../test_helper'
 require 'json'
 
+require 'ui'
 require 'helpers/fake_ui'
 require 'helpers/test_data'
 
