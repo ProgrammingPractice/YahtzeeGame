@@ -1,6 +1,7 @@
 class GameWrapper
   def initialize(game)
     @game = game
+    advance_to_next_player
   end
 
   def current_player_score
@@ -49,7 +50,10 @@ class GameWrapper
   end
 
   def round_finished?
-    @current_step == 3
+    return false if @current_step != 3
+
+    advance_to_next_player
+    true
   end
 
   private
