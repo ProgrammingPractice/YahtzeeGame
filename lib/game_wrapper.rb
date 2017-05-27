@@ -19,11 +19,6 @@ class GameWrapper
     @game.winners
   end
 
-  def start_round_for_next_player
-    advance_to_next_player
-    start_round
-  end
-
   def advance_to_next_player
     if @current_player.nil?
       @player_index = 0
@@ -32,6 +27,7 @@ class GameWrapper
     end
 
     @current_player = players[@player_index]
+    @current_step = 0
   end
 
   def steps
@@ -57,10 +53,6 @@ class GameWrapper
         end
       ],
     ]
-  end
-
-  def start_round
-    @current_step = 0
   end
 
   def next_step_of_round

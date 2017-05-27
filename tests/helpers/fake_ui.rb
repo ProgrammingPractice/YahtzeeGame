@@ -11,7 +11,7 @@ class FakeUI
   def run(game_wrapper)
     loop do
       game_wrapper.players.size.times do
-        game_wrapper.start_round_for_next_player
+        game_wrapper.advance_to_next_player
         loop do
           ui_action = game_wrapper.next_step_of_round
           # values for ui_action: ask_for_hold_positions, ask_for_category
