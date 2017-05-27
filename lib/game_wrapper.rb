@@ -4,8 +4,10 @@ class GameWrapper
     advance_to_next_player
   end
 
-  def current_player_score
-    @current_player.score
+  def score(player_name)
+    player = @game.players.find { |p| p.name == player_name }
+
+    player.score
   end
 
   def players
@@ -31,7 +33,7 @@ class GameWrapper
     @current_step = 0
   end
 
-  def next_step_of_round
+  def next_step
     steps[@current_step][0]
   end
 
