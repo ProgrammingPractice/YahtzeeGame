@@ -27,7 +27,7 @@ class FakeUI < UI
     @test_data.next_hold_positions
   end
 
-  def ask_for_category
+  def ask_for_category(_roll)
     @test_data.extract_category
   end
 end

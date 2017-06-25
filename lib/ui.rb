@@ -15,9 +15,9 @@ class UI
       ui_action = @game_wrapper.next_step
 
       if ui_action.is_a?(GameWrapper::AskForHoldPositionsAction)
-        input_from_user = send(:ask_for_hold_positions, ui_action.roll)
-      elsif ui_action == :ask_for_category
-        input_from_user = send(ui_action)
+        input_from_user = ask_for_hold_positions(ui_action.roll)
+      elsif ui_action.is_a?(GameWrapper::AskForCategoryAction)
+        input_from_user = ask_for_category(ui_action.roll)
       else
         raise "Unknown action: #{ui_action.inspect}"
       end
@@ -64,19 +64,21 @@ class UI
     (0..4).select { |i| hold_pattern[i] == 1 }
   end
 
-  # def ask_for_category
-  #   index      = 0
+  def ask_for_category(roll)
+    players = @players
 
-  #   display = -> { display_categories(index) }
-  #   commands = {
-  #     'down' => -> { index = (index + 1) % categories.size },
-  #     'up'   => -> { index = (index - 1) % categories.size }
-  #   }
+    index = 0
 
-  #   interaction_loop(display, commands)
+    display = -> { display_categories(index, roll, players) }
+    commands = {
+      'down' => -> { index = (index + 1) % categories.size },
+      'up'   => -> { index = (index - 1) % categories.size }
+    }
 
-  #   categories[index]
-  # end
+    interaction_loop(display, commands)
+
+    categories[index]
+  end
 
   # def display_winners(winners)
   #   score = winners.first.score
@@ -141,17 +143,17 @@ class UI
     Remedy::ANSI.push(Remedy::ANSI.cursor.to_column(cursor + 1))
   end
 
-  # def display_categories(index)
-  #   message = "Please select category for roll: #{@roll.inspect}
-  #     #{category_names.join("\n")}
-  #   ".gsub(/^\s+/, '')
+  def display_categories(index, roll, players)
+    message = "Please select category for roll: #{roll.inspect}
+      #{category_names.join("\n")}
+    ".gsub(/^\s+/, '')
 
-  #   footer = Remedy::Footer.new(["--------\nUse up/down to move around. Enter to accept."])
+    footer = Remedy::Footer.new(["--------\nUse up/down to move around. Enter to accept."])
 
-  #   Remedy::Viewport.new.draw(Remedy::Content.new([message]), Remedy::Size.new(0,0), header, footer)
-  #   Remedy::ANSI.cursor.home!
-  #   Remedy::ANSI.push(Remedy::ANSI.cursor.down(@players.size + index + 3))
-  # end
+    Remedy::Viewport.new.draw(Remedy::Content.new([message]), Remedy::Size.new(0,0), header, footer)
+    Remedy::ANSI.cursor.home!
+    Remedy::ANSI.push(Remedy::ANSI.cursor.down(players.size + index + 3))
+  end
 
   def header
     message = @players.map do |player|

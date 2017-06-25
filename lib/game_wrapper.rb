@@ -1,6 +1,7 @@
 class GameWrapper
   class RoundStep < Struct.new(:action, :callback); end
   class AskForHoldPositionsAction < Struct.new(:roll); end
+  class AskForCategoryAction      < Struct.new(:roll); end
 
   def initialize(game)
     @game = game
@@ -87,7 +88,9 @@ class GameWrapper
         end
       ),
       RoundStep.new(
-        -> { :ask_for_category },
+        -> do
+          AskForCategoryAction.new(@current_player.roll)
+        end,
         ->(category) do
           @current_player.select_category(category)
         end
