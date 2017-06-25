@@ -10,6 +10,12 @@ class FakeUI < UI
     @output       = []
   end
 
+  def end_of_step_hook
+    if @game_wrapper.round_finished?
+      end_of_player_turn_assertions(@game_wrapper)
+    end
+  end
+
   def end_of_player_turn_assertions(game_wrapper)
     @dice_roller.ensure_exact_use_of_dice
 

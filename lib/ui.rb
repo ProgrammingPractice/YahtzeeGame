@@ -24,15 +24,15 @@ class UI
 
       @game_wrapper.advance(input_from_user)
 
-      if @game_wrapper.round_finished?
-        end_of_player_turn_assertions(@game_wrapper)
-      end
+      end_of_step_hook
 
       break unless @game_wrapper.rounds_left?
     end
 
     display_winners(@game_wrapper.winners)
   end
+
+  def end_of_step_hook; end
 
   # def ask_for_number_of_players
   #   players_count = 1
