@@ -14,8 +14,8 @@ class UI
     loop do
       ui_action = @game_wrapper.next_step
 
-      if ui_action == :ask_for_hold_positions
-        input_from_user = send(ui_action, [7,7,7,7,7])
+      if ui_action.is_a?(GameWrapper::AskForHoldPositionsAction)
+        input_from_user = send(:ask_for_hold_positions, ui_action.roll)
       elsif ui_action == :ask_for_category
         input_from_user = send(ui_action)
       end

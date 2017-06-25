@@ -1,5 +1,6 @@
 class GameWrapper
   class RoundStep < Struct.new(:action, :callback); end
+  class AskForHoldPositionsAction < Struct.new(:roll); end
 
   def initialize(game)
     @game = game
@@ -69,7 +70,7 @@ class GameWrapper
   def steps
     [
       RoundStep.new(
-        :ask_for_hold_positions,
+        AskForHoldPositionsAction.new([7,7,7,7,6]),
         ->(hold_positions) do
           # FIXME: we should roll before asking the user for hold positions.
           @current_player.roll_dice
@@ -77,7 +78,7 @@ class GameWrapper
         end
       ),
       RoundStep.new(
-        :ask_for_hold_positions,
+        AskForHoldPositionsAction.new([7,7,7,7,8]),
         ->(hold_positions) do
           @current_player.reroll(positions_to_reroll(hold_positions))
         end
