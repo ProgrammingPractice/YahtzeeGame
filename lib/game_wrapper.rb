@@ -47,8 +47,8 @@ class GameWrapper
   end
 
   def advance_current_step(input_from_user)
-    if input_from_user.is_a?(Array) && input_from_user.size == 5
-      @current_step += 2
+    if input_from_user.is_a?(Array) && input_from_user.size == 5 && @current_step == 0
+      @current_step = 2
     else
       @current_step += 1
     end
