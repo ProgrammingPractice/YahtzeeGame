@@ -56,10 +56,7 @@ class GameWrapper
   end
 
   def round_finished?
-    return false if @current_step != 3
-
-    advance_to_next_player
-    true
+    @current_step == 3
   end
 
   private

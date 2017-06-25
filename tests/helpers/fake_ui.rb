@@ -10,16 +10,10 @@ class FakeUI < UI
     @output       = []
   end
 
-  def end_of_step_hook
-    if @game_wrapper.round_finished?
-      end_of_player_turn_assertions(@game_wrapper)
-    end
-  end
-
-  def end_of_player_turn_assertions(game_wrapper)
+  def end_of_player_turn_assertions
     @dice_roller.ensure_exact_use_of_dice
 
-    actual_score   = game_wrapper.score(@test_data.current_player)
+    actual_score   = @game_wrapper.score(@test_data.current_player)
     expected_score = @test_data.extract_score_and_advance_round
 
     @test.assert_equal expected_score, actual_score

@@ -32,7 +32,15 @@ class UI
     display_winners(@game_wrapper.winners)
   end
 
-  def end_of_step_hook; end
+  def end_of_step_hook
+    if @game_wrapper.round_finished?
+      @game_wrapper.advance_to_next_player
+
+      end_of_player_turn_assertions
+    end
+  end
+
+  def end_of_player_turn_assertions; end
 
   # def ask_for_number_of_players
   #   players_count = 1
