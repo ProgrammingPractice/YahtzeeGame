@@ -14,7 +14,7 @@ class UI
       ui_action = @game_wrapper.next_step
 
       if ui_action.is_a?(GameWrapper::AskForHoldPositionsAction)
-        input_from_user = ask_for_hold_positions(ui_action.roll, ui_action.player)
+        input_from_user = ask_for_hold_positions(ui_action.roll, ui_action.player, ui_action.rolls_count)
       elsif ui_action.is_a?(GameWrapper::AskForCategoryAction)
         input_from_user = ask_for_category(ui_action.roll, ui_action.player)
       else
@@ -55,11 +55,11 @@ class UI
   #   players_count
   # end
 
-  def ask_for_hold_positions(roll, player)
+  def ask_for_hold_positions(roll, player, rolls_count)
     cursor       = 0
     hold_pattern = [1,1,1,1,1]
 
-    display = -> { display_hold(roll, cursor, hold_pattern, player) }
+    display = -> { display_hold(roll, cursor, hold_pattern, player, rolls_count) }
     commands = {
       'right' => -> { cursor = (cursor + 1) % 5 },
       'left'  => -> { cursor = (cursor - 1) % 5 },
@@ -128,13 +128,13 @@ class UI
   #   Remedy::ANSI.push(Remedy::ANSI.cursor.down(2))
   # end
 
-  def display_hold(roll, cursor, hold_pattern, player)
+  def display_hold(roll, cursor, hold_pattern, player, rolls_count)
     dice_to_hold = hold_pattern.each_with_index.map do |value, i|
       value == 0 ? '-' : roll[i]
     end.join
 
     message = "
-      You rolled: #{roll.inspect} (roll #{@rolls_count}/3)
+      You rolled: #{roll.inspect} (roll #{rolls_count}/3)
       Select what to hold:
       #{dice_to_hold}
       --------

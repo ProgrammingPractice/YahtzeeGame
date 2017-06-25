@@ -1,6 +1,6 @@
 class GameWrapper
   class RoundStep < Struct.new(:action, :callback); end
-  class AskForHoldPositionsAction < Struct.new(:roll, :player); end
+  class AskForHoldPositionsAction < Struct.new(:roll, :player, :rolls_count); end
   class AskForCategoryAction      < Struct.new(:roll, :player); end
 
   def initialize(game)
@@ -70,7 +70,7 @@ class GameWrapper
       RoundStep.new(
         -> do
           @current_player.roll_dice
-          AskForHoldPositionsAction.new(@current_player.roll, @current_player)
+          AskForHoldPositionsAction.new(@current_player.roll, @current_player, @current_step + 1)
         end,
         ->(hold_positions) do
           @current_player.reroll(positions_to_reroll(hold_positions))
@@ -78,7 +78,7 @@ class GameWrapper
       ),
       RoundStep.new(
         -> do
-          AskForHoldPositionsAction.new(@current_player.roll, @current_player)
+          AskForHoldPositionsAction.new(@current_player.roll, @current_player, @current_step + 1)
         end,
         ->(hold_positions) do
           @current_player.reroll(positions_to_reroll(hold_positions))
