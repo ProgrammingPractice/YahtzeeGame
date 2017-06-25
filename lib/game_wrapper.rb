@@ -37,7 +37,7 @@ class GameWrapper
   end
 
   def next_step
-    steps[@current_step].action
+    steps[@current_step].action.call
   end
 
   def advance(input_from_user)
@@ -70,21 +70,24 @@ class GameWrapper
   def steps
     [
       RoundStep.new(
-        AskForHoldPositionsAction.new([7,7,7,7,6]),
-        ->(hold_positions) do
-          # FIXME: we should roll before asking the user for hold positions.
+        -> do
           @current_player.roll_dice
-          @current_player.reroll(positions_to_reroll(hold_positions))
-        end
-      ),
-      RoundStep.new(
-        AskForHoldPositionsAction.new([7,7,7,7,8]),
+          AskForHoldPositionsAction.new(@current_player.roll)
+        end,
         ->(hold_positions) do
           @current_player.reroll(positions_to_reroll(hold_positions))
         end
       ),
       RoundStep.new(
-        :ask_for_category,
+        -> do
+          AskForHoldPositionsAction.new(@current_player.roll)
+        end,
+        ->(hold_positions) do
+          @current_player.reroll(positions_to_reroll(hold_positions))
+        end
+      ),
+      RoundStep.new(
+        -> { :ask_for_category },
         ->(category) do
           @current_player.select_category(category)
         end

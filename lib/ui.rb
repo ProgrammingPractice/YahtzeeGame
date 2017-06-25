@@ -18,6 +18,8 @@ class UI
         input_from_user = send(:ask_for_hold_positions, ui_action.roll)
       elsif ui_action == :ask_for_category
         input_from_user = send(ui_action)
+      else
+        raise "Unknown action: #{ui_action.inspect}"
       end
 
       @game_wrapper.advance(input_from_user)
