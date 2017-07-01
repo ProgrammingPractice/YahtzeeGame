@@ -87,15 +87,9 @@ class UI
     categories(player)[index]
   end
 
-  # def display_winners(winners)
-  #   score = winners.first.score
-  #   if winners.size == 1
-  #     puts "The winner is: #{winners.first.name} with score #{score}!"
-  #   else
-  #     puts "The winners are: #{winners.map(&:name).join(' & ')} with score #{score}!"
-  #   end
-  #   puts "Congratulations!"
-  # end
+  def display_winners(winners)
+    puts "#{winners.map(&:name).join(' & ')} won with #{winners.first.score} points!"
+  end
 
   private
 
