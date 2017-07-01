@@ -19,8 +19,8 @@ class FakeUI < UI
     @test.assert_equal expected_score, actual_score
   end
 
-  def display_winners(players)
-    @output << "#{players.map(&:name).join(' & ')} won with #{players.first.score} points!"
+  def puts(output_string)
+    @output << output_string
   end
 
   def ask_for_hold_positions(*)
