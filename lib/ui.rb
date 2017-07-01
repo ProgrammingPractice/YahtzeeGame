@@ -5,8 +5,6 @@ class UI
 
   def initialize(game_wrapper)
     @game_wrapper = game_wrapper
-
-    @players = game_wrapper.players
   end
 
   def run
@@ -14,9 +12,9 @@ class UI
       ui_action = @game_wrapper.next_step
 
       if ui_action.is_a?(GameWrapper::AskForHoldPositionsAction)
-        input_from_user = ask_for_hold_positions(ui_action.roll, ui_action.player, ui_action.rolls_count)
+        input_from_user = ask_for_hold_positions(ui_action.roll, ui_action.player, ui_action.rolls_count, @game_wrapper.players)
       elsif ui_action.is_a?(GameWrapper::AskForCategoryAction)
-        input_from_user = ask_for_category(ui_action.roll, ui_action.player)
+        input_from_user = ask_for_category(ui_action.roll, ui_action.player, @game_wrapper.players)
       else
         raise "Unknown action: #{ui_action.inspect}"
       end
@@ -41,6 +39,10 @@ class UI
 
   def end_of_player_turn_assertions; end
 
+  # def self.ask_for_number_of_players
+  #   new(nil).ask_for_number_of_players
+  # end
+
   # def ask_for_number_of_players
   #   players_count = 1
 
@@ -55,11 +57,11 @@ class UI
   #   players_count
   # end
 
-  def ask_for_hold_positions(roll, player, rolls_count)
+  def ask_for_hold_positions(roll, player, rolls_count, players)
     cursor       = 0
     hold_pattern = [1,1,1,1,1]
 
-    display = -> { display_hold(roll, cursor, hold_pattern, player, rolls_count) }
+    display = -> { display_hold(roll, cursor, hold_pattern, player, rolls_count, players) }
     commands = {
       'right' => -> { cursor = (cursor + 1) % 5 },
       'left'  => -> { cursor = (cursor - 1) % 5 },
@@ -71,9 +73,7 @@ class UI
     (0..4).select { |i| hold_pattern[i] == 1 }
   end
 
-  def ask_for_category(roll, player)
-    players = @players
-
+  def ask_for_category(roll, player, players)
     index = 0
 
     display = -> { display_categories(index, roll, players, player) }
@@ -122,7 +122,7 @@ class UI
   #   Remedy::ANSI.push(Remedy::ANSI.cursor.down(2))
   # end
 
-  def display_hold(roll, cursor, hold_pattern, player, rolls_count)
+  def display_hold(roll, cursor, hold_pattern, player, rolls_count, players)
     dice_to_hold = hold_pattern.each_with_index.map do |value, i|
       value == 0 ? '-' : roll[i]
     end.join
@@ -138,9 +138,9 @@ class UI
 
     footer = Remedy::Footer.new(["--------\nUse left/right to move around. Space to mark position. Enter to accept."])
 
-    Remedy::Viewport.new.draw(Remedy::Content.new([message]), Remedy::Size.new(0,0), header(player), footer)
+    Remedy::Viewport.new.draw(Remedy::Content.new([message]), Remedy::Size.new(0,0), header(player, players), footer)
     Remedy::ANSI.cursor.home!
-    Remedy::ANSI.push(Remedy::ANSI.cursor.down(@players.size + 4))
+    Remedy::ANSI.push(Remedy::ANSI.cursor.down(players.size + 4))
     Remedy::ANSI.push(Remedy::ANSI.cursor.to_column(cursor + 1))
   end
 
@@ -151,13 +151,13 @@ class UI
 
     footer = Remedy::Footer.new(["--------\nUse up/down to move around. Enter to accept."])
 
-    Remedy::Viewport.new.draw(Remedy::Content.new([message]), Remedy::Size.new(0,0), header(player), footer)
+    Remedy::Viewport.new.draw(Remedy::Content.new([message]), Remedy::Size.new(0,0), header(player, players), footer)
     Remedy::ANSI.cursor.home!
     Remedy::ANSI.push(Remedy::ANSI.cursor.down(players.size + index + 3))
   end
 
-  def header(player)
-    message = @players.map do |player|
+  def header(player, players)
+    message = players.map do |player|
       "#{player.name}: #{player.score} points"
     end.join("\n")
 

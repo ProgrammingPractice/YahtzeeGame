@@ -23,11 +23,11 @@ class FakeUI < UI
     @output << "#{players.map(&:name).join(' & ')} won with #{players.first.score} points!"
   end
 
-  def ask_for_hold_positions(_roll, _player, _rolls_count)
+  def ask_for_hold_positions(*)
     @test_data.next_hold_positions
   end
 
-  def ask_for_category(_roll, _player)
+  def ask_for_category(*)
     @test_data.extract_category
   end
 end
