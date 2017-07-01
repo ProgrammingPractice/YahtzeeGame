@@ -60,6 +60,9 @@ class YahtzeeWeb < Sinatra::Base
     redirect :new_round
   end
 
+  get '/favicon.ico' do
+  end
+
   private
 
   def create_new_game(game)
