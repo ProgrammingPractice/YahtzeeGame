@@ -4,10 +4,10 @@ Web version of the Yahtzee game.
 
 ## Development
 
-- Running the server
+Running the server
 
-        ./server
+    bin/server
 
-- Running the tests
+Running the tests
 
-        ./build
+    bin/run_tests
