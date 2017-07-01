@@ -1,9 +1,9 @@
 require_relative 'test_helper'
 
 require_relative '../lib/game_serializer'
-require_relative '../../lib/game'
-require_relative '../../lib/player'
-require_relative '../../lib/dice_roller'
+require_relative '../../console/lib/game'
+require_relative '../../console/lib/player'
+require_relative '../../console/lib/dice_roller'
 
 class GameSerializerTest < Minitest::Test
   def test_serialize_and_deserialize_game
