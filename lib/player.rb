@@ -6,11 +6,11 @@ class Player
   attr_reader :roll
   attr_reader :score
 
-  def initialize(name, dice_roller)
-    @name = name
+  def initialize(name, dice_roller, categories = ScoreCalculator::CATEGORIES)
+    @name        = name
     @dice_roller = dice_roller
-    @score = 0
-    @categories = ScoreCalculator::CATEGORIES.dup
+    @score       = 0
+    @categories  = categories.dup
   end
 
   def self.from_h(hash, dice_roller)

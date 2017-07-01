@@ -17,16 +17,16 @@ class GameTest < Minitest::Test
     assert p2.categories.include?('chance')
   end
 
-  def test_rounds_left_returns_true_as_long_as_the_game_is_not_over
+  def test_rounds_left_returns_false_when_last_player_finished_his_categories
     dice_roller = DiceRoller.new
-    player = Player.new('p', dice_roller)
-    game = Game.new([player])
+    player0     = Player.new('Player 0', dice_roller, ['yahtzee'])
+    player1     = Player.new('Player 1', dice_roller, ['yahtzee'])
+    game        = Game.new([player0, player1])
+
+    player0.roll_dice; player0.select_category('yahtzee')
     assert game.rounds_left?
 
-    player.roll_dice
-    ScoreCalculator::CATEGORIES.each do |category|
-      player.select_category(category)
-    end
+    player1.roll_dice; player1.select_category('yahtzee')
     refute game.rounds_left?
   end
 

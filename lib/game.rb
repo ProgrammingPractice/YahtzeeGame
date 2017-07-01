@@ -6,7 +6,7 @@ class Game
   end
 
   def rounds_left?
-    !@players.first.categories.empty?
+    !@players.last.categories.empty?
   end
 
   def winners
