@@ -39,23 +39,23 @@ class UI
 
   def end_of_player_turn_assertions; end
 
-  # def self.ask_for_number_of_players
-  #   new(nil).ask_for_number_of_players
-  # end
+  def self.ask_for_number_of_players
+    new(nil).ask_for_number_of_players
+  end
 
-  # def ask_for_number_of_players
-  #   players_count = 1
+  def ask_for_number_of_players
+    players_count = 1
 
-  #   display = -> { display_players_count(players_count) }
-  #   commands = {
-  #     'up'   => -> { players_count += 1 },
-  #     'down' => -> { players_count = [1, players_count - 1].max }
-  #   }
+    display = -> { display_players_count(players_count) }
+    commands = {
+      'up'   => -> { players_count += 1 },
+      'down' => -> { players_count = [1, players_count - 1].max }
+    }
 
-  #   interaction_loop(display, commands)
+    interaction_loop(display, commands)
 
-  #   players_count
-  # end
+    players_count
+  end
 
   def ask_for_hold_positions(roll, player, rolls_count, players)
     cursor       = 0
@@ -113,14 +113,14 @@ class UI
     end
   end
 
-  # def display_players_count(players_count)
-  #   header = Remedy::Header.new(["Yahtzee!\nSelect number of players"])
-  #   footer = Remedy::Footer.new(["--------\nUse up/down to change values. Enter to accept."])
+  def display_players_count(players_count)
+    header = Remedy::Header.new(["Yahtzee!\nSelect number of players"])
+    footer = Remedy::Footer.new(["--------\nUse up/down to change values. Enter to accept."])
 
-  #   Remedy::Viewport.new.draw(Remedy::Content.new([players_count.to_s]), Remedy::Size.new(0,0), header, footer)
-  #   Remedy::ANSI.cursor.home!
-  #   Remedy::ANSI.push(Remedy::ANSI.cursor.down(2))
-  # end
+    Remedy::Viewport.new.draw(Remedy::Content.new([players_count.to_s]), Remedy::Size.new(0,0), header, footer)
+    Remedy::ANSI.cursor.home!
+    Remedy::ANSI.push(Remedy::ANSI.cursor.down(2))
+  end
 
   def display_hold(roll, cursor, hold_pattern, player, rolls_count, players)
     dice_to_hold = hold_pattern.each_with_index.map do |value, i|
