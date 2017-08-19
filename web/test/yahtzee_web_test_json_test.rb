@@ -21,11 +21,20 @@ class YahtzeeWebJsonTest < Minitest::Test
   def test_complete_game
     start_new_game_with_players(@test_data.players_count)
 
-    
-    # loop do
-
-    #   break unless rounds_left?
-    # end
+    player_holds_dice_in_round(
+      @test_data.current_player,
+      @test_data.next_hold_positions,
+      1
+    )
+    player_holds_dice_in_round(
+      @test_data.current_player,
+      @test_data.next_hold_positions,
+      2
+    )
+    player_selects_category(
+      @test_data.current_player,
+      @test_data.extract_category
+    )
   end
 
   # def test_complete_game
@@ -45,19 +54,19 @@ class YahtzeeWebJsonTest < Minitest::Test
   def start_new_game_with_players(count)
     visit '/new_game'
     assert_equal 200, status_code
-    assert has_content?('Yahtzee')
-    assert has_content?('Please enter number of players:')
+    assert_has_content?('Yahtzee')
+    assert_has_content?('Please enter number of players:')
 
     select(count.to_s, from: 'players_count')
     click_button('Start game')
     assert_equal 200, status_code
-    assert has_content?('Player 1: 0 points')
-    assert has_content?('Player 2: 0 points')
+    assert_has_content?('Player 1: 0 points')
+    assert_has_content?('Player 2: 0 points')
   end
 
   def player_holds_dice_in_round(player_name, positions_to_hold, round_number)
-    assert has_content?("Playing -> #{player_name}")
-    assert has_content?("roll #{round_number}/3")
+    assert_has_content?("Playing -> #{player_name}")
+    assert_has_content?("roll #{round_number}/3")
 
     positions_to_hold.each do |p|
       check("checkbox_dice_#{p}")
@@ -69,7 +78,7 @@ class YahtzeeWebJsonTest < Minitest::Test
   end
 
   def player_selects_category(player_name, category)
-    assert has_content?("Playing -> #{player_name}")
+    assert_has_content?("Playing -> #{player_name}")
     refute has_content?('Select what to hold:')
 
     choose("radiobutton_category_#{category}")
@@ -80,5 +89,9 @@ class YahtzeeWebJsonTest < Minitest::Test
 
   def the_dice_will_be(dice)
     @dice_roller.add_values_for_round(dice)
+  end
+
+  def assert_has_content?(content)
+    assert has_content?(content), "Could not find content: #{content.inspect}"
   end
 end

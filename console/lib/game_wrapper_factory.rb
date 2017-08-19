@@ -1,5 +1,5 @@
-require_relative 'game_factory'
-require_relative 'game_wrapper'
+require 'game_factory'
+require 'game_wrapper'
 
 class GameWrapperFactory
   def self.create(number_of_players)

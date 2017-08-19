@@ -22,6 +22,6 @@ class CompleteGameTest < Minitest::Test
 
     ui.run
 
-    assert_equal "Player 1 won with 75 points!", ui.output.last
+    assert_equal "Player 2 won with 75 points!", ui.output.last
   end
 end
