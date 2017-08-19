@@ -58,4 +58,8 @@ class TestData
     advance_to_next_round
     score
   end
+
+  def players_count
+    player_names.size
+  end
 end

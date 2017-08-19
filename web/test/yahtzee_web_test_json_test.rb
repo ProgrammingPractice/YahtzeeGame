@@ -1,8 +1,9 @@
 require_relative 'capybara_helper'
 
 require 'yahtzee_web'
+require 'helpers/test_data'
 
-class YahtzeeWebTest < Minitest::Test
+class YahtzeeWebJsonTest < Minitest::Test
   include Capybara::DSL
 
   def setup
@@ -12,10 +13,34 @@ class YahtzeeWebTest < Minitest::Test
 
     # We need to set this so that capybara-screenshot works
     Sinatra::Application.root = application.settings.root
+
+    json = JSON.parse(File.read('../core/test/fixtures/complete_game.json'))
+    @test_data = TestData.new(json, @dice_roller)
   end
 
   def test_complete_game
+    start_new_game_with_players(@test_data.players_count)
+
+    
+    # loop do
+
+    #   break unless rounds_left?
+    # end
   end
+
+  # def test_complete_game
+
+  #   players = test_data.player_names.map do |name|
+  #     Player.new(name, dice_roller)
+  #   end
+  #   game = Game.new(players)
+  #   game_wrapper = GameWrapper.new(game)
+  #   ui = FakeUI.new(game_wrapper, self, test_data, dice_roller)
+
+  #   ui.run
+
+  #   assert_equal "Player 1 won with 75 points!", ui.output.last
+  # end
 
   def start_new_game_with_players(count)
     visit '/new_game'

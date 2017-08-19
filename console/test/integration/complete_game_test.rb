@@ -7,7 +7,7 @@ require 'helpers/test_data'
 
 class CompleteGameTest < Minitest::Test
   def test_complete_game
-    json = JSON.parse(File.read('test/fixtures/complete_game.json'))
+    json = JSON.parse(File.read('../core/test/fixtures/complete_game.json'))
 
     dice_roller = FakeDiceRoller.new([])
 
