@@ -1,6 +1,6 @@
 require 'sinatra/base'
 
-require_relative '../../console/lib/game_factory'
+require_relative '../../core/lib/game_factory'
 require_relative 'game_serializer'
 
 class YahtzeeWeb < Sinatra::Base
