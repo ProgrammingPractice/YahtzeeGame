@@ -1,7 +1,7 @@
 require_relative 'capybara_helper'
 
 require_relative '../lib/yahtzee_web'
-require_relative '../../console/tests/helpers/fake_dice_roller'
+require_relative '../../console/test/helpers/fake_dice_roller'
 
 class YahtzeeWebTest < Minitest::Test
   include Capybara::DSL

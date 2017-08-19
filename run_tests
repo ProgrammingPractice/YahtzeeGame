@@ -1,0 +1,9 @@
+#! /bin/bash
+
+pushd console
+bin/run_tests
+popd
+
+pushd web
+bin/run_tests
+popd
