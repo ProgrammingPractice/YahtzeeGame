@@ -61,9 +61,8 @@ class TestData
     [hold_positions0, hold_positions1]
   end
 
-  def extract_score_and_advance_round
+  def extract_score
     (roll0, hold0, roll1, hold1, roll2, category, score) = @current_round
-    advance_to_next_round
     score
   end
 

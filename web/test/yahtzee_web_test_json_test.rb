@@ -23,11 +23,13 @@ class YahtzeeWebJsonTest < Minitest::Test
 
     1.times do
       hold_positions = @test_data.next_hold_positions
+
       player_holds_dice_in_round(
         @test_data.current_player,
         hold_positions,
         1
       )
+
       if hold_positions.size < 5
         player_holds_dice_in_round(
           @test_data.current_player,
@@ -35,18 +37,18 @@ class YahtzeeWebJsonTest < Minitest::Test
           2
         )
       end
+
       player_selects_category(
         @test_data.current_player,
         @test_data.extract_category
       )
 
-      player = @test_data.current_player
-      expected_score = @test_data.extract_score_and_advance_round
-
       the_score_should_be(
-        player,
-        expected_score
+        @test_data.current_player,
+        @test_data.extract_score
       )
+
+      @test_data.advance_to_next_round
     end
   end
 

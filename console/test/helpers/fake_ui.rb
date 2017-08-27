@@ -14,9 +14,10 @@ class FakeUI < UI
     @dice_roller.ensure_exact_use_of_dice
 
     actual_score   = @game_wrapper.score(@test_data.current_player)
-    expected_score = @test_data.extract_score_and_advance_round
+    expected_score = @test_data.extract_score
 
     @test.assert_equal expected_score, actual_score
+    @test_data.advance_to_next_round
   end
 
   def puts(output_string)
