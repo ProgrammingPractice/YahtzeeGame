@@ -6,15 +6,21 @@ class FakeDiceRoller
 
   def roll_one
     if @values.empty?
-      value = 10
-    else
-      value = @values.shift
+      @rolled_values << 'extra_value'
+      ensure_exact_use_of_dice
     end
+
+    value = @values.shift
     @rolled_values << value
     value
   end
 
   def ensure_exact_use_of_dice
+    # This method is useful when a test fails.
+    # It checks both cases:
+    #   - More dice used than available.
+    #   - Fewer dice used than available.
+
     if @current_round_values != @rolled_values
       message = <<~STRING
         Dice mismatch.
