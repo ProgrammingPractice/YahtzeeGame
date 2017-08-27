@@ -57,7 +57,11 @@ class YahtzeeWeb < Sinatra::Base
     switch_to_next_player
 
     save_game
-    redirect :new_round
+    redirect :advance_to_next_player
+  end
+
+  get '/advance_to_next_player' do
+    erb :advance_to_next_player
   end
 
   get '/favicon.ico' do

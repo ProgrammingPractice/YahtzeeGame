@@ -21,7 +21,7 @@ class YahtzeeWebJsonTest < Minitest::Test
   def test_complete_game
     start_new_game_with_players(@test_data.players_count)
 
-    1.times do
+    5.times do
       hold_positions = @test_data.next_hold_positions
 
       player_holds_dice_in_round(
@@ -51,6 +51,7 @@ class YahtzeeWebJsonTest < Minitest::Test
       )
 
       @test_data.advance_to_next_round
+      click_link('Advance to next player')
     end
   end
 

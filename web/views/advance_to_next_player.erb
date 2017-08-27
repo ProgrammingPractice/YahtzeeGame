@@ -1,0 +1,6 @@
+<% current_game.players.each do |player| %>
+  <p><%= "#{player.name}: #{player.score} points" %></p>
+<% end %>
+<p>--------</p>
+
+<a href="/new_round">Advance to next player</a>
