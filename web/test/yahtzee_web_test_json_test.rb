@@ -43,6 +43,8 @@ class YahtzeeWebJsonTest < Minitest::Test
         @test_data.extract_category
       )
 
+      @dice_roller.ensure_exact_use_of_dice
+
       the_score_should_be(
         @test_data.current_player,
         @test_data.extract_score
