@@ -43,7 +43,15 @@ class TestData
   end
 
   def next_hold_positions
-    @hold_positions.shift or raise "We were asked for hold positions, but did not expect it."
+    @hold_positions.shift or unexpected_request_for_hold_positions
+  end
+
+  private def unexpected_request_for_hold_positions
+    raise <<~STRING
+      TestData was asked for hold positions, but did not expect it.
+        Player: #{current_player}
+        Raw round: #{current_round.inspect}
+    STRING
   end
 
   private def extract_hold_positions
