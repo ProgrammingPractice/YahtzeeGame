@@ -21,20 +21,27 @@ class YahtzeeWebJsonTest < Minitest::Test
   def test_complete_game
     start_new_game_with_players(@test_data.players_count)
 
-    player_holds_dice_in_round(
-      @test_data.current_player,
-      @test_data.next_hold_positions,
-      1
-    )
-    player_holds_dice_in_round(
-      @test_data.current_player,
-      @test_data.next_hold_positions,
-      2
-    )
-    player_selects_category(
-      @test_data.current_player,
-      @test_data.extract_category
-    )
+    2.times do
+      hold_positions = @test_data.next_hold_positions
+      player_holds_dice_in_round(
+        @test_data.current_player,
+        hold_positions,
+        1
+      )
+      if hold_positions.size < 5
+        player_holds_dice_in_round(
+          @test_data.current_player,
+          @test_data.next_hold_positions,
+          2
+        )
+      end
+      player_selects_category(
+        @test_data.current_player,
+        @test_data.extract_category
+      )
+
+      score = @test_data.extract_score_and_advance_round
+    end
   end
 
   # def test_complete_game
