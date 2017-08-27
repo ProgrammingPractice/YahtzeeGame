@@ -21,7 +21,7 @@ class YahtzeeWebJsonTest < Minitest::Test
   def test_complete_game
     start_new_game_with_players(@test_data.players_count)
 
-    2.times do
+    1.times do
       hold_positions = @test_data.next_hold_positions
       player_holds_dice_in_round(
         @test_data.current_player,
@@ -40,7 +40,13 @@ class YahtzeeWebJsonTest < Minitest::Test
         @test_data.extract_category
       )
 
-      score = @test_data.extract_score_and_advance_round
+      player = @test_data.current_player
+      expected_score = @test_data.extract_score_and_advance_round
+
+      the_score_should_be(
+        player,
+        expected_score
+      )
     end
   end
 
@@ -92,6 +98,10 @@ class YahtzeeWebJsonTest < Minitest::Test
     click_button('Select category')
 
     assert_equal 200, status_code
+  end
+
+  def the_score_should_be(player_name, expected_score)
+    assert_has_content?("#{player_name}: #{expected_score} points")
   end
 
   def the_dice_will_be(dice)
