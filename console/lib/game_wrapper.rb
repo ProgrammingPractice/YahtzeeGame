@@ -55,7 +55,7 @@ class GameWrapper
     end
   end
 
-  def round_finished?
+  def player_turn_finished?
     @current_step == 3
   end
 

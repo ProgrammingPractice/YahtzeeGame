@@ -30,7 +30,7 @@ class UI
   end
 
   def end_of_step_hook
-    if @game_wrapper.round_finished?
+    if @game_wrapper.player_turn_finished?
       @game_wrapper.advance_to_next_player
 
       end_of_player_turn_assertions
