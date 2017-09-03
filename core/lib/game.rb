@@ -5,8 +5,8 @@ class Game
     @players = players
   end
 
-  def rounds_left?
-    !@players.last.categories.empty?
+  def finished?
+    @players.last.categories.empty?
   end
 
   def winners

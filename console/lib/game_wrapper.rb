@@ -18,8 +18,8 @@ class GameWrapper
     @game.players
   end
 
-  def rounds_left?
-    @game.rounds_left?
+  def game_finished?
+    @game.finished?
   end
 
   def winners

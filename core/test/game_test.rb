@@ -17,17 +17,17 @@ class GameTest < Minitest::Test
     assert p2.categories.include?('chance')
   end
 
-  def test_rounds_left_returns_false_when_last_player_finished_his_categories
+  def test_finished_returns_true_when_last_player_finished_his_categories
     dice_roller = DiceRoller.new
     player0     = Player.new('Player 0', dice_roller, ['yahtzee'])
     player1     = Player.new('Player 1', dice_roller, ['yahtzee'])
     game        = Game.new([player0, player1])
 
     player0.roll_dice; player0.select_category('yahtzee')
-    assert game.rounds_left?
+    refute game.finished?
 
     player1.roll_dice; player1.select_category('yahtzee')
-    refute game.rounds_left?
+    assert game.finished?
   end
 
   def test_winners_returns_all_the_players_with_highest_score

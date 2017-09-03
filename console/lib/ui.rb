@@ -23,7 +23,7 @@ class UI
 
       end_of_step_hook
 
-      break unless @game_wrapper.rounds_left?
+      break if @game_wrapper.game_finished?
     end
 
     display_winners(@game_wrapper.winners)
