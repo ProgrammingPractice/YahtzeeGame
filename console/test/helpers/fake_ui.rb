@@ -17,7 +17,7 @@ class FakeUI < UI
     expected_score = @test_data.extract_score
 
     @test.assert_equal expected_score, actual_score
-    @test_data.advance_to_next_round
+    @test_data.advance_to_next_player
   end
 
   def puts(output_string)

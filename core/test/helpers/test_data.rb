@@ -11,10 +11,10 @@ class TestData
       hash[player] = player_rounds.each
     end
 
-    advance_to_next_round
+    advance_to_next_player
   end
 
-  def advance_to_next_round
+  def advance_to_next_player
     advance_current_player
     @current_round = @rounds_iterators[@current_player].next
     @hold_positions = extract_hold_positions

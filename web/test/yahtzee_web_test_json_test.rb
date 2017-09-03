@@ -50,7 +50,7 @@ class YahtzeeWebJsonTest < Minitest::Test
         @test_data.extract_score
       )
 
-      @test_data.advance_to_next_round
+      @test_data.advance_to_next_player
       click_link('Advance to next player')
     end
   end
