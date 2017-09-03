@@ -1,6 +1,6 @@
 class TestData
   attr_reader :current_player
-  attr_reader :current_round
+  attr_reader :player_turn_data
   attr_reader :player_names
 
   def initialize(rounds, dice_roller)
@@ -16,7 +16,7 @@ class TestData
 
   def advance_to_next_player
     advance_current_player
-    @current_round = @rounds_iterators[@current_player].next
+    @player_turn_data = @rounds_iterators[@current_player].next
     @hold_positions = extract_hold_positions
 
     @dice_roller.move_to_next_round(self)
@@ -33,12 +33,12 @@ class TestData
   end
 
   def extract_category
-    (roll0, hold0, roll1, hold1, roll2, category, score) = @current_round
+    (roll0, hold0, roll1, hold1, roll2, category, score) = @player_turn_data
     category
   end
 
   def extract_dice
-    (roll0, hold0, roll1, hold1, roll2, category, score) = @current_round
+    (roll0, hold0, roll1, hold1, roll2, category, score) = @player_turn_data
     roll0 + roll1 + roll2
   end
 
@@ -50,19 +50,19 @@ class TestData
     raise <<~STRING
       TestData was asked for hold positions, but did not expect it.
         Player: #{current_player}
-        Raw round: #{current_round.inspect}
+        Raw round: #{player_turn_data.inspect}
     STRING
   end
 
   private def extract_hold_positions
-    (roll0, hold0, roll1, hold1, roll2, category, score) = @current_round
+    (roll0, hold0, roll1, hold1, roll2, category, score) = @player_turn_data
     hold_positions0 = [0,1,2,3,4].select { |i| hold0[i] == 'x' }
     hold_positions1 = [0,1,2,3,4].select { |i| hold1[i] == 'x' } unless hold1.empty?
     [hold_positions0, hold_positions1]
   end
 
   def extract_score
-    (roll0, hold0, roll1, hold1, roll2, category, score) = @current_round
+    (roll0, hold0, roll1, hold1, roll2, category, score) = @player_turn_data
     score
   end
 
