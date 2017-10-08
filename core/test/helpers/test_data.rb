@@ -14,6 +14,10 @@ class TestData
     advance_to_next_player
   end
 
+  def turns_count
+    30
+  end
+
   def advance_to_next_player
     advance_current_player
     @player_turn_data = @rounds_iterators[@current_player].next

@@ -22,8 +22,8 @@ class YahtzeeWebTest < Minitest::Test
   def test_complete_game
     start_new_game_with_players(@test_data.players_count)
 
-    30.times do |i|
-      if i != 0
+    @test_data.turns_count.times do |turn_index|
+      if turn_index != 0
         @test_data.advance_to_next_player
         click_link('Advance to next player')
       end
