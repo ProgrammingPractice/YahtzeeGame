@@ -3,7 +3,7 @@ require_relative 'capybara_helper'
 require 'yahtzee_web'
 require 'helpers/test_data'
 
-class YahtzeeWebJsonTest < Minitest::Test
+class YahtzeeWebTest < Minitest::Test
   include Capybara::DSL
 
   def setup
