@@ -2,11 +2,11 @@ class TestData
   attr_reader :player_turn_data
 
   def initialize(player_turns, dice_roller)
-    @players = player_turns.keys
-    @dice_roller  = dice_roller
+    @players     = player_turns.keys
+    @dice_roller = dice_roller
 
-    @turns_iterators = player_turns.each_with_object({}) do |(player, player_rounds), hash|
-      hash[player] = player_rounds.each
+    @turns_iterators = player_turns.each_with_object({}) do |(player, player_turns), hash|
+      hash[player] = player_turns.each
     end
 
     advance_to_next_player
@@ -20,15 +20,21 @@ class TestData
     @players
   end
 
+  def players_count
+    @players.size
+  end
+
   def turns_count
+    # FIXME: read this from the JSON instead of hard-coding it
     30
   end
 
   def advance_to_next_player
     advance_current_player
     @player_turn_data = @turns_iterators[@current_player].next
-    @hold_positions = extract_hold_positions
+    @hold_positions   = extract_hold_positions
 
+    # FIXME: should be #move_to_next_roll
     @dice_roller.move_to_next_round(self)
   end
 
@@ -59,8 +65,8 @@ class TestData
   private def unexpected_request_for_hold_positions
     raise <<~STRING
       TestData was asked for hold positions, but did not expect it.
-        Player: #{current_player}
-        Raw round: #{player_turn_data.inspect}
+        Player: #{@current_player}
+        Raw turn: #{@player_turn_data.inspect}
     STRING
   end
 
@@ -74,9 +80,5 @@ class TestData
   def extract_score
     (roll0, hold0, roll1, hold1, roll2, category, score) = @player_turn_data
     score
-  end
-
-  def players_count
-    @players.size
   end
 end
