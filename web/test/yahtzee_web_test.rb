@@ -25,14 +25,14 @@ class YahtzeeWebTest < Minitest::Test
     5.times do
       hold_positions = @test_data.next_hold_positions
 
-      player_holds_dice_in_round(
+      player_holds_dice_from_roll(
         @test_data.current_player,
         hold_positions,
         1
       )
 
       if hold_positions.size < 5
-        player_holds_dice_in_round(
+        player_holds_dice_from_roll(
           @test_data.current_player,
           @test_data.next_hold_positions,
           2
@@ -83,9 +83,9 @@ class YahtzeeWebTest < Minitest::Test
     assert_has_content?('Player 2: 0 points')
   end
 
-  def player_holds_dice_in_round(player_name, positions_to_hold, round_number)
+  def player_holds_dice_from_roll(player_name, positions_to_hold, roll_number)
     assert_has_content?("Playing -> #{player_name}")
-    assert_has_content?("roll #{round_number}/3")
+    assert_has_content?("roll #{roll_number}/3")
 
     positions_to_hold.each do |p|
       check("checkbox_dice_#{p}")
