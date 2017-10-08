@@ -1,0 +1,6 @@
+<% current_game.players.each do |player| %>
+  <p><%= "#{player.name}: #{player.score} points" %></p>
+<% end %>
+<p>--------</p>
+
+<p><%= "#{current_game.winners.first.name} won with #{current_game.winners.first.score} points!" %></p>

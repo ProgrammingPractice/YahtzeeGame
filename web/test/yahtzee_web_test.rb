@@ -22,7 +22,7 @@ class YahtzeeWebTest < Minitest::Test
   def test_complete_game
     start_new_game_with_players(@test_data.players_count)
 
-    5.times do
+    30.times do |i|
       hold_positions = @test_data.next_hold_positions
 
       player_holds_dice_from_roll(
@@ -51,11 +51,13 @@ class YahtzeeWebTest < Minitest::Test
         @test_data.extract_score
       )
 
-      @test_data.advance_to_next_player
-      click_link('Advance to next player')
+      if i < 29
+        @test_data.advance_to_next_player
+        click_link('Advance to next player')
+      end
     end
 
-    # assert_equal "Player 1 won with 75 points!", ui.output.last
+    assert_has_content?('Player 2 won with 75 points!')
   end
 
   def start_new_game_with_players(count)

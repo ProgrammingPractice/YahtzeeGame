@@ -54,10 +54,18 @@ class YahtzeeWeb < Sinatra::Base
 
     current_player.select_category(category)
 
-    switch_to_next_player
+    if current_game.finished?
+      save_game
+      redirect :game_end
+    else
+      switch_to_next_player
+      save_game
+      redirect :advance_to_next_player
+    end
+  end
 
-    save_game
-    redirect :advance_to_next_player
+  get '/game_end' do
+    erb :game_end
   end
 
   get '/advance_to_next_player' do
