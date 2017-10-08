@@ -13,7 +13,7 @@ class FakeUI < UI
   def end_of_player_turn_assertions
     @dice_roller.ensure_exact_use_of_dice
 
-    actual_score   = @game_wrapper.score(@test_data.current_player)
+    actual_score   = @game_wrapper.score(@test_data.current_player_name)
     expected_score = @test_data.extract_score
 
     @test.assert_equal expected_score, actual_score

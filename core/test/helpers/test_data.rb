@@ -1,17 +1,23 @@
 class TestData
-  attr_reader :current_player
   attr_reader :player_turn_data
-  attr_reader :player_names
 
-  def initialize(rounds, dice_roller)
-    @player_names = rounds.keys
-    @dice_roller = dice_roller
+  def initialize(player_turns, dice_roller)
+    @players = player_turns.keys
+    @dice_roller  = dice_roller
 
-    @rounds_iterators = rounds.each_with_object({}) do |(player, player_rounds), hash|
+    @turns_iterators = player_turns.each_with_object({}) do |(player, player_rounds), hash|
       hash[player] = player_rounds.each
     end
 
     advance_to_next_player
+  end
+
+  def current_player_name
+    @current_player
+  end
+
+  def player_names
+    @players
   end
 
   def turns_count
@@ -20,7 +26,7 @@ class TestData
 
   def advance_to_next_player
     advance_current_player
-    @player_turn_data = @rounds_iterators[@current_player].next
+    @player_turn_data = @turns_iterators[@current_player].next
     @hold_positions = extract_hold_positions
 
     @dice_roller.move_to_next_round(self)
@@ -30,10 +36,10 @@ class TestData
     if @current_player.nil?
       @player_index = 0
     else
-      @player_index = (@player_index + 1) % @player_names.size
+      @player_index = (@player_index + 1) % @players.size
     end
 
-    @current_player = @player_names[@player_index]
+    @current_player = @players[@player_index]
   end
 
   def extract_category
@@ -71,6 +77,6 @@ class TestData
   end
 
   def players_count
-    player_names.size
+    @players.size
   end
 end

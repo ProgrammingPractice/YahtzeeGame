@@ -31,28 +31,28 @@ class YahtzeeWebTest < Minitest::Test
       hold_positions = @test_data.next_hold_positions
 
       player_holds_dice_from_roll(
-        @test_data.current_player,
+        @test_data.current_player_name,
         hold_positions,
         1
       )
 
       if hold_positions.size < 5
         player_holds_dice_from_roll(
-          @test_data.current_player,
+          @test_data.current_player_name,
           @test_data.next_hold_positions,
           2
         )
       end
 
       player_selects_category(
-        @test_data.current_player,
+        @test_data.current_player_name,
         @test_data.extract_category
       )
 
       @dice_roller.ensure_exact_use_of_dice
 
       the_score_should_be(
-        @test_data.current_player,
+        @test_data.current_player_name,
         @test_data.extract_score
       )
     end
