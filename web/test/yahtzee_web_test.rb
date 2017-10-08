@@ -54,21 +54,9 @@ class YahtzeeWebTest < Minitest::Test
       @test_data.advance_to_next_player
       click_link('Advance to next player')
     end
+
+    # assert_equal "Player 1 won with 75 points!", ui.output.last
   end
-
-  # def test_complete_game
-
-  #   players = test_data.player_names.map do |name|
-  #     Player.new(name, dice_roller)
-  #   end
-  #   game = Game.new(players)
-  #   game_wrapper = GameWrapper.new(game)
-  #   ui = FakeUI.new(game_wrapper, self, test_data, dice_roller)
-
-  #   ui.run
-
-  #   assert_equal "Player 1 won with 75 points!", ui.output.last
-  # end
 
   def start_new_game_with_players(count)
     visit '/new_game'
