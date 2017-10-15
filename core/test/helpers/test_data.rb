@@ -80,4 +80,13 @@ class TestData
     (roll0, hold0, roll1, hold1, roll2, category, score) = @player_turn_data
     score
   end
+
+  private
+
+  # Example:
+  # [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+  # => [1, 4, 7, 2, 5, 8, 3, 6, 9]
+  def merge_arrays(arrays)
+    arrays[0].zip(*arrays[1..-1]).flatten
+  end
 end
