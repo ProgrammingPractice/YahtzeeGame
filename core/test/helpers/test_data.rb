@@ -8,9 +8,7 @@ class TestData
     @players     = player_turns.keys
     @dice_roller = FakeDiceRoller.new
 
-    @turns_iterators = player_turns.each_with_object({}) do |(player, player_turns), hash|
-      hash[player] = player_turns.each
-    end
+    @turns_iterator = merge_arrays(player_turns.values).each
 
     advance_to_next_player
   end
@@ -38,7 +36,8 @@ class TestData
 
   def advance_to_next_player
     advance_current_player
-    @player_turn_data = @turns_iterators[@current_player].next
+
+    @player_turn_data = @turns_iterator.next
     @hold_positions   = extract_hold_positions
 
     @dice_roller.move_to_next_group(self)
@@ -94,6 +93,6 @@ class TestData
   # [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
   # => [1, 4, 7, 2, 5, 8, 3, 6, 9]
   def merge_arrays(arrays)
-    arrays[0].zip(*arrays[1..-1]).flatten
+    arrays[0].zip(*arrays[1..-1]).flatten(1)
   end
 end
