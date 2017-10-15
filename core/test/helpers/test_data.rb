@@ -34,8 +34,7 @@ class TestData
     @player_turn_data = @turns_iterators[@current_player].next
     @hold_positions   = extract_hold_positions
 
-    # FIXME: should be #move_to_next_roll
-    @dice_roller.move_to_next_round(self)
+    @dice_roller.move_to_next_group(self)
   end
 
   private def advance_current_player

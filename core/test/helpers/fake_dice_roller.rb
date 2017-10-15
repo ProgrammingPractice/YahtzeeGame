@@ -21,13 +21,13 @@ class FakeDiceRoller
     #   - More dice used than available.
     #   - Fewer dice used than available.
 
-    if @current_round_values != @rolled_values
+    if @current_group_values != @rolled_values
       message = <<~STRING
         Dice mismatch.
-          In the current round the number of dice provided and dice used do not match:
+          In the current group the number of dice provided and dice used do not match:
           Player: #{@test_data.current_player}
-          Raw round: #{@test_data.player_turn_data.inspect}
-          Dice provided by test: #{@current_round_values}
+          Raw turn data: #{@test_data.player_turn_data.inspect}
+          Dice provided by test: #{@current_group_values}
           Dice used by game:     #{@rolled_values}
       STRING
 
@@ -35,17 +35,17 @@ class FakeDiceRoller
     end
   end
 
-  def move_to_next_round(test_data)
+  def move_to_next_group(test_data)
     @test_data = test_data
 
     @rolled_values = []
 
-    add_values_for_round(test_data.extract_dice)
+    add_values_for_group(test_data.extract_dice)
   end
 
-  def add_values_for_round(values)
-    raise 'Values should be empty when round begins' if @values.any?
-    @current_round_values = values.dup
+  def add_values_for_group(values)
+    raise 'Values should be empty when group begins' if @values.any?
+    @current_group_values = values.dup
     @values = values.dup
   end
 end
