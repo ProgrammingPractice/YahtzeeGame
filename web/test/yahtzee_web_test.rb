@@ -14,9 +14,7 @@ class YahtzeeWebTest < Minitest::Test
     # We need to set this so that capybara-screenshot works
     Sinatra::Application.root = application.settings.root
 
-    file_path = File.expand_path('../../core/test/fixtures/complete_game.json', __dir__)
-    json = JSON.parse(File.read(file_path))
-    @test_data = TestData.new(json, @dice_roller)
+    @test_data = TestData.new(@dice_roller)
   end
 
   def test_complete_game

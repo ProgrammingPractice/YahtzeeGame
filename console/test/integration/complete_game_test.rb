@@ -7,11 +7,9 @@ require 'helpers/test_data'
 
 class CompleteGameTest < Minitest::Test
   def test_complete_game
-    json = JSON.parse(File.read('../core/test/fixtures/complete_game.json'))
-
     dice_roller = FakeDiceRoller.new([])
 
-    test_data = TestData.new(json, dice_roller)
+    test_data = TestData.new(dice_roller)
 
     players = test_data.player_names.map do |name|
       Player.new(name, dice_roller)

@@ -1,7 +1,9 @@
 class TestData
+  FILE_PATH = File.expand_path('../fixtures/complete_game.json', __dir__)
+
   attr_reader :player_turn_data
 
-  def initialize(player_turns, dice_roller)
+  def initialize(dice_roller)
     @players     = player_turns.keys
     @dice_roller = dice_roller
 
@@ -22,6 +24,10 @@ class TestData
 
   def players_count
     @players.size
+  end
+
+  def player_turns
+    @player_turns ||= JSON.parse(File.read(FILE_PATH))
   end
 
   def turns_count
