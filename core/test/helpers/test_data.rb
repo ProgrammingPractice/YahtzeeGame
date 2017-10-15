@@ -5,16 +5,34 @@ class TestData
   attr_reader :dice_roller
 
   def initialize
-    @players     = player_turns.keys
+    json ||= JSON.parse(File.read(FILE_PATH))
+
+    @players     = json.keys
     @dice_roller = FakeDiceRoller.new
 
-    @turns_iterator = merge_arrays(player_turns.values).each
+    player_turns = add_player_name_to_turns(json)
+    @turns_iterator = merge_arrays(player_turns).each
 
     advance_to_next_player
   end
 
+  private def add_player_name_to_turns(json)
+    json.map do |player, turns|
+      turns.map do |turn|
+        turn << player
+      end
+    end
+  end
+
+  # Example:
+  # [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+  # => [1, 4, 7, 2, 5, 8, 3, 6, 9]
+  private def merge_arrays(arrays)
+    arrays[0].zip(*arrays[1..-1]).flatten(1)
+  end
+
   def current_player_name
-    @current_player
+    @player_turn_data.last
   end
 
   def player_names
@@ -25,32 +43,16 @@ class TestData
     @players.size
   end
 
-  def player_turns
-    @player_turns ||= JSON.parse(File.read(FILE_PATH))
-  end
-
   def turns_count
     # FIXME: read this from the JSON instead of hard-coding it
     30
   end
 
   def advance_to_next_player
-    advance_current_player
-
     @player_turn_data = @turns_iterator.next
     @hold_positions   = extract_hold_positions
 
     @dice_roller.move_to_next_group(self)
-  end
-
-  private def advance_current_player
-    if @current_player.nil?
-      @player_index = 0
-    else
-      @player_index = (@player_index + 1) % @players.size
-    end
-
-    @current_player = @players[@player_index]
   end
 
   def extract_category
@@ -70,7 +72,7 @@ class TestData
   private def unexpected_request_for_hold_positions
     raise <<~STRING
       TestData was asked for hold positions, but did not expect it.
-        Player: #{@current_player}
+        Player: #{current_player_name}
         Raw turn: #{@player_turn_data.inspect}
     STRING
   end
@@ -85,14 +87,5 @@ class TestData
   def extract_score
     (roll0, hold0, roll1, hold1, roll2, category, score) = @player_turn_data
     score
-  end
-
-  private
-
-  # Example:
-  # [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
-  # => [1, 4, 7, 2, 5, 8, 3, 6, 9]
-  def merge_arrays(arrays)
-    arrays[0].zip(*arrays[1..-1]).flatten(1)
   end
 end
