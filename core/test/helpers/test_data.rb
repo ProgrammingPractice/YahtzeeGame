@@ -2,10 +2,11 @@ class TestData
   FILE_PATH = File.expand_path('../fixtures/complete_game.json', __dir__)
 
   attr_reader :player_turn_data
+  attr_reader :dice_roller
 
-  def initialize(dice_roller)
+  def initialize
     @players     = player_turns.keys
-    @dice_roller = dice_roller
+    @dice_roller = FakeDiceRoller.new
 
     @turns_iterators = player_turns.each_with_object({}) do |(player, player_turns), hash|
       hash[player] = player_turns.each

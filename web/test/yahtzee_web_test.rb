@@ -7,14 +7,13 @@ class YahtzeeWebTest < Minitest::Test
   include Capybara::DSL
 
   def setup
-    @dice_roller = FakeDiceRoller.new
+    @test_data = TestData.new
+    @dice_roller = @test_data.dice_roller
     application = YahtzeeWeb.new(@dice_roller)
     Capybara.app = application
 
     # We need to set this so that capybara-screenshot works
     Sinatra::Application.root = application.settings.root
-
-    @test_data = TestData.new(@dice_roller)
   end
 
   def test_complete_game
