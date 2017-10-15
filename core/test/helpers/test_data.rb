@@ -1,20 +1,32 @@
 class TestData
   FILE_PATH = File.expand_path('../fixtures/complete_game.json', __dir__)
 
-  attr_reader :player_turn_data
   attr_reader :dice_roller
+  attr_reader :player_turn_data
+  attr_reader :winner_name
+  attr_reader :winner_score
 
   def initialize
     json ||= JSON.parse(File.read(FILE_PATH))
 
     @players     = json.keys
     @dice_roller = FakeDiceRoller.new
+    extract_winner(json)
 
     # TODO: use an object instead of array for turn_data
     player_turns = add_player_name_to_turns(json)
     @turns_iterator = merge_arrays(player_turns).each
 
     advance_to_next_player
+  end
+
+  def extract_winner(json)
+    name_final_score_pairs = json.map do |player_name, player_turns|
+      final_score = player_turns.last.last
+      [player_name, final_score]
+    end
+
+    @winner_name, @winner_score = name_final_score_pairs.max { |a, b| a[1] <=> b[1] }
   end
 
   private def add_player_name_to_turns(json)
@@ -67,14 +79,6 @@ class TestData
 
   def next_hold_positions
     @hold_positions.shift or unexpected_request_for_hold_positions
-  end
-
-  def winner_name
-    'Player 2'
-  end
-
-  def winner_score
-    '75'
   end
 
   private def unexpected_request_for_hold_positions
