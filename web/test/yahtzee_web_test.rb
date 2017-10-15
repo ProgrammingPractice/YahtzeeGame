@@ -54,7 +54,7 @@ class YahtzeeWebTest < Minitest::Test
       )
     end
 
-    assert_has_content?('Player 2 won with 75 points!')
+    assert_has_content?("#{@test_data.winner_name} won with #{@test_data.winner_score} points!")
   end
 
   def start_new_game_with_players(count)

@@ -10,6 +10,7 @@ class TestData
     @players     = json.keys
     @dice_roller = FakeDiceRoller.new
 
+    # TODO: use an object instead of array for turn_data
     player_turns = add_player_name_to_turns(json)
     @turns_iterator = merge_arrays(player_turns).each
 
@@ -66,6 +67,14 @@ class TestData
 
   def next_hold_positions
     @hold_positions.shift or unexpected_request_for_hold_positions
+  end
+
+  def winner_name
+    'Player 2'
+  end
+
+  def winner_score
+    '75'
   end
 
   private def unexpected_request_for_hold_positions
