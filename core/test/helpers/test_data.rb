@@ -44,8 +44,7 @@ class TestData
   end
 
   def turns_count
-    # FIXME: read this from the JSON instead of hard-coding it
-    30
+    @turns_iterator.size
   end
 
   def advance_to_next_player
