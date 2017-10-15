@@ -1,12 +1,12 @@
 class FakeUI < UI
   attr_reader :output
 
-  def initialize(game_wrapper, test, test_data, dice_roller)
+  def initialize(game_wrapper, test, test_data)
     super(game_wrapper)
 
     @test         = test
     @test_data    = test_data
-    @dice_roller  = dice_roller
+    @dice_roller  = @test_data.dice_roller
     @output       = []
   end
 
