@@ -18,6 +18,8 @@ class YahtzeeWebTest < Minitest::Test
   def test_complete_game
     start_new_game_with_players(@test_data.players_count)
 
+    # IDEA:
+    # while @test_data.turns_left do
     @test_data.turns_count.times do |turn_index|
       player_holds_dice_from_roll(1)
       player_holds_dice_from_roll(2) if @test_data.player_rolled_again?
@@ -25,6 +27,8 @@ class YahtzeeWebTest < Minitest::Test
       check_score
       @dice_roller.ensure_exact_use_of_dice
 
+      # IDEA:
+      # advance_to_next_turn unless @test_data.last_turn?
       if turn_index < @test_data.turns_count - 1
         advance_to_next_turn
       end
