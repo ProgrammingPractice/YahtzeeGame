@@ -1,7 +1,6 @@
 class TestData
   FILE_PATH = File.expand_path('../fixtures/complete_game.json', __dir__)
 
-  attr_reader :dice_roller
   attr_reader :player_turn_data
   attr_reader :winner_name
   attr_reader :winner_score
@@ -10,7 +9,6 @@ class TestData
     json ||= JSON.parse(File.read(FILE_PATH))
 
     @players     = json.keys
-    @dice_roller = FakeDiceRoller.new([], self)
     extract_winner(json)
 
     # TODO: use an object instead of array for turn_data
@@ -67,8 +65,6 @@ class TestData
   def advance_to_next_player
     @player_turn_data = @turns_iterator.next
     @hold_positions   = extract_hold_positions
-
-    @dice_roller.move_to_next_group
   end
 
   def extract_category

@@ -7,13 +7,12 @@ class YahtzeeWebTest < Minitest::Test
   include Capybara::DSL
 
   def setup
-    @test_data = TestData.new
-    @dice_roller = @test_data.dice_roller
-    application = YahtzeeWeb.new(@dice_roller)
-    Capybara.app = application
+    @test_data   = TestData.new
+    @dice_roller = FakeDiceRoller.new([], @test_data)
+    Capybara.app = YahtzeeWeb.new(@dice_roller)
 
     # We need to set this so that capybara-screenshot works
-    Sinatra::Application.root = application.settings.root
+    Sinatra::Application.root = Capybara.app.settings.root
   end
 
   def test_complete_game
@@ -21,20 +20,13 @@ class YahtzeeWebTest < Minitest::Test
 
     @test_data.turns_count.times do |turn_index|
       player_holds_dice_from_roll(1)
-
-      if @test_data.player_rolled_again?
-        player_holds_dice_from_roll(2)
-      end
-
+      player_holds_dice_from_roll(2) if @test_data.player_rolled_again?
       player_selects_category
-
       check_score
-
-      ensure_exact_use_of_dice
+      @dice_roller.ensure_exact_use_of_dice
 
       if turn_index < @test_data.turns_count - 1
-        @test_data.advance_to_next_player
-        click_link('Advance to next player')
+        advance_to_next_turn
       end
     end
 
@@ -81,9 +73,13 @@ class YahtzeeWebTest < Minitest::Test
     assert_has_content?("#{@test_data.current_player_name}: #{@test_data.extract_score} points")
   end
 
-  def ensure_exact_use_of_dice
-    @dice_roller.ensure_exact_use_of_dice
+  def advance_to_next_turn
+    @test_data.advance_to_next_player
+    @dice_roller.move_to_next_group
+    click_link('Advance to next player')
   end
+
+  private
 
   def assert_has_content?(content)
     assert has_content?(content), "Could not find content: #{content.inspect}"

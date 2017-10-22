@@ -1,12 +1,12 @@
 class FakeUI < UI
   attr_reader :output
 
-  def initialize(game_wrapper, test, test_data)
+  def initialize(game_wrapper, test, test_data, dice_roller)
     super(game_wrapper)
 
     @test         = test
     @test_data    = test_data
-    @dice_roller  = @test_data.dice_roller
+    @dice_roller  = dice_roller
     @output       = []
   end
 
@@ -18,6 +18,7 @@ class FakeUI < UI
 
     @test.assert_equal expected_score, actual_score
     @test_data.advance_to_next_player
+    @dice_roller.move_to_next_group
   end
 
   def puts(output_string)

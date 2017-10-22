@@ -8,14 +8,14 @@ require 'helpers/test_data'
 class CompleteGameTest < Minitest::Test
   def test_complete_game
     test_data = TestData.new
-    dice_roller = test_data.dice_roller
+    dice_roller = FakeDiceRoller.new([], test_data)
 
     players = test_data.player_names.map do |name|
       Player.new(name, dice_roller)
     end
     game = Game.new(players)
     game_wrapper = GameWrapper.new(game)
-    ui = FakeUI.new(game_wrapper, self, test_data)
+    ui = FakeUI.new(game_wrapper, self, test_data, dice_roller)
 
     ui.run
 

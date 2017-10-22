@@ -3,6 +3,7 @@ class FakeDiceRoller
     @values        = values
     @rolled_values = []
     @test_data     = test_data
+    test_data && move_to_next_group
   end
 
   def roll_one
