@@ -20,21 +20,15 @@ class YahtzeeWebTest < Minitest::Test
     start_new_game_with_players(@test_data.players_count)
 
     @test_data.turns_count.times do |turn_index|
-      player_holds_dice_from_roll(@test_data, 1)
+      player_holds_dice_from_roll(1)
 
       if @test_data.player_rolled_again?
-        player_holds_dice_from_roll(@test_data, 2)
+        player_holds_dice_from_roll(2)
       end
 
-      player_selects_category(
-        @test_data.current_player_name,
-        @test_data.extract_category
-      )
+      player_selects_category
 
-      the_score_should_be(
-        @test_data.current_player_name,
-        @test_data.extract_score
-      )
+      check_score
 
       # TODO: can we move this to test data?
       @dice_roller.ensure_exact_use_of_dice
@@ -61,14 +55,11 @@ class YahtzeeWebTest < Minitest::Test
     assert_has_content?('Player 2: 0 points')
   end
 
-  def player_holds_dice_from_roll(test_data, roll_number)
-    player_name = test_data.current_player_name
-    positions_to_hold = test_data.next_hold_positions
-
-    assert_has_content?("Playing -> #{player_name}")
+  def player_holds_dice_from_roll(roll_number)
+    assert_has_content?("Playing -> #{@test_data.current_player_name}")
     assert_has_content?("roll #{roll_number}/3")
 
-    positions_to_hold.each do |p|
+    @test_data.next_hold_positions.each do |p|
       check("checkbox_dice_#{p}")
     end
 
@@ -77,18 +68,18 @@ class YahtzeeWebTest < Minitest::Test
     assert_equal 200, status_code
   end
 
-  def player_selects_category(player_name, category)
-    assert_has_content?("Playing -> #{player_name}")
+  def player_selects_category
+    assert_has_content?("Playing -> #{@test_data.current_player_name}")
     refute has_content?('Select what to hold:')
 
-    choose("radiobutton_category_#{category}")
+    choose("radiobutton_category_#{@test_data.extract_category}")
     click_button('Select category')
 
     assert_equal 200, status_code
   end
 
-  def the_score_should_be(player_name, expected_score)
-    assert_has_content?("#{player_name}: #{expected_score} points")
+  def check_score
+    assert_has_content?("#{@test_data.current_player_name}: #{@test_data.extract_score} points")
   end
 
   def the_dice_will_be(dice)
