@@ -10,7 +10,7 @@ class TestData
     json ||= JSON.parse(File.read(FILE_PATH))
 
     @players     = json.keys
-    @dice_roller = FakeDiceRoller.new
+    @dice_roller = FakeDiceRoller.new([], self)
     extract_winner(json)
 
     # TODO: use an object instead of array for turn_data
@@ -68,7 +68,7 @@ class TestData
     @player_turn_data = @turns_iterator.next
     @hold_positions   = extract_hold_positions
 
-    @dice_roller.move_to_next_group(self)
+    @dice_roller.move_to_next_group
   end
 
   def extract_category

@@ -1,7 +1,8 @@
 class FakeDiceRoller
-  def initialize(values = [])
+  def initialize(values = [], test_data = nil)
     @values        = values
     @rolled_values = []
+    @test_data     = test_data
   end
 
   def roll_one
@@ -25,7 +26,7 @@ class FakeDiceRoller
       message = <<~STRING
         Dice mismatch.
           In the current group the number of dice provided and dice used do not match:
-          Player: #{@test_data.current_player}
+          Player: #{@test_data.current_player_name}
           Raw turn data: #{@test_data.player_turn_data.inspect}
           Dice provided by test: #{@current_group_values}
           Dice used by game:     #{@rolled_values}
@@ -35,12 +36,10 @@ class FakeDiceRoller
     end
   end
 
-  def move_to_next_group(test_data)
-    @test_data = test_data
-
+  def move_to_next_group
     @rolled_values = []
 
-    add_values_for_group(test_data.extract_dice)
+    add_values_for_group(@test_data.extract_dice)
   end
 
   def add_values_for_group(values)
