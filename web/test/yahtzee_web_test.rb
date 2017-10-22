@@ -30,8 +30,7 @@ class YahtzeeWebTest < Minitest::Test
 
       check_score
 
-      # TODO: can we move this to test data?
-      @dice_roller.ensure_exact_use_of_dice
+      ensure_exact_use_of_dice
 
       if turn_index < @test_data.turns_count - 1
         @test_data.advance_to_next_player
@@ -82,8 +81,8 @@ class YahtzeeWebTest < Minitest::Test
     assert_has_content?("#{@test_data.current_player_name}: #{@test_data.extract_score} points")
   end
 
-  def the_dice_will_be(dice)
-    @dice_roller.add_values_for_round(dice)
+  def ensure_exact_use_of_dice
+    @dice_roller.ensure_exact_use_of_dice
   end
 
   def assert_has_content?(content)
