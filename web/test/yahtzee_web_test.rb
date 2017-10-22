@@ -20,18 +20,10 @@ class YahtzeeWebTest < Minitest::Test
     start_new_game_with_players(@test_data.players_count)
 
     @test_data.turns_count.times do |turn_index|
-      player_holds_dice_from_roll(
-        @test_data.current_player_name,
-        @test_data.next_hold_positions,
-        1
-      )
+      player_holds_dice_from_roll(@test_data, 1)
 
       if @test_data.player_rolled_again?
-        player_holds_dice_from_roll(
-          @test_data.current_player_name,
-          @test_data.next_hold_positions,
-          2
-        )
+        player_holds_dice_from_roll(@test_data, 2)
       end
 
       player_selects_category(
@@ -69,7 +61,10 @@ class YahtzeeWebTest < Minitest::Test
     assert_has_content?('Player 2: 0 points')
   end
 
-  def player_holds_dice_from_roll(player_name, positions_to_hold, roll_number)
+  def player_holds_dice_from_roll(test_data, roll_number)
+    player_name = test_data.current_player_name
+    positions_to_hold = test_data.next_hold_positions
+
     assert_has_content?("Playing -> #{player_name}")
     assert_has_content?("roll #{roll_number}/3")
 
