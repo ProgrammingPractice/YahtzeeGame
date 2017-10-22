@@ -8,6 +8,7 @@
 <p>You rolled: <%= current_player.roll.inspect %></p>
 
 <p>--------</p>
+<p>Select the category for this round</p>
 <p>Available categories:</p>
 <form action="select_category" method="post">
   <% current_player.categories.each do |category| %>

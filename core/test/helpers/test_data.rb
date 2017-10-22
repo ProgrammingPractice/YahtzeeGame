@@ -20,15 +20,6 @@ class TestData
     advance_to_next_player
   end
 
-  def extract_winner(json)
-    name_final_score_pairs = json.map do |player_name, player_turns|
-      final_score = player_turns.last.last
-      [player_name, final_score]
-    end
-
-    @winner_name, @winner_score = name_final_score_pairs.max { |a, b| a[1] <=> b[1] }
-  end
-
   private def add_player_name_to_turns(json)
     json.map do |player, turns|
       turns.map do |turn|
@@ -42,6 +33,15 @@ class TestData
   # => [1, 4, 7, 2, 5, 8, 3, 6, 9]
   private def merge_arrays(arrays)
     arrays[0].zip(*arrays[1..-1]).flatten(1)
+  end
+
+  def extract_winner(json)
+    name_final_score_pairs = json.map do |player_name, player_turns|
+      final_score = player_turns.last.last
+      [player_name, final_score]
+    end
+
+    @winner_name, @winner_score = name_final_score_pairs.max { |a, b| a[1] <=> b[1] }
   end
 
   def current_player_name
@@ -58,6 +58,10 @@ class TestData
 
   def turns_count
     @turns_iterator.size
+  end
+
+  def player_rolled_again?
+    @last_hold_positions.size < 5
   end
 
   def advance_to_next_player
@@ -78,7 +82,9 @@ class TestData
   end
 
   def next_hold_positions
-    @hold_positions.shift or unexpected_request_for_hold_positions
+    positions = @hold_positions.shift or unexpected_request_for_hold_positions
+    @last_hold_positions = positions
+    positions
   end
 
   private def unexpected_request_for_hold_positions

@@ -20,15 +20,13 @@ class YahtzeeWebTest < Minitest::Test
     start_new_game_with_players(@test_data.players_count)
 
     @test_data.turns_count.times do |turn_index|
-      hold_positions = @test_data.next_hold_positions
-
       player_holds_dice_from_roll(
         @test_data.current_player_name,
-        hold_positions,
+        @test_data.next_hold_positions,
         1
       )
 
-      if hold_positions.size < 5
+      if @test_data.player_rolled_again?
         player_holds_dice_from_roll(
           @test_data.current_player_name,
           @test_data.next_hold_positions,
@@ -41,12 +39,13 @@ class YahtzeeWebTest < Minitest::Test
         @test_data.extract_category
       )
 
-      @dice_roller.ensure_exact_use_of_dice
-
       the_score_should_be(
         @test_data.current_player_name,
         @test_data.extract_score
       )
+
+      # TODO: can we move this to test data?
+      @dice_roller.ensure_exact_use_of_dice
 
       if turn_index < @test_data.turns_count - 1
         @test_data.advance_to_next_player
