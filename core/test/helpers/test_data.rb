@@ -1,7 +1,8 @@
+require_relative 'turn_data'
+
 class TestData
   FILE_PATH = File.expand_path('../fixtures/complete_game.json', __dir__)
 
-  attr_reader :player_turn_data
   attr_reader :winner_name
   attr_reader :winner_score
 
@@ -11,17 +12,25 @@ class TestData
     @players     = json.keys
     extract_winner(json)
 
-    # TODO: use an object instead of array for turn_data
-    player_turns = add_player_name_to_each_turn(json)
-    @turns_iterator = merge_arrays(player_turns).each
+    turns_grouped_by_player = create_turn_data_objects(json)
+    @turns_iterator = interweave_arrays(turns_grouped_by_player).each
 
     advance_to_next_player
   end
 
-  private def add_player_name_to_each_turn(json)
+  private def create_turn_data_objects(json)
     json.map do |player, turns|
       turns.map do |turn|
-        turn << player
+        TurnData.new(
+          player_name: player,
+          roll0:       turn[0],
+          hold0:       turn[1],
+          roll1:       turn[2],
+          hold1:       turn[3],
+          roll2:       turn[4],
+          category:    turn[5],
+          score:       turn[6]
+        )
       end
     end
   end
@@ -29,7 +38,7 @@ class TestData
   # Example:
   # [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
   # => [1, 4, 7, 2, 5, 8, 3, 6, 9]
-  private def merge_arrays(arrays)
+  private def interweave_arrays(arrays)
     arrays[0].zip(*arrays[1..-1]).flatten(1)
   end
 
@@ -43,7 +52,7 @@ class TestData
   end
 
   def current_player_name
-    @player_turn_data.last
+    @player_turn_data.player_name
   end
 
   def player_names
@@ -68,13 +77,11 @@ class TestData
   end
 
   def extract_category
-    (roll0, hold0, roll1, hold1, roll2, category, score) = @player_turn_data
-    category
+    @player_turn_data.category
   end
 
   def extract_dice
-    (roll0, hold0, roll1, hold1, roll2, category, score) = @player_turn_data
-    roll0 + roll1 + roll2
+    @player_turn_data.roll0 + @player_turn_data.roll1 + @player_turn_data.roll2
   end
 
   def next_hold_positions
@@ -92,14 +99,14 @@ class TestData
   end
 
   private def extract_hold_positions
-    (roll0, hold0, roll1, hold1, roll2, category, score) = @player_turn_data
+    hold0 = @player_turn_data.hold0
+    hold1 = @player_turn_data.hold1
     hold_positions0 = [0,1,2,3,4].select { |i| hold0[i] == 'x' }
     hold_positions1 = [0,1,2,3,4].select { |i| hold1[i] == 'x' } unless hold1.empty?
     [hold_positions0, hold_positions1]
   end
 
   def extract_score
-    (roll0, hold0, roll1, hold1, roll2, category, score) = @player_turn_data
-    score
+    @player_turn_data.score
   end
 end
