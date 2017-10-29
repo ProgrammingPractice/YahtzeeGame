@@ -13,6 +13,7 @@ class TestData
     extract_winner(json)
 
     turns_grouped_by_player = create_turn_data_objects(json)
+    #IDEA try to replace iterator with array + index
     @turns_iterator = interweave_arrays(turns_grouped_by_player).each
 
     advance_to_next_player
