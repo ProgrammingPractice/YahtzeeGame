@@ -12,13 +12,13 @@ class TestData
     extract_winner(json)
 
     # TODO: use an object instead of array for turn_data
-    player_turns = add_player_name_to_turns(json)
+    player_turns = add_player_name_to_each_turn(json)
     @turns_iterator = merge_arrays(player_turns).each
 
     advance_to_next_player
   end
 
-  private def add_player_name_to_turns(json)
+  private def add_player_name_to_each_turn(json)
     json.map do |player, turns|
       turns.map do |turn|
         turn << player
