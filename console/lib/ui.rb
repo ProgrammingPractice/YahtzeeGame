@@ -88,7 +88,11 @@ class UI
   end
 
   def display_winners(winners)
-    puts "#{winners.map(&:name).join(' & ')} won with #{winners.first.score} points!"
+    print_message "#{winners.map(&:name).join(' & ')} won with #{winners.first.score} points!"
+  end
+
+  def print_message(message)
+    puts(message)
   end
 
   private
@@ -101,7 +105,7 @@ class UI
       key = Remedy::Keyboard.get.to_s
 
       if key == 'q'
-        puts "Bye"
+        print_message 'Bye'
         exit
       elsif key == KEY_ENTER
         break

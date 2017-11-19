@@ -8,6 +8,7 @@ class FakeUI < UI
     @test_data    = test_data
     @dice_roller  = dice_roller
     @output       = []
+    @turn_index   = -1
   end
 
   def end_of_player_turn_assertions
@@ -17,12 +18,16 @@ class FakeUI < UI
     expected_score = @test_data.extract_score
 
     @test.assert_equal expected_score, actual_score
-    @test_data.advance_to_next_player
-    @dice_roller.move_to_next_group
+
+    @turn_index += 1
+    if @turn_index < @test_data.turns_count - 1
+      @test_data.advance_to_next_player
+      @dice_roller.move_to_next_group
+    end
   end
 
-  def puts(output_string)
-    @output << output_string
+  def print_message(message)
+    @output << message
   end
 
   def ask_for_hold_positions(*)

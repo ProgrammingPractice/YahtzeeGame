@@ -13,8 +13,8 @@ class TestData
     extract_winner(json)
 
     turns_grouped_by_player = create_turn_data_objects(json)
-    #IDEA try to replace iterator with array + index
-    @turns_iterator = interweave_arrays(turns_grouped_by_player).each
+    @index = -1
+    @turns = interweave_arrays(turns_grouped_by_player)
 
     advance_to_next_player
   end
@@ -65,7 +65,7 @@ class TestData
   end
 
   def turns_count
-    @turns_iterator.size
+    @turns.size
   end
 
   def player_rolled_again?
@@ -73,7 +73,8 @@ class TestData
   end
 
   def advance_to_next_player
-    @player_turn_data = @turns_iterator.next
+    @index += 1
+    @player_turn_data = @turns[@index]
     @hold_positions   = extract_hold_positions
   end
 
