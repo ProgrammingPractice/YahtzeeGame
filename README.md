@@ -10,6 +10,25 @@ To run the console version, run this in the command line:
 
 For the web version you can find instructions in 'web/README.md'
 
+## Programming Practice notes - Victor & Florin
+
+- web version
+    - continue with yahtze_web_test.rb
+        - rename yahtzee_web_test as complete_game_test
+        - see 2 IDEA comments
+        - do a final review of the test
+    - tidy up TestData
+        - check for unused methods
+        - fix TODO comment
+        - order/group methods
+    - tidy up FakeDiceRoller
+        - clean initialize method if possible
+    - web version: the session gets lost between server restarts and the game has to be restarted
+    - use the newly implemented business logic in web -> use GameWrapper instead of Game
+- console version
+    - consider minimum test to check console input
+- Consider other UIs: web (each player in different browser), API.
+
 ## Console version
 
 - Running tests
