@@ -16,6 +16,18 @@ For the web version you can find instructions in 'web/README.md'
 
         bin/run_tests
 
+## Naming convention
+
+- round: the game has 15 rounds. One round lasts for all players
+- player_turn: the player's part in a round
+- step: any of the steps in a player turn
+    - step_roll_0
+    - step_hold_0
+    - step_roll_1 (optional)
+    - step_hold_1 (optional)
+    - step_roll_2 (optional)
+    - step_select_category
+
 ## Game rules
 
 The game of yahtzee is a simple dice game. Each player
